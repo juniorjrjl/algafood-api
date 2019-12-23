@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
@@ -34,8 +35,8 @@ public class CidadeController {
 
     @GetMapping("{id}")
     public ResponseEntity<Cidade> buscar(@PathVariable Long id){
-        Cidade cidade = cadastroCidadeService.buscar(id);
-        return cidade == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(cidade);
+        Optional<Cidade> cidade = cadastroCidadeService.buscar(id);
+        return cidade.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(cidade.get());
     }
     
     @PostMapping
@@ -51,13 +52,13 @@ public class CidadeController {
     @PutMapping("{id}")
     public ResponseEntity<?> atualizar(@PathVariable Long id, @RequestBody Cidade cidade){
         try{
-            Cidade cidadeAtual = cadastroCidadeService.buscar(id);
-            if (cidadeAtual == null){
+            Optional<Cidade> cidadeAtual = cadastroCidadeService.buscar(id);
+            if (cidadeAtual.isEmpty()){
                 return ResponseEntity.notFound().build();
             }
-            BeanUtils.copyProperties(cidade, cidadeAtual, "id");
-            cadastroCidadeService.salvar(cidadeAtual);
-            return ResponseEntity.ok(cidadeAtual);
+            BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
+            Cidade cidadeSalva = cadastroCidadeService.salvar(cidadeAtual.get());
+            return ResponseEntity.ok(cidadeSalva);
         }catch(EntidadeNaoEncontradaException ex){
             return ResponseEntity.badRequest().body(ex.getMessage());
         }

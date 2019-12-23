@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
@@ -18,21 +19,21 @@ public class CadastroCozinhaService {
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
-    public Cozinha buscar(Long id){
-        return cozinhaRepository.buscar(id);
+    public Optional<Cozinha> buscar(Long id){
+        return cozinhaRepository.findById(id);
     }
 
     public List<Cozinha> listar(){
-        return cozinhaRepository.listar();
+        return cozinhaRepository.findAll();
     }
 
     public Cozinha salvar(Cozinha cozinha){
-        return cozinhaRepository.salvar(cozinha);
+        return cozinhaRepository.save(cozinha);
     }
     
     public void excluir(Long id){
         try{
-            cozinhaRepository.remover(id);
+            cozinhaRepository.deleteById(id);
         } catch(EmptyResultDataAccessException ex){
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com o código", id));
         }catch(DataIntegrityViolationException ex){
