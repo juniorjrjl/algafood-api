@@ -88,4 +88,10 @@ public class RestauranteController {
         });
     }
 
+    @GetMapping("frete-gratis")
+    public List<Restaurante> restaurantesFreteGratis(String nome){
+        return cadastroRestauranteService.listarFreteGratis(nome);
+
+    }
+
 }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           

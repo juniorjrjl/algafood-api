@@ -33,8 +33,8 @@ public class CadastroCidadeService {
     public Cidade salvar(Cidade cidade){
         Long cidadeId = cidade.getEstado().getId();
         Optional<Estado> estado = cadastroEstadoService.buscar(cidadeId);
-        cidade.setEstado(estado
-            .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cidade com código %d", cidadeId))));
+        cidade.setEstado(estado.orElseThrow(() -> 
+            new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cidade com código %d", cidadeId))));
         return cidadeRepository.save(cidade);
     }
 
