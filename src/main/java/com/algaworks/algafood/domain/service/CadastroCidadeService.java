@@ -1,9 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
 import java.util.List;
-import java.util.Optional;
 
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
@@ -14,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CadastroCidadeService {
-
     
     @Autowired
     private CidadeRepository cidadeRepository;
@@ -22,8 +20,8 @@ public class CadastroCidadeService {
     @Autowired
     private CadastroEstadoService cadastroEstadoService;
 
-    public Optional<Cidade> buscar(Long id){
-        return cidadeRepository.findById(id);
+    public Cidade buscar(Long id){
+        return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
     }
 
     public List<Cidade> listar(){
@@ -32,9 +30,8 @@ public class CadastroCidadeService {
     
     public Cidade salvar(Cidade cidade){
         Long cidadeId = cidade.getEstado().getId();
-        Optional<Estado> estado = cadastroEstadoService.buscar(cidadeId);
-        cidade.setEstado(estado.orElseThrow(() -> 
-            new EntidadeNaoEncontradaException(String.format("Não existe cadastro de cidade com código %d", cidadeId))));
+        Estado estado = cadastroEstadoService.buscar(cidadeId);
+        cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
     }
 
@@ -42,7 +39,7 @@ public class CadastroCidadeService {
         try{
             cidadeRepository.deleteById(id);
         } catch(EmptyResultDataAccessException ex){
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cidade com o código", id));
+            throw new CidadeNaoEncontradaException(id);
         }
     }
 
