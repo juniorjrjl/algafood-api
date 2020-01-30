@@ -59,7 +59,7 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
-    @JsonIgnore
+    //@JsonIgnore
     //@JsonIgnoreProperties("hibernateLazyInitializer")
     @ManyToOne
     @JoinColumn(name = "cozinha_id", nullable = false)
