@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -49,7 +50,7 @@ public class RestauranteController {
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody Restaurante restaurante){
+    public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante){
         try{
             return cadastroRestauranteService.salvar(restaurante);
         }catch(CozinhaNaoEncontradaException ex){
@@ -58,7 +59,7 @@ public class RestauranteController {
     }
 
     @PutMapping("{id}")
-    public Restaurante atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante){
+    public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante){
         Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", 
             "formasPagamento", "endereco", "dataCadastro", "produtos");
