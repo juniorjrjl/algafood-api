@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -149,17 +151,29 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
+    @ExceptionHandler(ValidacaoException.class)
+    public ResponseEntity<Object> handleValidacaoException(ValidacaoException ex, WebRequest request){
+        return buildResponseBodyWithValidateErrors(ex.getBindingResult(), HttpStatus.BAD_REQUEST, request, ex);
+    }
+
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
             HttpHeaders headers, HttpStatus status, WebRequest request) {
+                return buildResponseBodyWithValidateErrors(ex.getBindingResult(), status, request, ex);
+    }
+
+    private ResponseEntity<Object> buildResponseBodyWithValidateErrors(BindingResult bindingResult, HttpStatus status, WebRequest request, Exception ex){
         String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
-        BindingResult bindingResult = ex.getBindingResult();
         
-        List<Problem.Field> problemFields = bindingResult.getFieldErrors().stream()
-            .map(fieldError -> {
-                String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
-                return Problem.Field.builder()
-                    .name(fieldError.getField())
+        List<Problem.Object> problemFields = bindingResult.getAllErrors().stream()
+            .map(objectError -> {
+                String message = messageSource.getMessage(objectError, LocaleContextHolder.getLocale());
+                String name = objectError.getObjectName();
+                if (objectError instanceof FieldError ){
+                    name = ((FieldError) objectError).getField();
+                }
+                return Problem.Object.builder()
+                    .name(name)
                     .userMessage(message)
                     .build();
             })

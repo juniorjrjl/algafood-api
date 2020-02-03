@@ -26,7 +26,7 @@ import javax.validation.groups.ConvertGroup;
 import javax.validation.groups.Default;
 
 import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
+//import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 //import com.algaworks.algafood.core.validation.Multiplo;
 //import com.algaworks.algafood.core.validation.TaxaFrete;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -38,7 +38,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria="Frete grátis")
+//@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria="Frete grátis")
 @Entity
 @Table
 @Data
