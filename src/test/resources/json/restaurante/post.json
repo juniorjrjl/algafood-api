@@ -1,0 +1,7 @@
+{
+    "nome": "Cozinha do Marcos",
+    "taxaFrete": 12.00,
+    "cozinha":{
+        "id": 1
+    }
+}
