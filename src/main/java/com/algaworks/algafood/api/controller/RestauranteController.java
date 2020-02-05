@@ -7,6 +7,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import com.algaworks.algafood.api.assembler.RestauranteInputDisassembler;
+import com.algaworks.algafood.api.assembler.RestauranteModelAssembler;
+import com.algaworks.algafood.api.model.RestauranteModel;
+import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.core.validation.ValidacaoException;
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.NegocioException;
@@ -44,45 +48,53 @@ public class RestauranteController {
     @Autowired
     private CadastroRestauranteService cadastroRestauranteService;
 
+    @Autowired
+    private RestauranteInputDisassembler restauranteInputDisassembler;
+
+    @Autowired
+    private RestauranteModelAssembler restauranteModelAssembler;
+
     @GetMapping
-    public List<Restaurante> listar(){
-        return cadastroRestauranteService.listar();
+    public List<RestauranteModel> listar(){
+        return restauranteModelAssembler.toCollectionModel(cadastroRestauranteService.listar());
     }
 
     @GetMapping("{id}")
-    public Restaurante buscar(@PathVariable Long id){
-        return cadastroRestauranteService.buscar(id);
+    public RestauranteModel buscar(@PathVariable Long id){
+        return restauranteModelAssembler.toModel(cadastroRestauranteService.buscar(id));
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Restaurante adicionar(@RequestBody @Valid Restaurante restaurante){
+    public RestauranteModel adicionar(@RequestBody @Valid RestauranteInput restauranteInput){
         try{
-            return cadastroRestauranteService.salvar(restaurante);
+            Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
+            return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restaurante));
         }catch(CozinhaNaoEncontradaException ex){
             throw new NegocioException(ex.getMessage());
         }
     }
 
     @PutMapping("{id}")
-    public Restaurante atualizar(@PathVariable Long id, @RequestBody @Valid Restaurante restaurante){
+    public RestauranteModel atualizar(@PathVariable Long id, @RequestBody @Valid RestauranteInput restauranteInput){
         Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
+        Restaurante restaurante = restauranteInputDisassembler.toDomainObject(restauranteInput);
         BeanUtils.copyProperties(restaurante, restauranteAtual, "id", 
             "formasPagamento", "endereco", "dataCadastro", "produtos");
         try{
-            return cadastroRestauranteService.salvar(restauranteAtual);
+            return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
         }catch(CozinhaNaoEncontradaException ex){
             throw new NegocioException(ex.getMessage());
         }
     }
 
     @PatchMapping("{id}")
-    public Restaurante atualizarParcial(@PathVariable Long id, 
+    public RestauranteModel atualizarParcial(@PathVariable Long id, 
         @RequestBody Map<String, Object>campos, HttpServletRequest request){
         Restaurante restauranteAtual = cadastroRestauranteService.buscar(id);
         merge(campos, restauranteAtual, request);
         validate(restauranteAtual, "restaurante");
-        return atualizar(id, restauranteAtual);
+        return restauranteModelAssembler.toModel(cadastroRestauranteService.salvar(restauranteAtual));
     }
 
     private void validate(Restaurante restaurante, String objectName){
@@ -116,8 +128,9 @@ public class RestauranteController {
     }
 
     @GetMapping("frete-gratis")
-    public List<Restaurante> restaurantesFreteGratis(String nome){
-        return cadastroRestauranteService.listarFreteGratis(nome);
+    public List<RestauranteModel> restaurantesFreteGratis(String nome){
+        return restauranteModelAssembler.
+            toCollectionModel(cadastroRestauranteService.listarFreteGratis(nome));
 
     }
 
