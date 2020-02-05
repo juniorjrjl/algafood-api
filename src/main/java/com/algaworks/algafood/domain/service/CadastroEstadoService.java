@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroEstadoService {
@@ -26,10 +27,14 @@ public class CadastroEstadoService {
         return estadoRepository.findAll();
     }
 
+
+    @Transactional
     public Estado salvar(Estado cozinha){
         return estadoRepository.save(cozinha);
     }
     
+
+    @Transactional
     public void excluir(Long id){
         try{
             estadoRepository.deleteById(id);
