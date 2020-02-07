@@ -36,16 +36,16 @@ public class CidadeController {
     private CidadeModelAssembler cidadeModelAssembler;
 
     @Autowired
-    private CadastroCidadeService cadastroCidadeService;
+    private CadastroCidadeService cadastroCidade;
 
     @GetMapping
     public List<CidadeModel> listar(){
-        return cidadeModelAssembler.toCollectionModel(cadastroCidadeService.listar());
+        return cidadeModelAssembler.toCollectionModel(cadastroCidade.listar());
     }
 
     @GetMapping("{id}")
     public CidadeModel buscar(@PathVariable Long id){
-        return cidadeModelAssembler.toModel(cadastroCidadeService.buscar(id));
+        return cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
     }
     
     @PostMapping
@@ -53,7 +53,7 @@ public class CidadeController {
     public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput){
         try{
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
-            return cidadeModelAssembler.toModel(cadastroCidadeService.salvar(cidade));
+            return cidadeModelAssembler.toModel(cadastroCidade.salvar(cidade));
         }catch(EstadoNaoEncontradoException ex){
             throw new NegocioException(ex.getMessage(), ex);
         }
@@ -62,9 +62,9 @@ public class CidadeController {
     @PutMapping("{id}")
     public CidadeModel atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInput cidadeInput){
         try{
-            Cidade cidadeAtual = cadastroCidadeService.buscar(id);
+            Cidade cidadeAtual = cadastroCidade.buscar(id);
             cidadeInputDisassembler.copyToDomainInObject(cidadeInput, cidadeAtual);
-            return cidadeModelAssembler.toModel(cadastroCidadeService.salvar(cidadeAtual));
+            return cidadeModelAssembler.toModel(cadastroCidade.salvar(cidadeAtual));
         }catch(EstadoNaoEncontradoException ex){
             throw new NegocioException(ex.getMessage(), ex);
         }
@@ -74,7 +74,7 @@ public class CidadeController {
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
-        cadastroCidadeService.excluir(id);
+        cadastroCidade.excluir(id);
     }
 
 }

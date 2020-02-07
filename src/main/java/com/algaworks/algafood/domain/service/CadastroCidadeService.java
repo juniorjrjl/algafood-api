@@ -19,7 +19,7 @@ public class CadastroCidadeService {
     private CidadeRepository cidadeRepository;
 
     @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private CadastroEstadoService cadastroEstado;
 
     public Cidade buscar(Long id){
         return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
@@ -32,7 +32,7 @@ public class CadastroCidadeService {
     @Transactional
     public Cidade salvar(Cidade cidade){
         Long cidadeId = cidade.getEstado().getId();
-        Estado estado = cadastroEstadoService.buscar(cidadeId);
+        Estado estado = cadastroEstado.buscar(cidadeId);
         cidade.setEstado(estado);
         return cidadeRepository.save(cidade);
     }

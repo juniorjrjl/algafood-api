@@ -34,36 +34,36 @@ public class EstadoController {
     private EstadoModelAssembler estadoModelAssembler;
 
     @Autowired
-    private CadastroEstadoService cadastroEstadoService;
+    private CadastroEstadoService cadastroEstado;
 
     @GetMapping
     public List<EstadoModel> listar(){
-        return estadoModelAssembler.toCollectionModel(cadastroEstadoService.listar());
+        return estadoModelAssembler.toCollectionModel(cadastroEstado.listar());
     }
 
     @GetMapping("{id}")
     public EstadoModel buscar(@PathVariable Long id){
-        return estadoModelAssembler.toModel(cadastroEstadoService.buscar(id));
+        return estadoModelAssembler.toModel(cadastroEstado.buscar(id));
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput){
         Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
-        return estadoModelAssembler.toModel(cadastroEstadoService.salvar(estado));
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
     @PutMapping("{id}")
     public EstadoModel atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput estadoInput){
-        Estado estadoAtual = cadastroEstadoService.buscar(id);
+        Estado estadoAtual = cadastroEstado.buscar(id);
         estadoInputDisassembler.copyToDomainInObject(estadoInput, estadoAtual);
-        return estadoModelAssembler.toModel(cadastroEstadoService.salvar(estadoAtual));
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
-        cadastroEstadoService.excluir(id);
+        cadastroEstado.excluir(id);
     }
     
 }

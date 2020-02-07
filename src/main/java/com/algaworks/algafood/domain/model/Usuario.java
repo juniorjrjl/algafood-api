@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 
 import lombok.Data;
@@ -46,4 +47,9 @@ public class Usuario {
                inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     private List<Grupo> grupos = new ArrayList<>();
     
+    @PrePersist
+    private void prePersist(){
+        this.dataCadastro = OffsetDateTime.now();
+    }
+
 }

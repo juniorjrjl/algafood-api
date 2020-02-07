@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CozinhaController {
 
     @Autowired
-    private CadastroCozinhaService cadastroCozinhaService;
+    private CadastroCozinhaService cadastroCozinha;
 
     @Autowired
     private CozinhaInputDisassembler cozinhaInputDisassembler;
@@ -38,32 +38,32 @@ public class CozinhaController {
 
     @GetMapping
     public List<CozinhaModel> listar(){
-        return cozinhaModelAssembler.toCollectionModel(cadastroCozinhaService.listar());
+        return cozinhaModelAssembler.toCollectionModel(cadastroCozinha.listar());
     }
 
     @GetMapping("{id}")
     public CozinhaModel buscar(@PathVariable Long id){
-        return cozinhaModelAssembler.toModel(cadastroCozinhaService.buscar(id));
+        return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(id));
     }
     
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModel adicionar(@RequestBody @Valid CozinhaInput cozinhaInput){
         Cozinha cozinha = cozinhaInputDisassembler.toDomainObject(cozinhaInput);
-        return cozinhaModelAssembler.toModel(cadastroCozinhaService.salvar(cozinha));
+        return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
     }
 
     @PutMapping("{id}")
     public CozinhaModel atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInput cozinhaInput){
-        Cozinha cozinhaAtual = cadastroCozinhaService.buscar(id);
+        Cozinha cozinhaAtual = cadastroCozinha.buscar(id);
         cozinhaInputDisassembler.copyToDomainInObject(cozinhaInput, cozinhaAtual);
-        return cozinhaModelAssembler.toModel(cadastroCozinhaService.salvar(cozinhaAtual));
+        return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }
 
     @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id){
-        cadastroCozinhaService.excluir(id);
+        cadastroCozinha.excluir(id);
     }
 
 }

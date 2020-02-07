@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class CadastroEstadoService {
 
+    private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida, pois está em uso";
     @Autowired
     private EstadoRepository estadoRepository;
 
@@ -42,7 +43,7 @@ public class CadastroEstadoService {
         } catch(EmptyResultDataAccessException ex){
             throw new EstadoNaoEncontradoException(id);
         }catch(DataIntegrityViolationException ex){
-            throw new EntidadeEmUsoException(String.format("Estado de código %d não pode ser removida, pois está em uso", id));
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
         }
     }
     
