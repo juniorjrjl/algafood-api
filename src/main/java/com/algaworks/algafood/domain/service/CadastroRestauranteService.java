@@ -9,7 +9,6 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.freteGratis;
 import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.nomeSemelhante;
@@ -65,6 +64,18 @@ public class CadastroRestauranteService {
     public void inativar(Long id){
         Restaurante restauranteAtual = buscar(id);
         restauranteAtual.inativar();
+    }
+
+    @Transactional
+    public void abrir(Long id){
+        Restaurante restauranteAtual = buscar(id);
+        restauranteAtual.abrir();
+    }
+
+    @Transactional
+    public void fechar(Long id){
+        Restaurante restauranteAtual = buscar(id);
+        restauranteAtual.fechar();
     }
 
     @Transactional

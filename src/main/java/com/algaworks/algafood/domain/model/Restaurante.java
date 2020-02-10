@@ -54,6 +54,8 @@ public class Restaurante {
 
     private Boolean ativo = Boolean.TRUE;
 
+    private Boolean aberto = Boolean.TRUE;
+
     @Embedded
     private Endereco endereco;
 
@@ -78,6 +80,14 @@ public class Restaurante {
 
     public void inativar(){
         this.ativo = false;
+    }
+
+    public void abrir(){
+        this.aberto = true;
+    }
+
+    public void fechar(){
+        this.aberto = false;
     }
 
     @PrePersist
