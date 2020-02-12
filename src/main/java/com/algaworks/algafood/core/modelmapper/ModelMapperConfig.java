@@ -1,8 +1,10 @@
 package com.algaworks.algafood.core.modelmapper;
 
 import com.algaworks.algafood.api.model.EnderecoModel;
+import com.algaworks.algafood.api.model.input.ItemPedidoInput;
 import com.algaworks.algafood.api.model.input.SenhaUsuarioInput;
 import com.algaworks.algafood.domain.model.Endereco;
+import com.algaworks.algafood.domain.model.ItemPedido;
 import com.algaworks.algafood.domain.model.Usuario;
 
 import org.modelmapper.ModelMapper;
@@ -21,6 +23,8 @@ public class ModelMapperConfig {
             (dest, value) -> dest.getCidade().setEstado(value));
         modelMapper.createTypeMap(SenhaUsuarioInput.class, Usuario.class)
             .addMapping(SenhaUsuarioInput::getNovaSenha, Usuario::setSenha);
+        modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class)
+            .addMappings(mapper -> mapper.skip(ItemPedido::setId));
         return modelMapper;
     }
     
