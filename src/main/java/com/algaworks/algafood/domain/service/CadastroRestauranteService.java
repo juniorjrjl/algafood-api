@@ -1,5 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.freteGratis;
+import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.nomeSemelhante;
+
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -9,9 +12,8 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.freteGratis;
-import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.nomeSemelhante;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +32,9 @@ public class CadastroRestauranteService {
 
     @Autowired
     private CadastroCidadeService cadastroCidade;
+
+    @Autowired
+    private CadastroUsuarioService cadastroUsuario;
 
     public Restaurante buscar(Long id){
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
@@ -54,10 +59,21 @@ public class CadastroRestauranteService {
         return restauranteRepository.save(restaurante);
     }
 
+
+    @Transactional
+    public void ativar(List<Long> restaurantesIds){
+        restaurantesIds.forEach(this::ativar);
+    }
+
     @Transactional
     public void ativar(Long id){
         Restaurante restauranteAtual = buscar(id);
         restauranteAtual.ativar();
+    }
+
+    @Transactional
+    public void inativar(List<Long> restaurantesIds){
+        restaurantesIds.forEach(this::inativar);
     }
 
     @Transactional
@@ -86,10 +102,24 @@ public class CadastroRestauranteService {
     }
 
     @Transactional
-    public void dessassociarFormaPagamento(Long restauranteId, Long formaPagamentoId){
+    public void desassociarFormaPagamento(Long restauranteId, Long formaPagamentoId){
         Restaurante restaurante = buscar(restauranteId);
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscar(formaPagamentoId);
         restaurante.getFormasPagamento().remove(formaPagamento);
+    }
+
+    @Transactional
+    public void associarUsuario(Long restauranteId, Long usuarioId){
+        Restaurante restaurante = buscar(restauranteId);
+        Usuario formaPagamento = cadastroUsuario.buscar(usuarioId);
+        restaurante.getUsuarios().add(formaPagamento);
+    }
+
+    @Transactional
+    public void desassociarUsuario(Long restauranteId, Long usuarioId){
+        Restaurante restaurante = buscar(restauranteId);
+        Usuario usuario = cadastroUsuario.buscar(usuarioId);
+        restaurante.getUsuarios().remove(usuario);
     }
 
 }

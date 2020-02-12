@@ -20,7 +20,7 @@ public class CadastroPermissaoServive {
     private PermissaoRepository permissaoRepository;
 
     @Transactional
-    public void associar(Long grupoId, Long permissaoId){
+    public void associarPermissao(Long grupoId, Long permissaoId){
         Grupo grupo = cadastroGrupo.buscar(grupoId);
         Permissao permissao = permissaoRepository.findById(permissaoId)
             .orElseThrow(() -> new PermissaoNaoEncontradaException(permissaoId));
@@ -28,7 +28,7 @@ public class CadastroPermissaoServive {
     }
 
     @Transactional
-    public void dessassociar(Long grupoId, Long permissaoId){
+    public void dessassociarPermissao(Long grupoId, Long permissaoId){
         Grupo grupo = cadastroGrupo.buscar(grupoId);
         Permissao permissao = permissaoRepository.findById(permissaoId)
             .orElseThrow(() -> new PermissaoNaoEncontradaException(permissaoId));

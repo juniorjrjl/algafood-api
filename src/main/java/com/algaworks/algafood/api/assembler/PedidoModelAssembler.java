@@ -4,26 +4,26 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import com.algaworks.algafood.api.model.UsuarioModel;
-import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.api.model.PedidoModel;
+import com.algaworks.algafood.domain.model.Pedido;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class UsuarioModelAssembler {
+public class PedidoModelAssembler {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public UsuarioModel toModel(Usuario usuario) {
-		return modelMapper.map(usuario, UsuarioModel.class);
+    public PedidoModel toModel(Pedido pedido) {
+		return modelMapper.map(pedido, PedidoModel.class);
 	}
 	
-	public List<UsuarioModel> toCollectionModel(Collection<Usuario> usuarios) {
-		return usuarios.stream()
-				.map(usuario -> toModel(usuario))
+	public List<PedidoModel> toCollectionModel(Collection<Pedido> pedidos) {
+		return pedidos.stream()
+				.map(pedido -> toModel(pedido))
 				.collect(Collectors.toList());
 	}
     

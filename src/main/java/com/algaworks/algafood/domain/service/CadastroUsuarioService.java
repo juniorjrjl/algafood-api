@@ -6,6 +6,7 @@ import java.util.Optional;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.NegocioException;
+import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
 
@@ -19,8 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 public class CadastroUsuarioService {
 
     private static final String MSG_USUARIO_EM_USO = "Usuário de código %d não pode ser removido, pois está em uso";
+    
     @Autowired
     private UsuarioRepository usuarioRepository;
+
+    @Autowired
+    private CadastroGrupoService cadastroGrupo;
 
     public Usuario buscar(Long id){
         return usuarioRepository.findById(id).orElseThrow(() -> new UsuarioNaoEncontradoException(id));
@@ -55,6 +60,20 @@ public class CadastroUsuarioService {
         }catch(DataIntegrityViolationException ex){
             throw new EntidadeEmUsoException(String.format(MSG_USUARIO_EM_USO, id));
         }
+    }
+
+    @Transactional
+    public void associarGrupo(Long usuarioId, Long grupoId){
+        Usuario usuario = buscar(usuarioId);
+        Grupo grupo = cadastroGrupo.buscar(grupoId);
+        usuario.getGrupos().add(grupo);
+    }
+
+    @Transactional
+    public void desassociarGrupo(Long usuarioId, Long grupoId){
+        Usuario usuario = buscar(usuarioId);
+        Grupo grupo = cadastroGrupo.buscar(grupoId);
+        usuario.getGrupos().remove(grupo);
     }
 
 }
