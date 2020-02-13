@@ -19,8 +19,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PrePersist;
 
-import org.hibernate.annotations.CreationTimestamp;
-
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -39,7 +37,7 @@ public class Pedido {
 	private BigDecimal valorTotal;
 
 	@Embedded
-	private Endereco enderecoEntrega;
+	private Endereco enderecoEntrega = new Endereco();
 	
 	@Enumerated(EnumType.STRING)
 	private StatusPedido status = StatusPedido.CRIADO;
@@ -52,7 +50,7 @@ public class Pedido {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(nullable = false)
-	private FormaPagamento formaPagamento;
+	private FormaPagamento formaPagamento = new FormaPagamento();
 	
 	@ManyToOne
 	@JoinColumn(nullable = false)
@@ -60,7 +58,7 @@ public class Pedido {
 	
 	@ManyToOne
 	@JoinColumn(name = "usuario_cliente_id", nullable = false)
-	private Usuario cliente;
+	private Usuario cliente = new Usuario();
 	
 	@OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
 	private List<ItemPedido> itens = new ArrayList<>();
@@ -83,7 +81,10 @@ public class Pedido {
 
 	@PrePersist
     private void prePersist(){
-        this.dataCriacao = OffsetDateTime.now();
+		this.dataCriacao = OffsetDateTime.now();
+		this.calcularValorTotal();
+		this.definirFrete();
+		this.atribuirPedidoAosItens();
     }
 
 }

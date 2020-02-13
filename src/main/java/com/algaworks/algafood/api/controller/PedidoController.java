@@ -2,6 +2,8 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import com.algaworks.algafood.api.assembler.PedidoInputDisassembler;
 import com.algaworks.algafood.api.assembler.PedidoModelAssembler;
 import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
@@ -49,9 +51,10 @@ public class PedidoController {
     }
     
     @PostMapping
-    public PedidoModel emitir(@RequestBody PedidoInput pedidoInput) {
+    public PedidoModel emitir(@RequestBody @Valid PedidoInput pedidoInput) {
         Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
         pedido.getCliente().setId(1L);//provisório até implementar autenticação
+        cadastroPedido.salvar(pedido);
         return pedidoModelAssembler.toModel(pedido);
     }
     

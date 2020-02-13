@@ -21,7 +21,7 @@ public class PedidoInput {
     private FormaPagamentoIdInput formaPagamento;
     @Valid
     @NotNull
-    private EnderecoInput endereco;
+    private EnderecoInput enderecoEntrega;
     @Valid
     @Size(min = 1)
     @NotNull
