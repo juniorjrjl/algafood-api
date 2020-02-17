@@ -11,7 +11,7 @@ import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.service.CadastroPedidoService;
+import com.algaworks.algafood.domain.service.EmissaoPedidoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +28,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public class PedidoController {
 
     @Autowired
-    private CadastroPedidoService cadastroPedido;
+    private EmissaoPedidoService emissaoPedido;
 
     @Autowired
     private PedidoModelAssembler pedidoModelAssembler;
@@ -41,20 +41,20 @@ public class PedidoController {
 
     @GetMapping
     public List<PedidoResumoModel> listar() {
-        List<Pedido> pedidos = cadastroPedido.listar();
+        List<Pedido> pedidos = emissaoPedido.listar();
         return pedidoResumoModelAssembler.toCollectionModel(pedidos);
     }
     
-    @GetMapping("{id}")
-    public PedidoModel buscar(@PathVariable Long id){
-        return pedidoModelAssembler.toModel(cadastroPedido.buscar(id));
+    @GetMapping("{codigo}")
+    public PedidoModel buscar(@PathVariable String codigo){
+        return pedidoModelAssembler.toModel(emissaoPedido.buscar(codigo));
     }
     
     @PostMapping
     public PedidoModel emitir(@RequestBody @Valid PedidoInput pedidoInput) {
         Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
         pedido.getCliente().setId(1L);//provisório até implementar autenticação
-        cadastroPedido.salvar(pedido);
+        emissaoPedido.salvar(pedido);
         return pedidoModelAssembler.toModel(pedido);
     }
     

@@ -17,7 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CadastroPedidoService {
+public class EmissaoPedidoService {
 
     @Autowired
     private PedidoRepository pedidoRepository;
@@ -37,8 +37,8 @@ public class CadastroPedidoService {
     @Autowired
     private CadastroFormaPagamentoService cadastroFormaPagamento;
 
-    public Pedido buscar(Long id){
-        return pedidoRepository.findById(id).orElseThrow(() -> new PedidoNaoEncontradoException(id));
+    public Pedido buscar(String codigo){
+        return pedidoRepository.findByCodigo(codigo).orElseThrow(() -> new PedidoNaoEncontradoException(codigo));
     }
 
     public List<Pedido> listar(){
