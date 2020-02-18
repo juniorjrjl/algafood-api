@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -39,6 +40,12 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
     private static final String MSG_ERRO_GENERICO = "Ocorreu um erro interno inesperado no sistema. " +
         "Tente novamente e se o problema persistir, entre em contato com o administrador do sistema";
+
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException ex, HttpHeaders headers, HttpStatus status,
+            WebRequest request) {
+            return buildResponseBodyWithValidateErrors(ex.getBindingResult(), status, request, ex);
+    }
 
     @Override
     protected ResponseEntity<Object> handleHttpMessageNotReadable(HttpMessageNotReadableException ex,

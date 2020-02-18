@@ -40,6 +40,7 @@ public class CadastroRestauranteService {
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
     }
 
+    
     public List<Restaurante> listar(){
         return restauranteRepository.findAll();
     }
