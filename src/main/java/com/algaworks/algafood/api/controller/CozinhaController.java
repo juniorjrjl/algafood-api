@@ -46,7 +46,7 @@ public class CozinhaController {
             .toCollectionModel(cozinhasPage.getContent());
         Page<CozinhaModel> cozinhasModelPage = new PageImpl<>(cozinhasModel, 
                                                               pageable, 
-                                                              cozinhasPage.getNumberOfElements());
+                                                              cozinhasPage.getTotalElements());
         return cozinhasModelPage;
     }
 

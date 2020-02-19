@@ -1,21 +1,22 @@
 package com.algaworks.algafood.domain.service;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
-import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -43,8 +44,8 @@ public class EmissaoPedidoService {
         return pedidoRepository.findByCodigo(codigo).orElseThrow(() -> new PedidoNaoEncontradoException(codigo));
     }
 
-    public List<Pedido> listar(PedidoFilter filtro){
-        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+    public Page<Pedido> listar(PedidoFilter filtro, Pageable pageable){
+        return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
     }
     
     @Transactional

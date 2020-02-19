@@ -10,11 +10,17 @@ import com.algaworks.algafood.api.assembler.PedidoResumoModelAssembler;
 import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
+import com.algaworks.algafood.domain.filter.PedidoFilter;
+//import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.model.Pedido;
-import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+//import com.google.common.collect.ImmutableMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -41,9 +47,18 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @GetMapping
-    public List<PedidoResumoModel> pesquisar(PedidoFilter filtro) {
-        List<Pedido> pedidos = emissaoPedido.listar(filtro);
-        return pedidoResumoModelAssembler.toCollectionModel(pedidos);
+    public Page<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
+            @PageableDefault(size = 10)Pageable pageable) {
+        //pageable = traduzirPageable(pageable);
+        Page<Pedido> pedidosPage = emissaoPedido.listar(filtro, pageable);
+        List<Pedido> pedidos = pedidosPage.getContent();
+        List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler
+            .toCollectionModel(pedidos);
+        Page<PedidoResumoModel> pedidosModelPage = new PageImpl<PedidoResumoModel>(pedidosModel, 
+                                                                                    pageable, 
+                                                                                    pedidosPage.getTotalElements());
+        return pedidosModelPage;
+
     }
     
     @GetMapping("{codigo}")
@@ -59,5 +74,14 @@ public class PedidoController {
         return pedidoModelAssembler.toModel(pedido);
     }
     
+    /*private Pageable traduzirPageable(Pageable pageable){
+        var mapeamento = ImmutableMap.of(
+            "codigo", "codigo",
+            "restaurante.nome", "restaurante.nome",
+            "nomeCliente", "cliente.nome",
+            "valorTotal", "valorTotal"
+        );
+        return PageableTranslator.translate(pageable, mapeamento);
+    }*/
 
 }
