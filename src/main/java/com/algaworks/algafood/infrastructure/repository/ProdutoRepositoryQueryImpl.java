@@ -25,10 +25,6 @@ public class ProdutoRepositoryQueryImpl implements ProdutoRepositoryQuery {
     @Override
     public void delete(FotoProduto foto) {
         entityManager.remove(foto);
-
     }
 
-
-
-    
 }
