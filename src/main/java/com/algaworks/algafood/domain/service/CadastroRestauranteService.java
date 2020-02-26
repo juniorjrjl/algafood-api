@@ -5,8 +5,6 @@ import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteS
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
@@ -17,6 +15,7 @@ import com.algaworks.algafood.domain.repository.RestauranteRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroRestauranteService {

@@ -3,8 +3,6 @@ package com.algaworks.algafood.domain.service;
 import java.math.BigDecimal;
 import java.util.stream.Collectors;
 
-import javax.transaction.Transactional;
-
 import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.PedidoNaoEncontradoException;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
@@ -18,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmissaoPedidoService {

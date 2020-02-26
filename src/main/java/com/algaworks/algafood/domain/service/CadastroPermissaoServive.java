@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.service;
 
-import javax.transaction.Transactional;
 
 import com.algaworks.algafood.domain.exception.PermissaoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Grupo;
@@ -9,6 +8,7 @@ import com.algaworks.algafood.domain.repository.PermissaoRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroPermissaoServive {
