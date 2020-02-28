@@ -25,10 +25,11 @@ public class CadastroProdutoService {
             .orElseThrow(() -> new ProdutoNaoEncontradoException(restauranteId, produtoId));
     }
 
-    public List<Produto> buscar(Long id, boolean incluirInativos){
+    public List<Produto> buscar(Long idRestaurante, boolean incluirInativos){
+        Restaurante restaurante = cadastroRestaurante.buscar(idRestaurante);
         return (incluirInativos) ? 
-            produtoRepository.findByRestauranteId(id) :
-            produtoRepository.findAtivosByRestauranteId(id);
+            produtoRepository.findByRestaurante(restaurante) :
+            produtoRepository.findAtivosByRestaurante(restaurante);
     }
 
     @Transactional

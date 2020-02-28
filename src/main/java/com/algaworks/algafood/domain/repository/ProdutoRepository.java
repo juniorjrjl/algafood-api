@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.model.Produto;
+import com.algaworks.algafood.domain.model.Restaurante;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -13,14 +14,19 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long>, ProdutoRepositoryQuery{
 
+    @Query("Select p " +
+           "  from Produto p" +
+           " where p.restaurante.id = :restauranteId" +
+           "   and p.id = :produtoId")
     Optional<Produto> findByRestauranteIdAndId(Long restauranteId, Long produtoId);
     
+    @Query("delete from Produto p where p.restaurante.id = :restauranteId and p.id = :produtoId")
     Long deleteByRestauranteIdAndId(Long restauranteId, Long produtoId);
 
-    @Query("from Produto p where p.ativo = true and p.restaurante.id = :id")
-    List<Produto> findAtivosByRestauranteId(Long id);
+    @Query("from Produto p where p.ativo = true and p.restaurante = :restaurante")
+    List<Produto> findAtivosByRestaurante(Restaurante restaurante);
 
-    List<Produto> findByRestauranteId(Long id);
+    List<Produto> findByRestaurante(Restaurante restaurante);
 
     @Query("select f " + 
            "  from FotoProduto f "+
