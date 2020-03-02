@@ -4,13 +4,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import com.algaworks.algafood.domain.model.FotoProduto;
-import com.algaworks.algafood.domain.repository.ProdutoRepositoryQuery;
+import com.algaworks.algafood.domain.repository.ProdutoRepositoryQueries;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class ProdutoRepositoryQueryImpl implements ProdutoRepositoryQuery {
+public class ProdutoRepositoryQueriesImpl implements ProdutoRepositoryQueries {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -21,10 +21,10 @@ public class ProdutoRepositoryQueryImpl implements ProdutoRepositoryQuery {
         return entityManager.merge(foto);
     }
 
-    @Transactional
+    /*@Transactional
     @Override
     public void delete(FotoProduto foto) {
         entityManager.remove(foto);
-    }
+    }*/
 
 }

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
-import com.algaworks.algafood.domain.service.VendaQueryService;
+import com.algaworks.algafood.domain.service.VendaQueriesService;
 import com.algaworks.algafood.domain.service.VendaReportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +18,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 public class PDFVendaReportService implements VendaReportService {
 
     @Autowired
-    private VendaQueryService vendaQueryService;
+    private VendaQueriesService vendaQueryService;
 
     @Override
     public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {

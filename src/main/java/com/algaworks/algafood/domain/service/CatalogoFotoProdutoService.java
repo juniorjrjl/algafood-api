@@ -17,11 +17,14 @@ public class CatalogoFotoProdutoService {
 
     @Transactional
     public FotoProduto salvar(FotoProduto foto){
-        Long restauranteId = foto.getProduto().getRestaurante().getId();
+        //Long restauranteId = foto.getProduto().getRestaurante().getId();
         Long produtoId = foto.getProduto().getId();
-        Optional<FotoProduto> fotoAtual = produtoRepository.findFotoById(restauranteId, produtoId);
+        /*Optional<FotoProduto> fotoAtual = produtoRepository.findFotoById(restauranteId, produtoId);
         if (fotoAtual.isPresent()){
-            produtoRepository.delete(fotoAtual.get());
+            produtoRepository.deleteFoto(fotoAtual.get().getId());
+        }*/
+        if (produtoRepository.fotoExiste(produtoId)){
+            produtoRepository.deleteFoto(produtoId);
         }
         return produtoRepository.save(foto);
     }

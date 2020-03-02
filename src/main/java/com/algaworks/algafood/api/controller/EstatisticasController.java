@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
-import com.algaworks.algafood.domain.service.VendaQueryService;
+import com.algaworks.algafood.domain.service.VendaQueriesService;
 import com.algaworks.algafood.domain.service.VendaReportService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class EstatisticasController {
 
     @Autowired
-    private VendaQueryService vendaQueryService;
+    private VendaQueriesService vendaQueryService;
 
     @Autowired
     private VendaReportService vendaReportService;

@@ -12,14 +12,14 @@ import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Pedido_;
 import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
-import com.algaworks.algafood.domain.service.VendaQueryService;
+import com.algaworks.algafood.domain.service.VendaQueriesService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 
 @Repository
-public class VendaQueryServiceImpl implements VendaQueryService {
+public class VendaQueriesServiceImpl implements VendaQueriesService {
 
 	@Autowired
 	private EntityManager entityManager;
