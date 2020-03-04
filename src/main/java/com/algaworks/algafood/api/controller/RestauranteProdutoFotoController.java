@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import java.io.IOException;
+
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.assembler.FotoProdutoInputDisassembler;
@@ -35,10 +37,11 @@ public class RestauranteProdutoFotoController {
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public FotoProdutoModel atualizarFoto(@PathVariable Long restauranteId, @PathVariable Long produtoId,
-        @Valid FotoProdutoInput fotoProdutoInput) {
+            @Valid FotoProdutoInput fotoProdutoInput) throws IOException {
             FotoProduto foto = fotoProdutoInputDisassembler.toDomainObject(fotoProdutoInput);
             foto.setProduto(cadastroProduto.buscar(restauranteId, produtoId));
-            return  fotoProdutoModelAssembler.toModel(catalagoFotoProduto.salvar(foto));
+            return  fotoProdutoModelAssembler.toModel(catalagoFotoProduto.salvar(foto, 
+                fotoProdutoInput.getArquivo().getInputStream()));
     }
     
 

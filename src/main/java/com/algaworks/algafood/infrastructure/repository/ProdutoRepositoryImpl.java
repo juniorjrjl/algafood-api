@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 @Repository
-public class ProdutoRepositoryQueriesImpl implements ProdutoRepositoryQueries {
+public class ProdutoRepositoryImpl implements ProdutoRepositoryQueries {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -21,10 +21,10 @@ public class ProdutoRepositoryQueriesImpl implements ProdutoRepositoryQueries {
         return entityManager.merge(foto);
     }
 
-    /*@Transactional
+    @Transactional
     @Override
     public void delete(FotoProduto foto) {
         entityManager.remove(foto);
-    }*/
+    }
 
 }
