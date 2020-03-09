@@ -48,7 +48,6 @@
       <artifactId>hibernate-jpamodelgen</artifactId>
       <scope>provided</scope>
     </dependency>
-
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
@@ -69,9 +68,9 @@
       <artifactId>commons-lang3</artifactId>
     </dependency>
     <dependency>
-    	<groupId>io.rest-assured</groupId>
-    	<artifactId>rest-assured</artifactId>
-    	<scope>test</scope>
+      <groupId>io.rest-assured</groupId>
+      <artifactId>rest-assured</artifactId>
+      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.modelmapper</groupId>
@@ -98,6 +97,11 @@
       <artifactId>aws-java-sdk-s3</artifactId>
       <version>${aws-java-sdk-s3.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-mail</artifactId>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
@@ -111,13 +115,13 @@
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
-            <source>${java.version}</source>
-            <target>${java.version}</target>
-            <compilerArguments>
-                <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
-            </compilerArguments>
+          <source>${java.version}</source>
+          <target>${java.version}</target>
+          <compilerArguments>
+            <processor>org.hibernate.jpamodelgen.JPAMetaModelEntityProcessor</processor>
+          </compilerArguments>
         </configuration>
-    </plugin>
+      </plugin>
     </plugins>
   </build>
 </project>

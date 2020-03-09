@@ -21,6 +21,7 @@ public class StorageConfig {
     private StorageProperties storageProperties;
 
     @Bean
+    @ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
     public AmazonS3 amazonS3() {
         var credentials = new BasicAWSCredentials(
             storageProperties.getS3().getIdChaveAcesso(), 
@@ -33,7 +34,6 @@ public class StorageConfig {
     }
     
     @Bean
-    @ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
     public FotoStorageService fotoStorageService(){
         return (storageProperties.getTipo().equals(TipoStorage.S3)) ? 
                 new S3FotoStorageService() : 
