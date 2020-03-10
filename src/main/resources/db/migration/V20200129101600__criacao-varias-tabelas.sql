@@ -42,7 +42,7 @@ create table restaurante (
 	cozinha_id bigint not null,
 	nome varchar(80) not null,
 	taxa_frete decimal(10,2) not null,
-	data_atualizacao datetime not null,
+	data_atualizacao datetime,
 	data_cadastro datetime not null,
 	
 	endereco_cidade_id bigint,

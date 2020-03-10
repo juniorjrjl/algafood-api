@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.validation.Valid;
 
@@ -12,7 +13,9 @@ import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.service.CadastroFormaPagamentoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,13 +40,19 @@ public class FormaPagamentoController {
     private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
     
     @GetMapping
-    public List<FormaPagamentoModel> listar(){
-        return formaPagamentoModelAssembler.toCollectionModel(cadastroFormaPagamento.listar());
+    public ResponseEntity<List<FormaPagamentoModel>> listar(){
+        List<FormaPagamentoModel> formasPagamentos = 
+            formaPagamentoModelAssembler.toCollectionModel(cadastroFormaPagamento.listar());
+            return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+                .body(formasPagamentos);
     }
 
     @GetMapping("{id}")
-    public FormaPagamentoModel buscar(@PathVariable Long id){
-        return formaPagamentoModelAssembler.toModel(cadastroFormaPagamento.buscar(id));
+    public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long id){
+        FormaPagamentoModel formaPagamento = formaPagamentoModelAssembler
+            .toModel(cadastroFormaPagamento.buscar(id));
+        return ResponseEntity.ok().cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS))
+            .body(formaPagamento);
     }
     
     @PostMapping
