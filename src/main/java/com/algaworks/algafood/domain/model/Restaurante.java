@@ -99,6 +99,7 @@ public class Restaurante {
     @PrePersist
     private void prePersist(){
         this.dataCadastro = OffsetDateTime.now();
+        this.dataAtualizacao = OffsetDateTime.now();
     }
 
     @PreUpdate

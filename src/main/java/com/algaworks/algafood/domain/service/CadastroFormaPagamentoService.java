@@ -1,6 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
+import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.FormaPagamentoNaoEncontradaException;
@@ -21,6 +23,11 @@ public class CadastroFormaPagamentoService {
 
     @Autowired
     private FormaPagamentoRepository formaPagamentoRepository;
+
+
+    public Optional<OffsetDateTime> getDataUltimaAtualizacao(){
+        return formaPagamentoRepository.getDataUltimaAtualizacao();
+    }
 
     public FormaPagamento buscar(Long id){
         return formaPagamentoRepository.findById(id)
