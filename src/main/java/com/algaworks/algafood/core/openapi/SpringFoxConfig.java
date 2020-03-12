@@ -1,6 +1,5 @@
 package com.algaworks.algafood.core.openapi;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 

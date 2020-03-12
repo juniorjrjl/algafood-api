@@ -39,7 +39,7 @@ public class Problem {
 	
 	@ApiModelProperty(value = "Lista de objetos ou campos que geraram o erro (opcional)", 
 			position = 30)
-	private List<Object> objects;
+	private List<Object> fields;
 
     @ApiModel("Objeto problema")
     @Getter
