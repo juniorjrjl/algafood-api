@@ -29,6 +29,10 @@ public class CadastroFormaPagamentoService {
         return formaPagamentoRepository.getDataUltimaAtualizacao();
     }
 
+    public Optional<OffsetDateTime> getDataUltimaAtualizacao(Long id){
+        return formaPagamentoRepository.getDataUltimaAtualizacao(id);
+    }
+
     public FormaPagamento buscar(Long id){
         return formaPagamentoRepository.findById(id)
             .orElseThrow(() -> new FormaPagamentoNaoEncontradaException(id));

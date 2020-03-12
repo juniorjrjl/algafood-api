@@ -15,4 +15,7 @@ public interface FormaPagamentoRepository extends JpaRepository<FormaPagamento, 
     @Query("select max(dataAtualizacao) from FormaPagamento")
     Optional<OffsetDateTime> getDataUltimaAtualizacao();
 
+    @Query("select max(dataAtualizacao) from FormaPagamento where id = :id")
+    Optional<OffsetDateTime> getDataUltimaAtualizacao(Long id);
+
 }
