@@ -10,8 +10,10 @@ public class CidadeResumoModel {
 
     @ApiModelProperty(value = "ID da cidade", example = "1")
     private Long id;
+
     @ApiModelProperty(value = "Nome da cidade", example = "São Paulo")
     private String nome;
+    
     @ApiModelProperty(value = "Estado da cidade", example = "São Paulo")
     private String estado;
 }

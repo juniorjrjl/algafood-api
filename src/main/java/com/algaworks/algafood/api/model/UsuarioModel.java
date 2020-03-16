@@ -8,11 +8,13 @@ import lombok.Setter;
 @Setter
 public class UsuarioModel {
 
-    @ApiModelProperty(value = "ID do cliente", example = "1")
+    @ApiModelProperty(value = "ID do usuário", example = "1")
     private Long id;
-    @ApiModelProperty(value = "Nome do cliente", example = "Paula")
+    
+    @ApiModelProperty(value = "Nome do usuário", example = "Paula")
     private String nome;
-    @ApiModelProperty(value = "E-mail do cliente", example = "paula@teste.com.br")
+
+    @ApiModelProperty(value = "E-mail do usuário", example = "paula@teste.com.br")
     private String email;
     
 }

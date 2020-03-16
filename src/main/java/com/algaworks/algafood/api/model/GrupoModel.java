@@ -10,6 +10,7 @@ public class GrupoModel {
 
     @ApiModelProperty(value = "ID do grupo", example = "1")
     private Long id;
+    
     @ApiModelProperty(value = "Nome do grupo", example = "Usuário")
     private String nome;
 }

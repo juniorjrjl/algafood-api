@@ -8,8 +8,9 @@ import lombok.Setter;
 @Setter
 public class EstadoModel {
 
-    @ApiModelProperty(example = "1")
+    @ApiModelProperty(value = "ID de um Estado", example = "1")
     private Long id;
-    @ApiModelProperty(example = "São Paulo")
+    
+    @ApiModelProperty(value = "Nome de um Estado", example = "São Paulo")
     private String nome;
 }

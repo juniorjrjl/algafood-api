@@ -12,7 +12,9 @@ public class CidadeModel {
 
     @ApiModelProperty(value = "ID da cidade", example = "1")
     private Long id;
+
     @ApiModelProperty(value = "Nome de uma cidade", example = "São Paulo")
     private String nome;
+    
     private EstadoModel estado;
 }

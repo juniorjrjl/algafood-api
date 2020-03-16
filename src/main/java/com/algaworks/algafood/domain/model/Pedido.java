@@ -42,7 +42,9 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	private String codigo;
 	
 	private BigDecimal subtotal;
+
 	private BigDecimal taxaFrete;
+
 	private BigDecimal valorTotal;
 
 	@Embedded
@@ -54,7 +56,9 @@ public class Pedido extends AbstractAggregateRoot<Pedido>{
 	private OffsetDateTime dataCriacao;
 
 	private OffsetDateTime dataConfirmacao;
+
 	private OffsetDateTime dataCancelamento;
+	
 	private OffsetDateTime dataEntrega;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

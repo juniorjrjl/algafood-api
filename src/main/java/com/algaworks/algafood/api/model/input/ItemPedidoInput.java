@@ -14,9 +14,11 @@ public class ItemPedidoInput {
     @ApiModelProperty(value = "ID do produto do item", example = "1")
     @NotNull
     private Long produtoId;
+
     @ApiModelProperty(value = "quantidade de produto do item", example = "1")
     @Positive
     private Integer quantidade;
+    
     @ApiModelProperty(value = "Observação do item do pedido", example = "1")
     private String observacao;
     

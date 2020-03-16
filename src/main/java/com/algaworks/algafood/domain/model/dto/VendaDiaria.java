@@ -13,7 +13,9 @@ import lombok.Setter;
 public class VendaDiaria {
 
     private Date data;
+
     private Long totalVendas;
+    
     private BigDecimal totalFaturado;
     
 }

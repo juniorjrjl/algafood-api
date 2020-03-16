@@ -40,9 +40,9 @@ public interface CozinhaControllerOpenApi {
                                             value = "Representação de uma cozinha com os novos dados") 
                                   CozinhaInput cozinhaInput);
 
-    @ApiOperation("Exclui um Cozinha por ID")
+    @ApiOperation("Exclui uma Cozinha por ID")
     @ApiResponses({
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
+        @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
     public void remover(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long id);
     

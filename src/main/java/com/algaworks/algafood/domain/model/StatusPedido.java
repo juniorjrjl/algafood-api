@@ -17,6 +17,7 @@ public enum StatusPedido {
 	CANCELADO("cancelado", Arrays.asList(CRIADO));
 
 	private String descricao;
+	
 	private List<StatusPedido> statusAnteriores;
 
 	public boolean naoPodeAlterarPara(StatusPedido status){
