@@ -18,7 +18,7 @@ public class PedidoInput {
     private RestauranteIdInput restaurante;
     @Valid
     @NotNull
-    private FormaPagamentoIdInput formaPagamento;
+    private FormaPagamentoIdInput formaPagamento;    
     @Valid
     @NotNull
     private EnderecoInput enderecoEntrega;

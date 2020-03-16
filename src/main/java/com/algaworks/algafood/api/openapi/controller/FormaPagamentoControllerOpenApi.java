@@ -36,11 +36,11 @@ public interface FormaPagamentoControllerOpenApi {
                                           FormaPagamentoInput formaPagamentoInput);
 
     public FormaPagamentoModel atualizar(@ApiParam(value = "ID de uma forma de pagamento", 
-                                                   example = "1" )Long id, 
+                                                   example = "1", required = true)Long id, 
                                          @ApiParam(name = "corpo", 
                                                    value = "Representação de uma forma de pagamento com os novos dados") 
                                          FormaPagamentoInput formaPagamentoInput);
 
-    public void remover(@ApiParam(value = "ID de uma forma de pagamento", example = "1" )Long id);
+    public void remover(@ApiParam(value = "ID de uma forma de pagamento", example = "1", required = true)Long id);
     
 }

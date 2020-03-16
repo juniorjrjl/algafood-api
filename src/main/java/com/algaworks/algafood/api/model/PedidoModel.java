@@ -14,7 +14,7 @@ import lombok.Setter;
 @Setter
 public class PedidoModel {
 
-    @ApiModelProperty(value = "ID do pedido", example = "1")
+    @ApiModelProperty(value = "Código do pedido do pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55")
     private String codigo;
     @ApiModelProperty(value = "valor total dos itens do pedido sem o frete", example = "10.00")
     private BigDecimal subtotal;
@@ -22,6 +22,7 @@ public class PedidoModel {
     private BigDecimal taxaFrete;
     @ApiModelProperty(value = "soma dos itens e do frete do pedido", example = "10.00")
     private BigDecimal valorTotal;
+    @ApiModelProperty(value = "situação atual do pedido", example = "CRIADO")
     private StatusPedido status;
     @ApiModelProperty(value = "data de criação do pedido", example = "2019-12-01T18:09:02.70844Z")
     private OffsetDateTime dataCriacao;

@@ -24,7 +24,7 @@ public interface CozinhaControllerOpenApi {
         @ApiResponse(code = 400, message = "ID da Cozinha inválido", response = Problem.class),
         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
-    public CozinhaModel buscar(@ApiParam(value = "ID de uma Cozinha", example = "1" ) Long id);
+    public CozinhaModel buscar(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long id);
 
     @ApiOperation("Cadastra uma Cozinha")
     public CozinhaModel adicionar(@ApiParam(name = "corpo", 
@@ -35,7 +35,7 @@ public interface CozinhaControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
-    public CozinhaModel atualizar(@ApiParam(value = "ID de uma Cozinha", example = "1" ) Long id, 
+    public CozinhaModel atualizar(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long id, 
                                   @ApiParam(name = "corpo", 
                                             value = "Representação de uma cozinha com os novos dados") 
                                   CozinhaInput cozinhaInput);
@@ -44,6 +44,6 @@ public interface CozinhaControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
     })
-    public void remover(@ApiParam(value = "ID de uma Cozinha", example = "1" ) Long id);
+    public void remover(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long id);
     
 }

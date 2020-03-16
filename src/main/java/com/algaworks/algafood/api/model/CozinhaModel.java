@@ -14,6 +14,7 @@ public class CozinhaModel {
     @ApiModelProperty(value = "ID da cozinha", example = "1")
     @JsonView(RestauranteView.Resumo.class)
     private Long id;
+    
     @ApiModelProperty(value = "Nome da cozinha", example = "Japonesa")
     @JsonView(RestauranteView.Resumo.class)
     private String nome;
