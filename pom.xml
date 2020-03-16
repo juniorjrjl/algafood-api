@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter-parent</artifactId>
-    <version>2.1.12.RELEASE</version>
+    <version>2.2.5.RELEASE</version>
     <relativePath/>
   </parent>
   <groupId>com.algaworks</groupId>
@@ -113,6 +113,12 @@
       <groupId>io.springfox</groupId>
       <artifactId>springfox-swagger2</artifactId>
       <version>${spring-fox.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.plugin</groupId>
+          <artifactId>spring-plugin-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>io.springfox</groupId>
@@ -123,10 +129,21 @@
       <groupId>io.springfox</groupId>
       <artifactId>springfox-bean-validators</artifactId>
       <version>${spring-fox.version}</version>
+      <exclusions>
+        <exclusion>
+          <groupId>org.springframework.plugin</groupId>
+          <artifactId>spring-plugin-core</artifactId>
+        </exclusion>
+      </exclusions>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-freemarker</artifactId>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-hateoas</artifactId>
       <scope>compile</scope>
     </dependency>
   </dependencies>

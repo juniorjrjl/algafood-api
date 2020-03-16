@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.api.ResourceUriHelper;
 import com.algaworks.algafood.api.assembler.CidadeInputDisassembler;
 import com.algaworks.algafood.api.assembler.CidadeModelAssembler;
 import com.algaworks.algafood.api.model.CidadeModel;
@@ -15,6 +16,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -27,10 +29,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping(path = "/cidades", produces = MediaType.APPLICATION_JSON_VALUE)
-public class CidadeController implements CidadeControllerOpenApi{
+public class CidadeController implements CidadeControllerOpenApi {
 
     @Autowired
     private CidadeInputDisassembler cidadeInputDisassembler;
@@ -42,21 +43,27 @@ public class CidadeController implements CidadeControllerOpenApi{
     private CadastroCidadeService cadastroCidade;
 
     @GetMapping
-    public List<CidadeModel> listar(){
+    public List<CidadeModel> listar() {
         return cidadeModelAssembler.toCollectionModel(cadastroCidade.listar());
     }
 
     @GetMapping("{id}")
-    public CidadeModel buscar(@PathVariable Long id){
-        return cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
+    public CidadeModel buscar(@PathVariable Long id) {
+        CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
+        cidadeModel.add(new Link("http://localhost:8080/cidades/" + cidadeModel.getId()));
+        cidadeModel.add(new Link("http://localhost:8080/cidades/", "cidades"));
+        cidadeModel.getEstado().add(new Link("http://localhost:8080/estados/" + cidadeModel.getEstado().getId()));
+        return cidadeModel;
     }
-    
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput){
-        try{
+    public CidadeModel adicionar(@RequestBody @Valid CidadeInput cidadeInput) {
+        try {
             Cidade cidade = cidadeInputDisassembler.toDomainObject(cidadeInput);
-            return cidadeModelAssembler.toModel(cadastroCidade.salvar(cidade));
+            CidadeModel cidadeModel = cidadeModelAssembler.toModel(cadastroCidade.salvar(cidade));
+            ResourceUriHelper.addUriInresponseHeader(cidadeModel.getId());
+            return cidadeModel;
         }catch(EstadoNaoEncontradoException ex){
             throw new NegocioException(ex.getMessage(), ex);
         }
