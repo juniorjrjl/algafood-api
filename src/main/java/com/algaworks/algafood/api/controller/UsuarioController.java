@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.assembler.UsuarioInputDisassembler;
@@ -15,6 +13,7 @@ import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,7 +40,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
     private CadastroUsuarioService cadastroUsuario;
 
     @GetMapping
-    public List<UsuarioModel> listar(){
+    public CollectionModel<UsuarioModel> listar(){
         return usuarioModelAssembler.toCollectionModel(cadastroUsuario.listar());
     }
 

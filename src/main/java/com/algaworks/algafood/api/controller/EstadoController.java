@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.assembler.EstadoInputDisassembler;
@@ -13,6 +11,7 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,7 @@ public class EstadoController implements EstadoControllerOpenApi{
     private CadastroEstadoService cadastroEstado;
 
     @GetMapping
-    public List<EstadoModel> listar(){
+    public CollectionModel<EstadoModel> listar(){
         return estadoModelAssembler.toCollectionModel(cadastroEstado.listar());
     }
 

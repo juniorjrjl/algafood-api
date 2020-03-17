@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.assembler.GrupoInputDisassembler;
@@ -13,6 +11,7 @@ import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,7 +38,7 @@ public class GrupoController implements GrupoControllerOpenApi{
     private CadastroGrupoService cadastroGrupo;
 
     @GetMapping
-    public List<GrupoModel> listar(){
+    public CollectionModel<GrupoModel> listar(){
         return grupoModelAssembler.toCollectionModel(cadastroGrupo.listar());
     }
 

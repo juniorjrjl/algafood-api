@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.ResourceUriHelper;
@@ -16,7 +14,7 @@ import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -43,17 +41,13 @@ public class CidadeController implements CidadeControllerOpenApi {
     private CadastroCidadeService cadastroCidade;
 
     @GetMapping
-    public List<CidadeModel> listar() {
+    public CollectionModel<CidadeModel> listar() {
         return cidadeModelAssembler.toCollectionModel(cadastroCidade.listar());
     }
 
     @GetMapping("{id}")
     public CidadeModel buscar(@PathVariable Long id) {
-        CidadeModel cidadeModel =  cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
-        cidadeModel.add(new Link("http://localhost:8080/cidades/" + cidadeModel.getId()));
-        cidadeModel.add(new Link("http://localhost:8080/cidades/", "cidades"));
-        cidadeModel.getEstado().add(new Link("http://localhost:8080/estados/" + cidadeModel.getEstado().getId()));
-        return cidadeModel;
+        return cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
     }
 
     @PostMapping
