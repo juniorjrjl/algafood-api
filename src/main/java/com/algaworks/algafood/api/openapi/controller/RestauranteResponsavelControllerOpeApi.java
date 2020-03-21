@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.UsuarioModel;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,13 +24,13 @@ public interface RestauranteResponsavelControllerOpeApi {
                                                example = "1", required = true) Long restauranteId);
 
     @ApiOperation("Associar forma de pagamento ao restaurante")
-    public void associarFormaPagamento(@ApiParam(value = "ID de um restaurante", 
+    public ResponseEntity<Void> associarUsuario(@ApiParam(value = "ID de um restaurante", 
                                                  example = "1", required = true) Long restauranteId, 
                                        @ApiParam(value = "ID de um usuário", 
                                                  example = "1", required = true) Long usuarioId);
     
     @ApiOperation("Desassociar forma de pagamento ao restaurante")
-    public void desassociarFormaPagamento(@ApiParam(value = "ID de um restaurante", 
+    public ResponseEntity<Void> desassociarUsuario(@ApiParam(value = "ID de um restaurante", 
                                                     example = "1", required = true) Long restauranteId, 
                                           @ApiParam(value = "ID de um usuário", 
                                                     example = "1", required = true)

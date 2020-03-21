@@ -6,9 +6,14 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import com.algaworks.algafood.api.exceptionhandler.Problem;
+import com.algaworks.algafood.api.model.RestauranteApenasNomeModel;
+import com.algaworks.algafood.api.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.api.openapi.model.RestauranteBasicoModelOpenApi;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -26,10 +31,10 @@ public interface RestauranteControllerOpenApi {
         @ApiImplicitParam(value = "Nome da projeção de pedidos", name = "projecao", paramType = "query", 
                           type = "string", allowableValues = "apenas-nome")
     })
-    public List<RestauranteModel> listarResumido();
+    public CollectionModel<RestauranteBasicoModel> listarResumido();
 
     @ApiOperation(value = "Lista restaurantes", hidden = true)
-    public List<RestauranteModel> listarApenasNome();
+    public CollectionModel<RestauranteApenasNomeModel> listarApenasNome();
     
     @ApiOperation("Busca um Restaurante por ID")
     @ApiResponses({
@@ -57,46 +62,40 @@ public interface RestauranteControllerOpenApi {
     public RestauranteModel atualizarParcial(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id, 
                                             Map<String, Object>campos, HttpServletRequest request);
 
-    @ApiImplicitParams({
-        @ApiImplicitParam(value = "Nome do restaurante", name = "nome", paramType = "query", 
-                            type = "string")
-    })
-    public List<RestauranteModel> restaurantesFreteGratis(String nome);
-
     @ApiOperation("Ativa um Restaurante por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public void ativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> ativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
 
     @ApiOperation("Ativa vários Restaurantes por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = Problem.class)
     })
-    public void ativar(List<Long> restaurantesIds);
+    public ResponseEntity<Void> ativar(List<Long> restaurantesIds);
 
     @ApiOperation("Exclui um Restaurante por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public void inativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> inativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
 
     @ApiOperation("Exclui vários Restaurantes por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public void inativar(List<Long> restaurantesIds);
+    public ResponseEntity<Void> inativar(List<Long> restaurantesIds);
 
     @ApiOperation("Abre um Restaurantes por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = Problem.class)
     })
-    public void abrir(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> abrir(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
 
     @ApiOperation("Fecha um Restaurantes por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = Problem.class)
     })
-    public void fechar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> fechar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
     
 }

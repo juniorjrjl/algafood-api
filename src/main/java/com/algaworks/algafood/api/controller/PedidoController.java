@@ -1,5 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
+import java.util.Map;
+
 import javax.validation.Valid;
 
 import com.algaworks.algafood.api.assembler.PedidoInputDisassembler;
@@ -9,11 +11,11 @@ import com.algaworks.algafood.api.model.PedidoModel;
 import com.algaworks.algafood.api.model.PedidoResumoModel;
 import com.algaworks.algafood.api.model.input.PedidoInput;
 import com.algaworks.algafood.api.openapi.controller.PedidoControllerOpenApi;
+import com.algaworks.algafood.core.data.PageWrapper;
+import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
-//import com.algaworks.algafood.core.data.PageableTranslator;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
-//import com.google.common.collect.ImmutableMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -53,11 +55,12 @@ public class PedidoController implements PedidoControllerOpenApi{
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
             @PageableDefault(size = 10)Pageable pageable) {
-        //pageable = traduzirPageable(pageable);
-        Page<Pedido> pedidosPage = emissaoPedido.listar(filtro, pageable);
-        PagedModel<PedidoResumoModel> pedidosPageModel = pagedResourcesAssembler
-            .toModel(pedidosPage, pedidoResumoModelAssembler);
-        return pedidosPageModel;
+        Pageable pageableTraduzido  = traduzirPageable(pageable);
+
+        Page<Pedido> pedidosPage = emissaoPedido.listar(filtro, pageableTraduzido);
+        pedidosPage = new PageWrapper<>(pedidosPage, pageable);
+
+        return pagedResourcesAssembler.toModel(pedidosPage, pedidoResumoModelAssembler);
 
     }
     
@@ -74,14 +77,20 @@ public class PedidoController implements PedidoControllerOpenApi{
         return pedidoModelAssembler.toModel(pedido);
     }
     
-    /*private Pageable traduzirPageable(Pageable pageable){
-        var mapeamento = ImmutableMap.of(
-            "codigo", "codigo",
-            "restaurante.nome", "restaurante.nome",
-            "nomeCliente", "cliente.nome",
-            "valorTotal", "valorTotal"
-        );
-        return PageableTranslator.translate(pageable, mapeamento);
-    }*/
+    private Pageable traduzirPageable(Pageable apiPageable) {
+		var mapeamento = Map.of(
+				"codigo", "codigo",
+				"subtotal", "subtotal",
+				"taxaFrete", "taxaFrete",
+				"valorTotal", "valorTotal",
+				"dataCriacao", "dataCriacao",
+				"nomeRestaurante", "restaurante.nome",
+				"restauranteId", "restaurante.id",
+				"clienteId", "cliente.id",
+				"nomeCliente", "cliente.nome"
+			);
+		
+		return PageableTranslator.translate(apiPageable, mapeamento);
+	}
 
 }

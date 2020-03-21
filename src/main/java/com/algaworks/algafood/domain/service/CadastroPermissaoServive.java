@@ -1,6 +1,8 @@
 package com.algaworks.algafood.domain.service;
 
 
+import java.util.List;
+
 import com.algaworks.algafood.domain.exception.PermissaoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Permissao;
@@ -18,6 +20,10 @@ public class CadastroPermissaoServive {
 
     @Autowired
     private PermissaoRepository permissaoRepository;
+
+    public List<Permissao> listar(){
+        return permissaoRepository.findAll();
+    }
 
     @Transactional
     public void associarPermissao(Long grupoId, Long permissaoId){

@@ -1,8 +1,5 @@
 package com.algaworks.algafood.domain.service;
 
-import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.freteGratis;
-import static com.algaworks.algafood.infrastructure.repository.spec.RestauranteSpecs.nomeSemelhante;
-
 import java.util.List;
 
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
@@ -42,10 +39,6 @@ public class CadastroRestauranteService {
     
     public List<Restaurante> listar(){
         return restauranteRepository.findAll();
-    }
-    
-    public List<Restaurante> listarFreteGratis(String nome){
-        return restauranteRepository.findAll(freteGratis().and(nomeSemelhante(nome)));
     }
 
     @Transactional

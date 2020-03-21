@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.assembler.ProdutoInputDisassembler;
 import com.algaworks.algafood.api.assembler.ProdutoModelAssembler;
 import com.algaworks.algafood.api.model.ProdutoModel;
@@ -13,6 +14,8 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -39,11 +42,15 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
     private ProdutoModelAssembler produtoModelAssembler;
 
+    @Autowired
+	private AlgaLinks algaLinks;
+
     @GetMapping
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId, 
-           @RequestParam(required = false) boolean incluirInativos){
+    public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId, 
+           @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos){
         List<Produto> produtos = cadastroProduto.buscar(restauranteId, incluirInativos);
-        return produtoModelAssembler.toCollectionModel(produtos);
+        return produtoModelAssembler.toCollectionModel(produtos)
+            .add(algaLinks.linkToRestauranteProdutos(IanaLinkRelations.SELF.value(), restauranteId));
     }
     
     @GetMapping("/{produtoId}")

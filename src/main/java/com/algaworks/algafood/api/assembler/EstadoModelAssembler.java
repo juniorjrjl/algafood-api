@@ -1,5 +1,6 @@
 package com.algaworks.algafood.api.assembler;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.controller.EstadoController;
 import com.algaworks.algafood.api.model.EstadoModel;
 import com.algaworks.algafood.domain.model.Estado;
@@ -7,8 +8,8 @@ import com.algaworks.algafood.domain.model.Estado;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,6 +18,9 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     @Autowired
     private ModelMapper modelMapper;
 
+	@Autowired
+	private AlgaLinks algaLinks;
+
 	public EstadoModelAssembler() {
 		super(EstadoController.class, EstadoModel.class);
 	}
@@ -24,16 +28,13 @@ public class EstadoModelAssembler extends RepresentationModelAssemblerSupport<Es
     public EstadoModel toModel(Estado estado) {
 		EstadoModel estadoModel = createModelWithId(estado.getId(), estado);
 		modelMapper.map(estado, estadoModel);
-		estadoModel.add(WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
-			.methodOn(EstadoController.class)
-			.listar()).withRel("estados"));
+		estadoModel.add(algaLinks.linkToEstados("estados"));
 		return estadoModel;
 	}
 	
 	@Override
 	public CollectionModel<EstadoModel> toCollectionModel(Iterable<? extends Estado> estados) {
-		return super.toCollectionModel(estados)
-			.add(WebMvcLinkBuilder.linkTo(EstadoController.class).withSelfRel());
+		return super.toCollectionModel(estados).add(algaLinks.linkToEstados(IanaLinkRelations.SELF.value()));
 	}
     
 }
