@@ -26,7 +26,7 @@ public class CozinhaModelAssembler extends RepresentationModelAssemblerSupport<C
 	@Override
     public CozinhaModel toModel(Cozinha cozinha) {
 		CozinhaModel cozinhaModel = createModelWithId(cozinha.getId(), cozinha);
-		cozinhaModel.add(algaLinks.linkToCozinhas());
+		cozinhaModel.add(algaLinks.linkToCozinhas("cozinhas"));
 		modelMapper.map(cozinha, cozinhaModel);
 		return cozinhaModel;
 	}

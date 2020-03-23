@@ -5,6 +5,7 @@ import java.util.List;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 
+import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
@@ -14,6 +15,11 @@ import io.swagger.annotations.ApiOperation;
 
 @Api(tags = "Estatísticas")
 public interface EstatisticasControllerOpenApi {
+
+    public static class EstatisticasModel extends RepresentationModel<EstatisticasModel> { }
+
+    @ApiOperation(value = "Estatísticas", hidden = true)
+	public EstatisticasModel estatisticas();
 
     @ApiOperation(value = "Busca dados de vendas", produces = "application/json, application/pdf")
     @ApiImplicitParams({

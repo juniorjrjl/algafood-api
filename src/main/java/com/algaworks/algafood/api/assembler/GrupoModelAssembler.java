@@ -35,8 +35,7 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 	
 	@Override
 	public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {
-		return super.toCollectionModel(entities)
-			.add(algaLinks.linkToGrupos(IanaLinkRelations.SELF.value()));
+		return super.toCollectionModel(entities);
 	}
     
 }

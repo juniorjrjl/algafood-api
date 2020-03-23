@@ -29,7 +29,7 @@ public class UsuarioModelAssembler extends RepresentationModelAssemblerSupport<U
 		UsuarioModel usuarioModel = createModelWithId(usuario.getId(), usuario);
 		modelMapper.map(usuario, usuarioModel);
 		usuarioModel.add(algaLinks.linkToUsuarios("usuarios"));
-		usuarioModel.add(algaLinks.linkToGruposUsuarios(usuario.getId()));
+		usuarioModel.add(algaLinks.linkToGruposUsuarios("grupos-usuarios", usuario.getId()));
 		return usuarioModel;
 	}
 

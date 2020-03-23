@@ -2,27 +2,25 @@ package com.algaworks.algafood.api.openapi.model;
 
 import java.util.List;
 
-import com.algaworks.algafood.api.model.CozinhaModel;
+import com.algaworks.algafood.api.model.CidadeModel;
 
 import org.springframework.hateoas.Links;
 
 import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
-@ApiModel("CozinhasModel")
+@ApiModel("CidadesModel")
 @Data
-public class CozinhasModelOpenApi {
+public class CidadesModelOpenApi {
 
     public CidadeEmbeddedModelOpenApi _embedded;
-
+    
     private Links _links;
 
-    private PageModelOpenApi page;
-
-    @ApiModel("CozinhasEmbeddedModel")
+    @ApiModel("CidadesEmbeddedModel")
     @Data
     public class CidadeEmbeddedModelOpenApi{
-        private List<CozinhaModel> cozinhas;
+        private List<CidadeModel> cidades;
     }
     
 }

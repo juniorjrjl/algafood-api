@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.model.GrupoModel;
 
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,7 +26,7 @@ public interface UsuarioGrupoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    public void associarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
+    public ResponseEntity<Void> associarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
                               Long usuarioId,
                               @ApiParam(value = "ID de um Grupo", example = "1",required = true)
                               Long grupoId);
@@ -34,7 +35,7 @@ public interface UsuarioGrupoControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    public void desassociarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
+    public ResponseEntity<Void> desassociarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
                                  Long usuarioId,
                                  @ApiParam(value = "ID de um Grupo", example = "1",required = true)
                                  Long grupoId);

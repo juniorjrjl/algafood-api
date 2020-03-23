@@ -3,6 +3,7 @@ package com.algaworks.algafood.api;
 import com.algaworks.algafood.api.controller.CidadeController;
 import com.algaworks.algafood.api.controller.CozinhaController;
 import com.algaworks.algafood.api.controller.EstadoController;
+import com.algaworks.algafood.api.controller.EstatisticasController;
 import com.algaworks.algafood.api.controller.FluxoPedidoController;
 import com.algaworks.algafood.api.controller.FormaPagamentoController;
 import com.algaworks.algafood.api.controller.GrupoController;
@@ -98,8 +99,9 @@ public class AlgaLinks {
             .listar()).withRel(relation);
     }
 
-    public Link linkToCozinhas(){
-        return WebMvcLinkBuilder.linkTo(CozinhaController.class).withRel("cozinhas");
+    public Link linkToCozinhas(String relation){
+        return WebMvcLinkBuilder
+            .linkTo(CozinhaController.class).withRel(relation);
     }
 
     public Link linkToUsuarios(String relation){
@@ -108,11 +110,11 @@ public class AlgaLinks {
             .listar()).withRel(relation);
     }
 
-    public Link linkToGruposUsuarios(Long usuarioId){
+    public Link linkToGruposUsuarios(String relation, Long usuarioId){
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
             .methodOn(UsuarioGrupoController.class)
             .listar(usuarioId))
-            .withRel("grupos-usuarios");
+            .withRel(relation);
     }
 
     public Link linkToRestauranteResponsavel(String relation, Long restauranteId){
@@ -262,5 +264,37 @@ public class AlgaLinks {
 			.associar(grupoId, null))
 			.withRel(relation);
     }
+
+    public Link linkToDesassociarGrupo(String relation, Long usuarioId, Long grupoId){
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+            .methodOn(UsuarioGrupoController.class)
+			.desassociarGrupo(usuarioId, grupoId))
+			.withRel(relation);
+    }
+
+    public Link linkToAssociarGrupo(String relation, Long usuarioId){
+        return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+            .methodOn(UsuarioGrupoController.class)
+			.associarGrupo(usuarioId, null))
+			.withRel(relation);
+    }
+
+    public Link linkToEstatisticas(String rel) {
+        return WebMvcLinkBuilder.
+            linkTo(EstatisticasController.class).withRel(rel);
+    }
+    
+    public Link linkToEstatisticasVendasDiarias(String rel) {
+        TemplateVariables filtroVariables = new TemplateVariables(
+                new TemplateVariable("restauranteId", VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoInicio", VariableType.REQUEST_PARAM),
+                new TemplateVariable("dataCriacaoFim", VariableType.REQUEST_PARAM),
+                new TemplateVariable("timeOffset", VariableType.REQUEST_PARAM));
+        
+        String pedidosUrl = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
+            .methodOn(EstatisticasController.class)
+            .consultar(null, null)).toUri().toString();
+        return new Link(UriTemplate.of(pedidosUrl, filtroVariables), rel);
+    } 
 
 }

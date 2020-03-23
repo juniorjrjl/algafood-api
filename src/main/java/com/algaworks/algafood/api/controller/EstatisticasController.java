@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import java.util.List;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.openapi.controller.EstatisticasControllerOpenApi;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
@@ -27,6 +28,9 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     @Autowired
     private VendaReportService vendaReportService;
 
+    @Autowired
+    private AlgaLinks algaLinks;
+
     @GetMapping(path = "vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultar(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00")String timeOffset){
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
@@ -42,5 +46,13 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
             .headers(headers)
             .body(bytesPDF);
     }
+
+    @Override
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public EstatisticasModel estatisticas() {
+        var estatisticasModel = new EstatisticasModel();
+        estatisticasModel.add(algaLinks.linkToEstatisticasVendasDiarias("vendas-diarias"));
+        return estatisticasModel;
+}
     
 }

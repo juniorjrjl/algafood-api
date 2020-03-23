@@ -2,6 +2,7 @@ package com.algaworks.algafood.api.controller;
 
 import javax.validation.Valid;
 
+import com.algaworks.algafood.api.AlgaLinks;
 import com.algaworks.algafood.api.assembler.GrupoInputDisassembler;
 import com.algaworks.algafood.api.assembler.GrupoModelAssembler;
 import com.algaworks.algafood.api.model.GrupoModel;
@@ -12,6 +13,7 @@ import com.algaworks.algafood.domain.service.CadastroGrupoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,9 +39,13 @@ public class GrupoController implements GrupoControllerOpenApi{
     @Autowired
     private CadastroGrupoService cadastroGrupo;
 
+    @Autowired
+	private AlgaLinks algaLinks;
+
     @GetMapping
     public CollectionModel<GrupoModel> listar(){
-        return grupoModelAssembler.toCollectionModel(cadastroGrupo.listar());
+        return grupoModelAssembler.toCollectionModel(cadastroGrupo.listar())
+            .add(algaLinks.linkToGrupos(IanaLinkRelations.SELF.value()));
     }
 
     @GetMapping("{id}")
