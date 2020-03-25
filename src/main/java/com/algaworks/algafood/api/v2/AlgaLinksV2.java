@@ -1,6 +1,7 @@
 package com.algaworks.algafood.api.v2;
 
 import com.algaworks.algafood.api.v2.controller.CidadeControllerV2;
+import com.algaworks.algafood.api.v2.controller.CozinhaControllerV2;
 
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
@@ -19,6 +20,11 @@ public class AlgaLinksV2 {
         return WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder
             .methodOn(CidadeControllerV2.class)
             .listar()).withRel(relation);
+    }
+
+    public Link linkToCozinhas(String relation){
+        return WebMvcLinkBuilder
+            .linkTo(CozinhaControllerV2.class).withRel(relation);
     }
 
 }

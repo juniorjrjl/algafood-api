@@ -17,12 +17,6 @@ public class WebConfig implements WebMvcConfigurer{
         registry.addMapping("/**")
             .allowedMethods("*");
     }
-    
-    @Override
-    public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
-        configurer.defaultContentType(AlgaMediaTypes.V2_APPLICATION_JSON);
-        WebMvcConfigurer.super.configureContentNegotiation(configurer);
-    }
 
     @Bean
     public Filter shallowEtagHeaderFilter(){

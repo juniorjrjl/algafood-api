@@ -32,6 +32,9 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @ControllerAdvice
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
 
@@ -155,7 +158,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler{
         Problem problem = createProblemBuilder(status, ProblemType.ERRO_DE_SISTEMA, MSG_ERRO_GENERICO)
             .userMessage(MSG_ERRO_GENERICO)
             .build();
-        ex.printStackTrace();
+        log.error(ExceptionUtils.getStackTrace(ex));
         return handleExceptionInternal(ex, problem, new HttpHeaders(), status, request);
     }
 
