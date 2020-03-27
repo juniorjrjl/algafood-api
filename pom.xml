@@ -20,6 +20,7 @@
     <maven.processpr.plugin.version>3.3.3</maven.processpr.plugin.version>
     <aws-java-sdk-s3.version>1.11.73</aws-java-sdk-s3.version>
     <spring-fox.version>2.9.2</spring-fox.version>
+    <oauth2-oidc-sdk>6.23</oauth2-oidc-sdk>
   </properties>
   <dependencies>
     <dependency>
@@ -151,6 +152,17 @@
       <artifactId>spring-boot-starter-security</artifactId>
       <scope>compile</scope>
     </dependency>
+    <dependency>
+    	<groupId>org.springframework.boot</groupId>
+    	<artifactId>
+    		spring-boot-starter-oauth2-resource-server
+    	</artifactId>
+    </dependency>
+    <dependency>
+  		<groupId>com.nimbusds</groupId>
+  		<artifactId>oauth2-oidc-sdk</artifactId>
+  		<version>${oauth2-oidc-sdk}</version>
+	</dependency>
   </dependencies>
   <build>
     <plugins>
