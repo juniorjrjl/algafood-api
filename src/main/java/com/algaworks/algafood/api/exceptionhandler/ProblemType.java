@@ -12,6 +12,7 @@ public enum ProblemType {
     MENSAGEM_INCOMPREENSIVEL("/mensagem-imcompreensivel", "Mensagem incompreensível"),
     PARAMETRO_INVALIDO("/parametro-invalido", "Parâmetro inválido"),
     DADOS_INVALIDOS("/dados-invalidos", "Dados inválidos"),
+    ACESSO_NEGADO("/acesso-negado", "Acesso negado"),
     ERRO_DE_SISTEMA("/erro-sistema", "Erro de sistema");
     
     private String title;

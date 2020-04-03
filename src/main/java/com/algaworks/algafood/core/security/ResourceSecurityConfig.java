@@ -1,27 +1,41 @@
 package com.algaworks.algafood.core.security;
 
-import javax.crypto.spec.SecretKeySpec;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
-import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
-import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ResourceSecurityConfig extends WebSecurityConfigurerAdapter{
 
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-        	.authorizeRequests()
-        		.anyRequest().authenticated()
-        	.and()
-        	.cors().and()
-        	.oauth2ResourceServer().jwt();
-                
-    }
+	@Override
+	protected void configure(HttpSecurity http) throws Exception {
+		http
+			.csrf().disable()
+			.cors().and()
+			.oauth2ResourceServer().jwt()
+				.jwtAuthenticationConverter(jwtAuthenticationConverter());
+	}
 
+    
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+    	var jwtAuthenticationConverter = new JwtAuthenticationConverter();
+    	jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwt ->{
+    		var authtorities = jwt.getClaimAsStringList("authorities");
+    		if (authtorities == null) {
+    			authtorities = Collections.emptyList();
+    		}
+    		return authtorities.stream()
+    				.map(SimpleGrantedAuthority::new)
+    				.collect(Collectors.toList());
+    	});
+    	return jwtAuthenticationConverter;
+    }
 }
