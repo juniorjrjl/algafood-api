@@ -10,6 +10,7 @@ import com.algaworks.algafood.api.v1.assembler.ProdutoModelAssembler;
 import com.algaworks.algafood.api.v1.model.ProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.ProdutoInput;
 import com.algaworks.algafood.api.v1.openapi.controller.RestauranteProdutoControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 
@@ -45,6 +46,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
     @Autowired
 	private AlgaLinks algaLinks;
 
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<ProdutoModel> listar(@PathVariable Long restauranteId, 
            @RequestParam(required = false, defaultValue = "false") Boolean incluirInativos){
@@ -53,12 +55,14 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
             .add(algaLinks.linkToRestauranteProdutos(IanaLinkRelations.SELF.value(), restauranteId));
     }
     
+    @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping("/{produtoId}")
     public ProdutoModel buscar(@PathVariable Long restauranteId, @PathVariable Long produtoId){
         Produto produto = cadastroProduto.buscar(restauranteId, produtoId);
         return produtoModelAssembler.toModel(produto);
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel cadastrar(@PathVariable Long restauranteId, 
@@ -68,6 +72,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(cadastroProduto.salvar(produto));
     }
     
+    @CheckSecurity.Restaurantes.PodeEditar
     @PutMapping("/{produtoId}")
     public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
                                       @RequestBody ProdutoInput produtoInput) {
@@ -76,6 +81,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(cadastroProduto.salvar(produto));
     }
 
+    @CheckSecurity.Restaurantes.PodeEditar
     @DeleteMapping("/{produtoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId){
