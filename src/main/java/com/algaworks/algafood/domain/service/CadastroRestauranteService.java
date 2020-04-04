@@ -40,6 +40,10 @@ public class CadastroRestauranteService {
     public List<Restaurante> listar(){
         return restauranteRepository.findAll();
     }
+    
+    public boolean existeResponsavel(Long restauranteId, Long usuarioId) {
+    	return restauranteRepository.existeResponsavel(restauranteId, usuarioId);
+    }
 
     @Transactional
     public Restaurante salvar(Restaurante restaurante){

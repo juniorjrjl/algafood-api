@@ -62,7 +62,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(produto);
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ProdutoModel cadastrar(@PathVariable Long restauranteId, 
@@ -72,7 +72,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(cadastroProduto.salvar(produto));
     }
     
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{produtoId}")
     public ProdutoModel atualizar(@PathVariable Long restauranteId, @PathVariable Long produtoId, 
                                       @RequestBody ProdutoInput produtoInput) {
@@ -81,7 +81,7 @@ public class RestauranteProdutoController implements RestauranteProdutoControlle
         return produtoModelAssembler.toModel(cadastroProduto.salvar(produto));
     }
 
-    @CheckSecurity.Restaurantes.PodeEditar
+    @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{produtoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long restauranteId, @PathVariable Long produtoId){
