@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping(path = "/v1/pedidos/{codigo}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/v1/pedidos/{codigoPedido}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 
     @Autowired
@@ -23,22 +23,22 @@ public class FluxoPedidoController implements FluxoPedidoControllerOpenApi{
 
     @PutMapping("confirmacao")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> confirmar(@PathVariable String codigo) {
-        fluxoPedido.confirmar(codigo);
+    public ResponseEntity<Void> confirmar(@PathVariable String codigoPedido) {
+        fluxoPedido.confirmar(codigoPedido);
         return ResponseEntity.noContent().build();
     }
     
     @PutMapping("entrega")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> entregar(@PathVariable String codigo) {
-        fluxoPedido.entregar(codigo);
+    public ResponseEntity<Void> entregar(@PathVariable String codigoPedido) {
+        fluxoPedido.entregar(codigoPedido);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("cancelamento")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> cancelar(@PathVariable String codigo) {
-        fluxoPedido.cancelar(codigo);
+    public ResponseEntity<Void> cancelar(@PathVariable String codigoPedido) {
+        fluxoPedido.cancelar(codigoPedido);
         return ResponseEntity.noContent().build();
     }
 

@@ -48,9 +48,9 @@ public class GrupoController implements GrupoControllerOpenApi{
             .add(algaLinks.linkToGrupos(IanaLinkRelations.SELF.value()));
     }
 
-    @GetMapping("{id}")
-    public GrupoModel buscar(@PathVariable Long id){
-        return grupoModelAssembler.toModel(cadastroGrupo.buscar(id));
+    @GetMapping("{idGrupo}")
+    public GrupoModel buscar(@PathVariable Long idGrupo){
+        return grupoModelAssembler.toModel(cadastroGrupo.buscar(idGrupo));
     }
     
     @PostMapping
@@ -60,17 +60,17 @@ public class GrupoController implements GrupoControllerOpenApi{
         return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupo));
     }
 
-    @PutMapping("{id}")
-    public GrupoModel atualizar(@PathVariable Long id, @RequestBody @Valid GrupoInput grupoInput){
-        Grupo grupoAtual = cadastroGrupo.buscar(id);
+    @PutMapping("{idGrupo}")
+    public GrupoModel atualizar(@PathVariable Long idGrupo, @RequestBody @Valid GrupoInput grupoInput){
+        Grupo grupoAtual = cadastroGrupo.buscar(idGrupo);
         grupoInputDisassembler.copyToDomainInObject(grupoInput, grupoAtual);
         return grupoModelAssembler.toModel(cadastroGrupo.salvar(grupoAtual));
     }
     
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idGrupo}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroGrupo.excluir(id);
+    public void remover(@PathVariable Long idGrupo){
+        cadastroGrupo.excluir(idGrupo);
     }
 
 }

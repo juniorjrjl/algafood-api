@@ -42,9 +42,9 @@ public class EstadoController implements EstadoControllerOpenApi{
         return estadoModelAssembler.toCollectionModel(cadastroEstado.listar());
     }
 
-    @GetMapping("{id}")
-    public EstadoModel buscar(@PathVariable Long id){
-        return estadoModelAssembler.toModel(cadastroEstado.buscar(id));
+    @GetMapping("{idEstado}")
+    public EstadoModel buscar(@PathVariable Long idEstado){
+        return estadoModelAssembler.toModel(cadastroEstado.buscar(idEstado));
     }
     
     @PostMapping
@@ -54,17 +54,17 @@ public class EstadoController implements EstadoControllerOpenApi{
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
-    @PutMapping("{id}")
-    public EstadoModel atualizar(@PathVariable Long id, @RequestBody @Valid EstadoInput estadoInput){
-        Estado estadoAtual = cadastroEstado.buscar(id);
+    @PutMapping("{idEstado}")
+    public EstadoModel atualizar(@PathVariable Long idEstado, @RequestBody @Valid EstadoInput estadoInput){
+        Estado estadoAtual = cadastroEstado.buscar(idEstado);
         estadoInputDisassembler.copyToDomainInObject(estadoInput, estadoAtual);
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idEstado}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroEstado.excluir(id);
+    public void remover(@PathVariable Long idEstado){
+        cadastroEstado.excluir(idEstado);
     }
     
 }

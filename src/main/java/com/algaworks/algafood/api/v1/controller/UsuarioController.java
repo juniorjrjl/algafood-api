@@ -48,9 +48,9 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         return usuarioModelAssembler.toCollectionModel(cadastroUsuario.listar());
     }
 
-    @GetMapping("{id}")
-    public UsuarioModel buscar(@PathVariable Long id){
-        return usuarioModelAssembler.toModel(cadastroUsuario.buscar(id));
+    @GetMapping("{idUsuario}")
+    public UsuarioModel buscar(@PathVariable Long idUsuario){
+        return usuarioModelAssembler.toModel(cadastroUsuario.buscar(idUsuario));
     }
     
     @PostMapping
@@ -61,26 +61,26 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
     }
 
-    @PutMapping("{id}")
-    public UsuarioModel atualizar(@PathVariable Long id, @RequestBody @Valid UsuarioAtualizacaoInput usuarioAtualizacaoInput){
-        Usuario usuarioAtual = cadastroUsuario.buscar(id);
+    @PutMapping("{idUsuario}")
+    public UsuarioModel atualizar(@PathVariable Long idUsuario, @RequestBody @Valid UsuarioAtualizacaoInput usuarioAtualizacaoInput){
+        Usuario usuarioAtual = cadastroUsuario.buscar(idUsuario);
         usuarioInputDisassembler.copyToDomainInObject(usuarioAtualizacaoInput, usuarioAtual);
         usuarioAtual.setSenha(passwordEncoder.encode(usuarioAtual.getSenha()));
         return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
     }
     
-    @PutMapping("{id}/senha")
+    @PutMapping("{idUsuario}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void alterarSenha(@PathVariable Long id, @RequestBody @Valid SenhaUsuarioInput senhaUsuarioInput){
-        Usuario usuarioAtual = cadastroUsuario.buscar(id, senhaUsuarioInput.getSenhaAtual());
+    public void alterarSenha(@PathVariable Long idUsuario, @RequestBody @Valid SenhaUsuarioInput senhaUsuarioInput){
+        Usuario usuarioAtual = cadastroUsuario.buscar(idUsuario, senhaUsuarioInput.getSenhaAtual());
         usuarioInputDisassembler.copyToDomainInObject(senhaUsuarioInput, usuarioAtual);
         usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroUsuario.excluir(id);
+    public void remover(@PathVariable Long idUsuario){
+        cadastroUsuario.excluir(idUsuario);
     }
 
 }

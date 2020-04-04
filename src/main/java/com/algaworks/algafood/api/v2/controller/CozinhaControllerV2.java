@@ -51,9 +51,9 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
         return cozinhaPagedModel;
     }
 
-    @GetMapping("{id}")
-    public CozinhaModelV2 buscar(@PathVariable Long id){
-        return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(id));
+    @GetMapping("{idCozinha}")
+    public CozinhaModelV2 buscar(@PathVariable Long idCozinha){
+        return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(idCozinha));
     }
     
     @PostMapping
@@ -63,17 +63,17 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
     }
 
-    @PutMapping("{id}")
-    public CozinhaModelV2 atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInputV2 CozinhaInputV2){
-        Cozinha cozinhaAtual = cadastroCozinha.buscar(id);
+    @PutMapping("{idCozinha}")
+    public CozinhaModelV2 atualizar(@PathVariable Long idCozinha, @RequestBody @Valid CozinhaInputV2 CozinhaInputV2){
+        Cozinha cozinhaAtual = cadastroCozinha.buscar(idCozinha);
         cozinhaInputDisassembler.copyToDomainInObject(CozinhaInputV2, cozinhaAtual);
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idCozinha}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroCozinha.excluir(id);
+    public void remover(@PathVariable Long idCozinha){
+        cadastroCozinha.excluir(idCozinha);
     }
 
 }

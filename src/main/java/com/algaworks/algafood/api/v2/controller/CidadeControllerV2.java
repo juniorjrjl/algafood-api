@@ -45,9 +45,9 @@ public class CidadeControllerV2 implements CidadeControllerV2OpenApi{
         return cidadeModelAssembler.toCollectionModel(cadastroCidade.listar());
     }
 
-    @GetMapping("{id}")
-    public CidadeModelV2 buscar(@PathVariable Long id) {
-        return cidadeModelAssembler.toModel(cadastroCidade.buscar(id));
+    @GetMapping("{idCidade}")
+    public CidadeModelV2 buscar(@PathVariable Long idCidade) {
+        return cidadeModelAssembler.toModel(cadastroCidade.buscar(idCidade));
     }
 
     @PostMapping
@@ -63,10 +63,10 @@ public class CidadeControllerV2 implements CidadeControllerV2OpenApi{
         }
     }
 
-    @PutMapping("{id}")
-    public CidadeModelV2 atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInputV2 cidadeInput){
+    @PutMapping("{idCidade}")
+    public CidadeModelV2 atualizar(@PathVariable Long idCidade, @RequestBody @Valid CidadeInputV2 cidadeInput){
         try{
-            Cidade cidadeAtual = cadastroCidade.buscar(id);
+            Cidade cidadeAtual = cadastroCidade.buscar(idCidade);
             cidadeInputDisassembler.copyToDomainInObject(cidadeInput, cidadeAtual);
             return cidadeModelAssembler.toModel(cadastroCidade.salvar(cidadeAtual));
         }catch(EstadoNaoEncontradoException ex){
@@ -75,10 +75,10 @@ public class CidadeControllerV2 implements CidadeControllerV2OpenApi{
 
     }
     
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idCidade}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroCidade.excluir(id);
+    public void remover(@PathVariable Long idCidade){
+        cadastroCidade.excluir(idCidade);
     }
 
 }

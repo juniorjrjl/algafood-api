@@ -27,7 +27,7 @@ public interface CozinhaControllerV2OpenApi {
         @ApiResponse(code = 400, message = "ID da Cozinha inválido", response = Problem.class),
         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
-    public CozinhaModelV2 buscar(@PathVariable Long id);
+    public CozinhaModelV2 buscar(@PathVariable Long idCidade);
 
     @ApiOperation("Cadastra uma Cozinha")
     public CozinhaModelV2 adicionar(@RequestBody @Valid CozinhaInputV2 CozinhaInputV2);
@@ -36,12 +36,12 @@ public interface CozinhaControllerV2OpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
-    public CozinhaModelV2 atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInputV2 CozinhaInputV2);
+    public CozinhaModelV2 atualizar(@PathVariable Long idCidade, @RequestBody @Valid CozinhaInputV2 CozinhaInputV2);
 
     @ApiOperation("Exclui uma Cozinha por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
     })
-    public void remover(@PathVariable Long id);
+    public void remover(@PathVariable Long idCidade);
     
 }

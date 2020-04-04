@@ -26,7 +26,7 @@ public interface UsuarioControllerOpenApi {
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
     public UsuarioModel buscar(@ApiParam(value = "ID de um usuário", example = "1",required = true) 
-                               Long id);
+                               Long idUsuario);
 
     @ApiOperation("Cadastra um Usuário")
     public UsuarioModel adicionar(UsuarioCadastroInput usuarioCadastroInput);
@@ -36,19 +36,19 @@ public interface UsuarioControllerOpenApi {
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
     public UsuarioModel atualizar(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                                  Long id, UsuarioAtualizacaoInput usuarioAtualizacaoInput);
+                                  Long idUsuario, UsuarioAtualizacaoInput usuarioAtualizacaoInput);
 
     @ApiOperation("Atualiza a senha do usuário por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
     public void alterarSenha(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                             Long id, SenhaUsuarioInput senhaUsuarioInput);
+                             Long idUsuario, SenhaUsuarioInput senhaUsuarioInput);
 
     @ApiOperation("Exclui um Usuário por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
     })
-    public void remover(@ApiParam(value = "ID de um usuário", example = "1",required = true) Long id);
+    public void remover(@ApiParam(value = "ID de um usuário", example = "1",required = true) Long idUsuario);
     
 }

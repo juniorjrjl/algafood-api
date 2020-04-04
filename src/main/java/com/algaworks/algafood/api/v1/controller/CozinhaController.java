@@ -58,9 +58,9 @@ public class CozinhaController implements CozinhaControllerOpenApi{
     }
 
     @CheckSecurity.Cozinhas.PodeConsultar
-    @GetMapping("{id}")
-    public CozinhaModel buscar(@PathVariable Long id){
-        return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(id));
+    @GetMapping("{idCozinha}")
+    public CozinhaModel buscar(@PathVariable Long idCozinha){
+        return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(idCozinha));
     }
     
     @CheckSecurity.Cozinhas.PodeEditar
@@ -72,18 +72,18 @@ public class CozinhaController implements CozinhaControllerOpenApi{
     }
 
     @CheckSecurity.Cozinhas.PodeEditar
-    @PutMapping("{id}")
-    public CozinhaModel atualizar(@PathVariable Long id, @RequestBody @Valid CozinhaInput cozinhaInput){
-        Cozinha cozinhaAtual = cadastroCozinha.buscar(id);
+    @PutMapping("{idCozinha}")
+    public CozinhaModel atualizar(@PathVariable Long idCozinha, @RequestBody @Valid CozinhaInput cozinhaInput){
+        Cozinha cozinhaAtual = cadastroCozinha.buscar(idCozinha);
         cozinhaInputDisassembler.copyToDomainInObject(cozinhaInput, cozinhaAtual);
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }
 
     @CheckSecurity.Cozinhas.PodeEditar
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idCozinha}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroCozinha.excluir(id);
+    public void remover(@PathVariable Long idCozinha){
+        cadastroCozinha.excluir(idCozinha);
     }
 
 }

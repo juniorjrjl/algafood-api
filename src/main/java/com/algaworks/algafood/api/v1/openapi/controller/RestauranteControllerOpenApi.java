@@ -43,7 +43,7 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
     public RestauranteModel buscar(@ApiParam(value = "ID de um restaurante", 
-                                             example = "1", required = true) Long id);
+                                             example = "1", required = true) Long idRestaurante);
 
     @ApiOperation("Cadastra um Restaurante")
     public RestauranteModel adicionar(RestauranteInput restauranteInput);
@@ -52,7 +52,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public RestauranteModel atualizar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id, 
+    public RestauranteModel atualizar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante, 
                                       RestauranteInput restauranteInput);
 
     @ApiOperation("Atualiza um Restaurante por ID")
@@ -60,14 +60,14 @@ public interface RestauranteControllerOpenApi {
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
     // TODO: pesquisar a melhor forma de documentar o corpo patch
-    public RestauranteModel atualizarParcial(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id, 
+    public RestauranteModel atualizarParcial(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante, 
                                             Map<String, Object>campos, HttpServletRequest request);
 
     @ApiOperation("Ativa um Restaurante por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public ResponseEntity<Void> ativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> ativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante);
 
     @ApiOperation("Ativa vários Restaurantes por ID")
     @ApiResponses({
@@ -79,7 +79,7 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    public ResponseEntity<Void> inativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> inativar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante);
 
     @ApiOperation("Exclui vários Restaurantes por ID")
     @ApiResponses({
@@ -91,12 +91,12 @@ public interface RestauranteControllerOpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = Problem.class)
     })
-    public ResponseEntity<Void> abrir(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> abrir(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante);
 
     @ApiOperation("Fecha um Restaurantes por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cozinha não encontrado", response = Problem.class)
     })
-    public ResponseEntity<Void> fechar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long id);
+    public ResponseEntity<Void> fechar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante);
     
 }

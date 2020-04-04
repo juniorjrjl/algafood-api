@@ -26,7 +26,7 @@ public interface CidadeControllerV2OpenApi {
         @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    public CidadeModelV2 buscar(@PathVariable Long id);
+    public CidadeModelV2 buscar(@PathVariable Long idCidade);
 
     @ApiOperation("Cadastra uma cidade")
     public CidadeModelV2 adicionar(@RequestBody @Valid CidadeInputV2 cidadeInput);
@@ -35,12 +35,12 @@ public interface CidadeControllerV2OpenApi {
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    public CidadeModelV2 atualizar(@PathVariable Long id, @RequestBody @Valid CidadeInputV2 cidadeInput);
+    public CidadeModelV2 atualizar(@PathVariable Long idCidade, @RequestBody @Valid CidadeInputV2 cidadeInput);
 
     @ApiOperation("Exclui uma cidade por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
     })
-    public void remover(@PathVariable Long id);
+    public void remover(@PathVariable Long idCidade);
     
 }

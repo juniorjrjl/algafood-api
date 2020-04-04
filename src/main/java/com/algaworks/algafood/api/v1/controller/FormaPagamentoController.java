@@ -65,12 +65,12 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
                 .body(formasPagamentos);
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long id, ServletWebRequest request){
+    @GetMapping("{idFormaPagamento}")
+    public ResponseEntity<FormaPagamentoModel> buscar(@PathVariable Long idFormaPagamento, ServletWebRequest request){
         ShallowEtagHeaderFilter.disableContentCaching(request.getRequest());
         String eTag = "0";
         Optional<OffsetDateTime> dataUltimaAtualizacao = cadastroFormaPagamento
-            .getDataUltimaAtualizacao(id);
+            .getDataUltimaAtualizacao(idFormaPagamento);
         if (dataUltimaAtualizacao.isPresent()){
             eTag = String.valueOf(dataUltimaAtualizacao.get().toEpochSecond());
         }
@@ -78,7 +78,7 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
             return null;
         }
         FormaPagamentoModel formaPagamento = formaPagamentoModelAssembler
-            .toModel(cadastroFormaPagamento.buscar(id));
+            .toModel(cadastroFormaPagamento.buscar(idFormaPagamento));
         return ResponseEntity.ok()
             .cacheControl(CacheControl.maxAge(10, TimeUnit.SECONDS).cachePublic())
             .eTag(eTag)
@@ -92,17 +92,17 @@ public class FormaPagamentoController implements FormaPagamentoControllerOpenApi
         return formaPagamentoModelAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamento));
     }
 
-    @PutMapping("{id}")
-    public FormaPagamentoModel atualizar(@PathVariable Long id, @RequestBody @Valid FormaPagamentoInput formaPagamentoInput){
-        FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscar(id);
+    @PutMapping("{idFormaPagamento}")
+    public FormaPagamentoModel atualizar(@PathVariable Long idFormaPagamento, @RequestBody @Valid FormaPagamentoInput formaPagamentoInput){
+        FormaPagamento formaPagamentoAtual = cadastroFormaPagamento.buscar(idFormaPagamento);
         formaPagamentoInputDisassembler.copyToDomainInObject(formaPagamentoInput, formaPagamentoAtual);
         return formaPagamentoModelAssembler.toModel(cadastroFormaPagamento.salvar(formaPagamentoAtual));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("{idFormaPagamento}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id){
-        cadastroFormaPagamento.excluir(id);
+    public void remover(@PathVariable Long idFormaPagamento){
+        cadastroFormaPagamento.excluir(idFormaPagamento);
     }
 
 }
