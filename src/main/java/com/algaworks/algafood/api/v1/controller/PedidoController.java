@@ -70,7 +70,7 @@ public class PedidoController implements PedidoControllerOpenApi{
     }
     
     @CheckSecurity.Pedidos.PodeBuscar
-    @GetMapping("{codigo}")
+    @GetMapping("{codigoPedido}")
     public PedidoModel buscar(@PathVariable String codigoPedido){
         return pedidoModelAssembler.toModel(emissaoPedido.buscar(codigoPedido));
     }
