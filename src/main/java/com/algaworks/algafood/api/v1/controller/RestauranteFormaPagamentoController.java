@@ -1,13 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
-import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
-import com.algaworks.algafood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
-import com.algaworks.algafood.core.security.CheckSecurity;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -22,6 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
+import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi{
@@ -35,6 +36,9 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @Autowired
 	private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;  
+    
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId){
@@ -43,11 +47,13 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
         CollectionModel<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler
             .toCollectionModel(restaurante.getFormasPagamento())
             .removeLinks()
-            .add(algaLinks.linkToRestauranteFormasPagamento(IanaLinkRelations.SELF.value(), restauranteId))
-            .add(algaLinks.linkToRestauranteFormaPagamentoAssociacao("associar", restauranteId));
-
-        formasPagamentoModel.getContent().forEach(f -> f.add(algaLinks
-            .linkToRestauranteFormaPagamentoDesassociacao("desassociar", restauranteId, f.getId())));
+            .add(algaLinks.linkToRestauranteFormasPagamento(IanaLinkRelations.SELF.value(), restauranteId));
+        
+        if (algaSecurity.podeGerenciarFuncionamentoRestaurantes(restauranteId)) {
+	        formasPagamentoModel.add(algaLinks.linkToRestauranteFormaPagamentoAssociacao("associar", restauranteId));
+	        formasPagamentoModel.getContent().forEach(f -> f.add(algaLinks
+	            .linkToRestauranteFormaPagamentoDesassociacao("desassociar", restauranteId, f.getId())));
+        }
         return formasPagamentoModel;
     }
 

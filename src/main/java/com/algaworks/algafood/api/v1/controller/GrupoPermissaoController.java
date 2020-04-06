@@ -1,14 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.PermissaoModelAssembler;
-import com.algaworks.algafood.api.v1.model.PermissaoModel;
-import com.algaworks.algafood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
-import com.algaworks.algafood.core.security.CheckSecurity;
-import com.algaworks.algafood.domain.model.Grupo;
-import com.algaworks.algafood.domain.service.CadastroGrupoService;
-import com.algaworks.algafood.domain.service.CadastroPermissaoServive;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -22,6 +13,16 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.PermissaoModelAssembler;
+import com.algaworks.algafood.api.v1.model.PermissaoModel;
+import com.algaworks.algafood.api.v1.openapi.controller.GrupoPermissaoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.domain.model.Grupo;
+import com.algaworks.algafood.domain.service.CadastroGrupoService;
+import com.algaworks.algafood.domain.service.CadastroPermissaoServive;
 
 
 @RestController
@@ -40,14 +41,19 @@ public class GrupoPermissaoController implements GrupoPermissaoControllerOpenApi
     @Autowired
 	private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity; 
+    
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<PermissaoModel> listar(@PathVariable Long grupoId) {
         Grupo grupo = cadastroGrupo.buscar(grupoId);
         CollectionModel<PermissaoModel> permissoesModel =  permissaoModelAssembler.toCollectionModel(grupo.getPermissoes());
-        permissoesModel.add(algaLinks.linkToAssociarPermissao("associar", grupoId));
         permissoesModel.add(algaLinks.linkToGrupoPermissoes(IanaLinkRelations.SELF.value(), grupoId));
-        permissoesModel.forEach(p -> p.add(algaLinks.linkToDesassociarPermissao("desassociar", grupoId, p.getId())));
+        if (algaSecurity.podeEditarUsuariosGruposPermissoes()) {
+	        permissoesModel.add(algaLinks.linkToAssociarPermissao("associar", grupoId));
+	        permissoesModel.forEach(p -> p.add(algaLinks.linkToDesassociarPermissao("desassociar", grupoId, p.getId())));
+        }
         return permissoesModel;
     }
     

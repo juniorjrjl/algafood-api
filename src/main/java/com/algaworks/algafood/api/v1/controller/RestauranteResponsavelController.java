@@ -1,13 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
-import com.algaworks.algafood.api.v1.model.UsuarioModel;
-import com.algaworks.algafood.api.v1.openapi.controller.RestauranteResponsavelControllerOpeApi;
-import com.algaworks.algafood.core.security.CheckSecurity;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
@@ -22,6 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
+import com.algaworks.algafood.api.v1.model.UsuarioModel;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteResponsavelControllerOpeApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
 public class RestauranteResponsavelController implements RestauranteResponsavelControllerOpeApi{
@@ -35,15 +36,20 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
     @Autowired
     private AlgaLinks algaLinks;
 
+    @Autowired
+    private AlgaSecurity algaSecurity;  
+    
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId){
         Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
         CollectionModel<UsuarioModel>  usuariosModel = usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
             .removeLinks()
-            .add(algaLinks.linkToRestauranteResponsavel(IanaLinkRelations.SELF.value(), restauranteId))
-            .add(algaLinks.linkToRestauranteResponsavelAssociar(IanaLinkRelations.SELF.value(), restauranteId));
-        usuariosModel.forEach(u -> u.add(algaLinks.linkToRestauranteResponsavelDesassociar("desassociar", restauranteId, u.getId())));
+            .add(algaLinks.linkToRestauranteResponsavel(IanaLinkRelations.SELF.value(), restauranteId));
+        if (algaSecurity.podeGerenciarCadastroRestaurantes()) {
+        	usuariosModel.add(algaLinks.linkToRestauranteResponsavelAssociar("associar", restauranteId));
+        	usuariosModel.forEach(u -> u.add(algaLinks.linkToRestauranteResponsavelDesassociar("desassociar", restauranteId, u.getId())));
+        }
         return usuariosModel;
     }
 

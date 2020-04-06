@@ -1,15 +1,17 @@
 package com.algaworks.algafood.api.v1.assembler;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.controller.GrupoController;
-import com.algaworks.algafood.api.v1.model.GrupoModel;
-import com.algaworks.algafood.domain.model.Grupo;
-
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
+
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.controller.GrupoController;
+import com.algaworks.algafood.api.v1.model.GrupoModel;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.domain.model.Grupo;
 
 @Component
 public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Grupo, GrupoModel>{
@@ -20,6 +22,9 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
 	@Autowired
 	private AlgaLinks algaLinks;
 
+	@Autowired
+	private AlgaSecurity algaSecurity;   
+	
 	public GrupoModelAssembler() {
 		super(GrupoController.class, GrupoModel.class);
 	}
@@ -27,14 +32,22 @@ public class GrupoModelAssembler extends RepresentationModelAssemblerSupport<Gru
     public GrupoModel toModel(Grupo grupo) {
 		GrupoModel grupoModel = createModelWithId(grupo.getId(), grupo);
 		modelMapper.map(grupo, grupoModel);
-		grupoModel.add(algaLinks.linkToGrupos("grupos"));
-		grupoModel.add(algaLinks.linkToGrupoPermissoes("permissoes", grupo.getId()));
+		if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+			grupoModel.add(algaLinks.linkToGrupos("grupos"));
+			grupoModel.add(algaLinks.linkToGrupoPermissoes("permissoes", grupo.getId()));
+		}
 		return grupoModel;
 	}
 	
 	@Override
-	public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {
-		return super.toCollectionModel(entities);
+	public CollectionModel<GrupoModel> toCollectionModel(Iterable<? extends Grupo> entities) {		
+	    CollectionModel<GrupoModel> collectionModel = super.toCollectionModel(entities);
+	    
+	    if (algaSecurity.podeConsultarUsuariosGruposPermissoes()) {
+	        collectionModel.add(algaLinks.linkToGrupos(IanaLinkRelations.SELF.value()));
+	    }
+	    
+	    return collectionModel;
 	}
     
 }
