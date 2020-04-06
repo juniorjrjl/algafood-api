@@ -36,4 +36,8 @@ public class AlgaSecurity {
 		return cadastroRestaurante.usuarioPodeGerenciarPedido(getUsuarioId(), codigoPedido);
 	}
 	
+	public boolean usuarioAutenticadoIgual(Long usuarioId) {
+		return getUsuarioId() != null && usuarioId != null && getUsuarioId().equals(usuarioId);
+	}
+	
 }
