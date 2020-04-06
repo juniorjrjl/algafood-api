@@ -26,5 +26,5 @@ public interface RestauranteRepository extends CustomJpaRepository<Restaurante, 
         	 + " where r.id = :restauranteId "
         	 + "   and u.id = :usuarioId")
         boolean existeResponsavel(Long restauranteId, Long usuarioId);
-
+        
 }

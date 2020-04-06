@@ -18,4 +18,15 @@ public interface PedidoRepository  extends CustomJpaRepository<Pedido, Long>,
     
     Optional<Pedido> findByCodigo(String codigo);
 
+    @Query("select case when "
+          	 + "            count(1) > 0 then true "
+          	 + "            else false "
+          	 + "       end"
+       	 + "  from Pedido p"
+       	 + "  join p.restaurante r"
+       	 + "  join r.usuarios u"
+       	 + " where u.id = :idUsuario"
+       	 + "   and p.codigo = :codigoPedido")
+       boolean usuarioPodeGerenciarPedido(Long idUsuario, String codigoPedido);
+    
 }

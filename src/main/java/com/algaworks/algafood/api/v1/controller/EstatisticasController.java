@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.openapi.controller.EstatisticasControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueriesService;
@@ -31,11 +32,13 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
     @Autowired
     private AlgaLinks algaLinks;
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "vendas-diarias", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<VendaDiaria> consultar(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00")String timeOffset){
         return vendaQueryService.consultarVendasDiarias(filtro, timeOffset);
     }
  
+    @CheckSecurity.Estatisticas.PodeConsultar
     @GetMapping(path = "vendas-diarias", produces = MediaType.APPLICATION_PDF_VALUE)
     public ResponseEntity<byte[]> gerarRelatorio(VendaDiariaFilter filtro, @RequestParam(required = false, defaultValue = "+00:00")String timeOffset){
         byte[] bytesPDF = vendaReportService.emitirVendasDiarias(filtro, timeOffset);
@@ -47,6 +50,7 @@ public class EstatisticasController implements EstatisticasControllerOpenApi {
             .body(bytesPDF);
     }
 
+    @CheckSecurity.Estatisticas.PodeConsultar
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public EstatisticasModel estatisticas() {

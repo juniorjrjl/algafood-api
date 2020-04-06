@@ -7,6 +7,7 @@ import com.algaworks.algafood.api.v2.assembler.CozinhaModelAssemblerV2;
 import com.algaworks.algafood.api.v2.model.CozinhaModelV2;
 import com.algaworks.algafood.api.v2.model.input.CozinhaInputV2;
 import com.algaworks.algafood.api.v2.openapi.controller.CozinhaControllerV2OpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 
@@ -43,6 +44,7 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
     @Autowired
     private PagedResourcesAssembler<Cozinha> pagedResourcesAssembler;
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping
     public PagedModel<CozinhaModelV2> listar(Pageable pageable){
         Page<Cozinha> cozinhasPage = cadastroCozinha.listar(pageable);
@@ -51,11 +53,13 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
         return cozinhaPagedModel;
     }
 
+    @CheckSecurity.Cozinhas.PodeConsultar
     @GetMapping("{idCozinha}")
     public CozinhaModelV2 buscar(@PathVariable Long idCozinha){
         return cozinhaModelAssembler.toModel(cadastroCozinha.buscar(idCozinha));
     }
     
+    @CheckSecurity.Cozinhas.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public CozinhaModelV2 adicionar(@RequestBody @Valid CozinhaInputV2 CozinhaInputV2){
@@ -63,6 +67,7 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinha));
     }
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @PutMapping("{idCozinha}")
     public CozinhaModelV2 atualizar(@PathVariable Long idCozinha, @RequestBody @Valid CozinhaInputV2 CozinhaInputV2){
         Cozinha cozinhaAtual = cadastroCozinha.buscar(idCozinha);
@@ -70,6 +75,7 @@ public class CozinhaControllerV2 implements CozinhaControllerV2OpenApi{
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }
 
+    @CheckSecurity.Cozinhas.PodeEditar
     @DeleteMapping("{idCozinha}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long idCozinha){

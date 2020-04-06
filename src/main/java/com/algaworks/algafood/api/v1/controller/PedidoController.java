@@ -57,6 +57,7 @@ public class PedidoController implements PedidoControllerOpenApi{
     @Autowired
     private AlgaSecurity algaSecurity;
     
+    @CheckSecurity.Pedidos.PodeConsultar
     @GetMapping
     public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
             @PageableDefault(size = 10)Pageable pageable) {
@@ -75,6 +76,7 @@ public class PedidoController implements PedidoControllerOpenApi{
         return pedidoModelAssembler.toModel(emissaoPedido.buscar(codigoPedido));
     }
     
+    @CheckSecurity.Pedidos.PodeCriar
     @PostMapping
     public PedidoModel emitir(@RequestBody @Valid PedidoInput pedidoInput) {
         Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);

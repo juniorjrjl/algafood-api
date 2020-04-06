@@ -2,17 +2,18 @@ package com.algaworks.algafood.domain.service;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CadastroRestauranteService {
@@ -32,10 +33,16 @@ public class CadastroRestauranteService {
     @Autowired
     private CadastroUsuarioService cadastroUsuario;
 
+    @Autowired
+    private PedidoRepository pedidoRepository;
+    
+    public boolean usuarioPodeGerenciarPedido(Long idUsuario, String codigoPedido) {
+    	return pedidoRepository.usuarioPodeGerenciarPedido(idUsuario, codigoPedido);
+    }
+    
     public Restaurante buscar(Long id){
         return restauranteRepository.findById(id).orElseThrow(() -> new RestauranteNaoEncontradoException(id));
     }
-
     
     public List<Restaurante> listar(){
         return restauranteRepository.findAll();

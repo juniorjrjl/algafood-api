@@ -14,6 +14,9 @@ public class AlgaSecurity {
 	@Autowired
 	private CadastroRestauranteService cadastrorestaurante;
 	
+	@Autowired
+	private CadastroRestauranteService cadastroRestaurante;
+	
 	public Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
@@ -24,7 +27,13 @@ public class AlgaSecurity {
 	}
 	
 	public boolean gerenciaRestaurante(Long restauranteId){
-		return cadastrorestaurante.existeResponsavel(restauranteId, getUsuarioId());
+		return restauranteId == null ? 
+				false : 
+				cadastrorestaurante.existeResponsavel(restauranteId, getUsuarioId());
+	}
+	
+	public boolean usuarioPodeGerenciarPedido(String codigoPedido) {
+		return cadastroRestaurante.usuarioPodeGerenciarPedido(getUsuarioId(), codigoPedido);
 	}
 	
 }

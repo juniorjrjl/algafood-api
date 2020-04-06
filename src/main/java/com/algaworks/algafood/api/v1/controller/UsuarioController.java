@@ -24,6 +24,7 @@ import com.algaworks.algafood.api.v1.model.input.SenhaUsuarioInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioAtualizacaoInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioCadastroInput;
 import com.algaworks.algafood.api.v1.openapi.controller.UsuarioControllerOpenApi;
+import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.service.CadastroUsuarioService;
 
@@ -43,11 +44,13 @@ public class UsuarioController implements UsuarioControllerOpenApi{
     @Autowired
     private PasswordEncoder passwordEncoder;
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping
     public CollectionModel<UsuarioModel> listar(){
         return usuarioModelAssembler.toCollectionModel(cadastroUsuario.listar());
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping("{idUsuario}")
     public UsuarioModel buscar(@PathVariable Long idUsuario){
         return usuarioModelAssembler.toModel(cadastroUsuario.buscar(idUsuario));
@@ -61,6 +64,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarUsuario
     @PutMapping("{idUsuario}")
     public UsuarioModel atualizar(@PathVariable Long idUsuario, @RequestBody @Valid UsuarioAtualizacaoInput usuarioAtualizacaoInput){
         Usuario usuarioAtual = cadastroUsuario.buscar(idUsuario);
@@ -69,6 +73,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
     }
     
+    @CheckSecurity.UsuariosGruposPermissoes.PodeAlterarPropriaSenha
     @PutMapping("{idUsuario}/senha")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void alterarSenha(@PathVariable Long idUsuario, @RequestBody @Valid SenhaUsuarioInput senhaUsuarioInput){
@@ -77,6 +82,7 @@ public class UsuarioController implements UsuarioControllerOpenApi{
         usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuarioAtual));
     }
 
+    @CheckSecurity.UsuariosGruposPermissoes.PodeEditar
     @DeleteMapping("{idUsuario}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long idUsuario){
