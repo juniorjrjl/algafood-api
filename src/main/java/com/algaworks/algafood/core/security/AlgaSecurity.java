@@ -10,9 +10,6 @@ import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @Component
 public class AlgaSecurity {
-
-	@Autowired
-	private CadastroRestauranteService cadastrorestaurante;
 	
 	@Autowired
 	private CadastroRestauranteService cadastroRestaurante;
@@ -29,7 +26,7 @@ public class AlgaSecurity {
 	public boolean gerenciaRestaurante(Long restauranteId){
 		return restauranteId == null ? 
 				false : 
-				cadastrorestaurante.existeResponsavel(restauranteId, getUsuarioId());
+				cadastroRestaurante.existeResponsavel(restauranteId, getUsuarioId());
 	}
 	
 	public boolean usuarioPodeGerenciarPedido(String codigoPedido) {

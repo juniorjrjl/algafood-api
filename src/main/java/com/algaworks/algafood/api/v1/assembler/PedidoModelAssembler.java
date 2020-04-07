@@ -32,6 +32,23 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
     public PedidoModel toModel(Pedido pedido) {
 		PedidoModel pedidoModel = createModelWithId(pedido.getCodigo(), pedido);
 		modelMapper.map(pedido, pedidoModel);
+		
+		if (algaSecurity.podePesquisarPedidos()) {
+			pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
+		}
+		
+		if (algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
+			if (pedido.podeConfirmar()){
+				pedidoModel.add(algaLinks.linkToConfirmacaoPedido("confirmar", pedido.getCodigo()));
+			}
+			if (pedido.podeCancelar()){
+				pedidoModel.add(algaLinks.linkToCancelamentoPedido("cancelar", pedido.getCodigo()));
+			}
+			if (pedido.podeEntregar()){
+				pedidoModel.add(algaLinks.linkToEntregaPedido("entregar", pedido.getCodigo()));
+			}
+		}
+		
 		if (algaSecurity.podeConsultarRestaurantes()) {
 			pedidoModel.getRestaurante().add(algaLinks.linkToRestaurante(pedido.getRestaurante().getId()));
 		}
@@ -50,22 +67,6 @@ public class PedidoModelAssembler extends RepresentationModelAssemblerSupport<Pe
 		
 		if (algaSecurity.podeConsultarRestaurantes()) {
 			pedidoModel.getItens().forEach(i -> i.add(algaLinks.linkToProduto(pedido.getRestaurante().getId(), i.getProdutoId())));
-		}
-		
-		if (algaSecurity.podePesquisarPedidos()) {
-			pedidoModel.add(algaLinks.linkToPedidos("pedidos"));
-		}
-		
-		if (algaSecurity.podeGerenciarPedidos(pedido.getCodigo())) {
-			if (pedido.podeConfirmar()){
-				pedidoModel.add(algaLinks.linkToConfirmacaoPedido("confirmar", pedido.getCodigo()));
-			}
-			if (pedido.podeCancelar()){
-				pedidoModel.add(algaLinks.linkToCancelamentoPedido("cancelar", pedido.getCodigo()));
-			}
-			if (pedido.podeEntregar()){
-				pedidoModel.add(algaLinks.linkToEntregaPedido("entregar", pedido.getCodigo()));
-			}
 		}
 		return pedidoModel;
 	}
