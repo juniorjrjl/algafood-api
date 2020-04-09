@@ -20,7 +20,7 @@ public class NotificacaoClientePedidoCanceladoListener {
         Pedido pedido = event.getPedido();
         envioEmail.enviar(Mensagem.builder()
             .assunto(" - Pedido Cancelado")
-            .corpo("pedido-cancelado.html")
+            .corpo("emails/pedido-cancelado.html")
             .variavel("pedido", pedido)
             .destinatario(pedido.getCliente().getEmail())
         .build());
