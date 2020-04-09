@@ -5,14 +5,14 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.http.ResponseEntity;
+
 import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.RestauranteApenasNomeModel;
 import com.algaworks.algafood.api.v1.model.RestauranteBasicoModel;
 import com.algaworks.algafood.api.v1.model.RestauranteModel;
 import com.algaworks.algafood.api.v1.model.input.RestauranteInput;
-
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.http.ResponseEntity;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -55,13 +55,14 @@ public interface RestauranteControllerOpenApi {
     public RestauranteModel atualizar(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante, 
                                       RestauranteInput restauranteInput);
 
-    @ApiOperation("Atualiza um Restaurante por ID")
+    @ApiOperation("Atualiza informações especificas do Restaurante por ID")
     @ApiResponses({
         @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
     })
-    // TODO: pesquisar a melhor forma de documentar o corpo patch
+
+    // TODO:spring fox ainda não suporta mapeamendo de Map<>
     public RestauranteModel atualizarParcial(@ApiParam(value = "ID de um restaurante", example = "1", required = true) Long idRestaurante, 
-                                            Map<String, Object>campos, HttpServletRequest request);
+    		Map<String, Object>campos, HttpServletRequest request);
 
     @ApiOperation("Ativa um Restaurante por ID")
     @ApiResponses({
