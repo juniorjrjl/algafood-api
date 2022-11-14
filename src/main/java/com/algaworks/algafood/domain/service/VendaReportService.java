@@ -4,7 +4,7 @@ import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 
 public interface VendaReportService {
 
-    byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset);
+    byte[] emitirVendasDiarias(final VendaDiariaFilter filtro, final String timeOffset);
 
     
 }

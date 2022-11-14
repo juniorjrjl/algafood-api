@@ -18,21 +18,21 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long>, Produto
            "  from Produto p" +
            " where p.restaurante.id = :restauranteId" +
            "   and p.id = :produtoId")
-    Optional<Produto> findByRestauranteIdAndId(Long restauranteId, Long produtoId);
+    Optional<Produto> findByRestauranteIdAndId(final Long restauranteId, final Long produtoId);
     
     @Query("delete from Produto p where p.restaurante.id = :restauranteId and p.id = :produtoId")
-    Long deleteByRestauranteIdAndId(Long restauranteId, Long produtoId);
+    Long deleteByRestauranteIdAndId(final Long restauranteId, final Long produtoId);
 
-    List<Produto> findByRestaurante(Restaurante restaurante);
+    List<Produto> findByRestaurante(final Restaurante restaurante);
 
     @Query("from Produto p where p.ativo = true and p.restaurante = :restaurante")
-    List<Produto> findAtivosByRestaurante(Restaurante restaurante);    
+    List<Produto> findAtivosByRestaurante(final Restaurante restaurante);
 
     @Query("select f " + 
            "  from FotoProduto f "+
            "  join f.produto p " + 
            " where f.produto.id = :produtoId " + 
            "   and p.restaurante.id = :restauranteId")
-    Optional<FotoProduto> findFotoById(Long restauranteId, Long produtoId);
+    Optional<FotoProduto> findFotoById(final Long restauranteId, final Long produtoId);
 
 }

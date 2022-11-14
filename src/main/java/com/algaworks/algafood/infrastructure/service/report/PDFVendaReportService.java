@@ -7,22 +7,23 @@ import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.service.VendaQueriesService;
 import com.algaworks.algafood.domain.service.VendaReportService;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import net.sf.jasperreports.engine.JasperExportManager;
+/*import net.sf.jasperreports.engine.JasperExportManager;
 import net.sf.jasperreports.engine.JasperFillManager;
-import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
+import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;*/
 
 @Service
+@AllArgsConstructor
 public class PDFVendaReportService implements VendaReportService {
 
-    @Autowired
-    private VendaQueriesService vendaQueryService;
+    private final VendaQueriesService vendaQueryService;
 
     @Override
-    public byte[] emitirVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
-        try {
+    public byte[] emitirVendasDiarias(final VendaDiariaFilter filtro, final String timeOffset) {
+        /*try {
             var inputStream = this.getClass().getResourceAsStream("/relatorios/vendas-diarias.jasper");
             var parametros = new HashMap<String, Object>();
             parametros.put("REPORT_LOCALE", new Locale("pt", "BR"));
@@ -32,7 +33,8 @@ public class PDFVendaReportService implements VendaReportService {
             return JasperExportManager.exportReportToPdf(jasperPrint);
         } catch (Exception ex) {
             throw new ReportException("Não foi possível emitir o relatório de vendas diarias", ex);
-        }
+        }*/
+        return null;
     }
 
     

@@ -25,6 +25,6 @@ public interface RestauranteRepository extends CustomJpaRepository<Restaurante, 
         	 + "  join r.usuarios u "
         	 + " where r.id = :restauranteId "
         	 + "   and u.id = :usuarioId")
-        boolean existeResponsavel(Long restauranteId, Long usuarioId);
+        boolean existeResponsavel(final Long restauranteId, final Long usuarioId);
         
 }

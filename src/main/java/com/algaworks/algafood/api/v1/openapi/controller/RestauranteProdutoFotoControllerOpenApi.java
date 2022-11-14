@@ -1,65 +1,47 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import java.io.IOException;
-
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.FotoProdutoModel;
 import com.algaworks.algafood.api.v1.model.input.FotoProdutoInput;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.HttpMediaTypeNotAcceptableException;
-import org.springframework.web.multipart.MultipartFile;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import java.io.IOException;
 
-@Api(tags = "Produtos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Restaurantes", description = "Gerencia os restaurantes")
 public interface RestauranteProdutoFotoControllerOpenApi {
-    
 
-     @ApiOperation("Atualiza uma Foto do Produto pelo ID do Restaurante e ID do Produto")
-     @ApiResponses({
-          @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-     })
-    public FotoProdutoModel atualizarFoto(@ApiParam(value = "ID de um restaurante", 
-                                                    example = "1",required = true)
-                                          Long restauranteId, 
-                                          @ApiParam(value = "ID de um produto", 
-                                                    example = "1",required = true)
-                                          Long produtoId,
-                                          FotoProdutoInput fotoProdutoInput,
-                                          @ApiParam(value = "Foto", required = true) MultipartFile arquivo) throws IOException;
 
-    @ApiOperation(value = "Busca informações da foto", response = FotoProdutoModel.class,
-                  produces = "application/json, image/jpeg, image/png")
-    public FotoProdutoModel buscarFoto(@ApiParam(value = "ID de um restaurante", 
-                                                 example = "1",required = true)
-                                        Long restauranteId, 
-                                        @ApiParam(value = "ID de um produto", 
-                                                  example = "1",required = true)
-                                        Long produtoId) throws HttpMediaTypeNotAcceptableException ;
-    
-    @ApiOperation(value = "Busca a imagem", hidden = true)
-    public ResponseEntity<?> buscarArquivoFoto(@ApiParam(value = "ID de um restaurante", 
-                                                         example = "1",required = true)
-                                               Long restauranteId, 
-                                               @ApiParam(value = "ID de um produto", 
-                                                    example = "1",required = true)
-                                               Long produtoId, 
-                                               String acceptHeader) throws HttpMediaTypeNotAcceptableException;
-    
-     @ApiOperation("Exclui um produto por ID do restaurante e ID do produto")
-     @ApiResponses({
-          @ApiResponse(code = 404, message = "Produto não encontrado", response = Problem.class)
-     })
-    public void excluir(@ApiParam(value = "ID de um restaurante", 
-                                  example = "1",required = true) 
-                        Long restauranteId, 
-                        @ApiParam(value = "ID de um produto", 
-                                  example = "1",required = true)
-                        Long produtoId);
+    @Operation(summary = "Atualiza/Define uma foto para um produto do restaurante")
+    FotoProdutoModel atualizarFoto(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                                   @Parameter(description = "Id de um produto", example = "1", required = true) final Long produtoId,
+                                   @RequestBody(description = "Informações para atualizar/definir foto de um produto")final FotoProdutoInput fotoProdutoInput) throws IOException;
+
+    @Operation(summary = "Busca uma foto para um produto de um restaurante", responses = {
+            @ApiResponse(responseCode = "200", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = FotoProdutoModel.class)),
+                    @Content(mediaType = "image/jpeg", schema = @Schema(type = "string", format = "binary")),
+                    @Content(mediaType = "image/png", schema = @Schema(type = "string", format = "binary"))
+            })
+    })
+    FotoProdutoModel buscarFoto(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                                @Parameter(description = "Id de um produto", example = "1", required = true) final Long produtoId) throws HttpMediaTypeNotAcceptableException ;
+
+    @Operation(summary = "Busca uma foto para um produto de um restaurante", hidden = true)
+    ResponseEntity<?> buscarArquivoFoto(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                                        @Parameter(description = "Id de um produto", example = "1", required = true) final Long produtoId,
+                                        final String acceptHeader) throws HttpMediaTypeNotAcceptableException;
+
+    @Operation(summary = "Remove a foto de um produto do restaurante")
+    void excluir(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                 @Parameter(description = "Id de um produto", example = "1", required = true) final Long produtoId);
     
 }

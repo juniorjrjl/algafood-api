@@ -1,23 +1,22 @@
 package com.algaworks.algafood.api.v1.model;
 
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 @Relation(collectionRelation = "cidades")
 @Getter
 @Setter
 public class CidadeResumoModel extends RepresentationModel<CidadeResumoModel>{
 
-    @ApiModelProperty(value = "ID da cidade", example = "1")
+    @Schema(example = "1")
     private Long id;
 
-    @ApiModelProperty(value = "Nome da cidade", example = "São Paulo")
+    @Schema(example = "Uberlândia")
     private String nome;
-    
-    @ApiModelProperty(value = "Estado da cidade", example = "São Paulo")
+
+    @Schema(example = "Minas Gerais")
     private String estado;
 }

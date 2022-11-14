@@ -10,7 +10,7 @@ import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 public class JwtCustomClaimsEnhancer implements TokenEnhancer {
 
 	@Override
-	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+	public OAuth2AccessToken enhance(final OAuth2AccessToken accessToken, final OAuth2Authentication authentication) {
 		if (authentication.getPrincipal() instanceof AuthUser) {
 			var authUser = (AuthUser) authentication.getPrincipal();
 			

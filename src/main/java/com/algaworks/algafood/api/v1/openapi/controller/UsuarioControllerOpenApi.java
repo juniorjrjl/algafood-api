@@ -1,54 +1,38 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.UsuarioModel;
 import com.algaworks.algafood.api.v1.model.input.SenhaUsuarioInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioAtualizacaoInput;
 import com.algaworks.algafood.api.v1.model.input.UsuarioCadastroInput;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Usuarios")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Usuários", description = "Gerencia os usuários")
 public interface UsuarioControllerOpenApi {
 
-    @ApiOperation("Lista os usuários")
-    public CollectionModel<UsuarioModel> listar();
+    @Operation(summary = "Lista usuários")
+    CollectionModel<UsuarioModel> listar();
 
-    @ApiOperation("Busca um usuário por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
-    })
-    public UsuarioModel buscar(@ApiParam(value = "ID de um usuário", example = "1",required = true) 
-                               Long idUsuario);
+    @Operation(summary = "Busca usuário pelo id")
+    UsuarioModel buscar(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long idUsuario);
 
-    @ApiOperation("Cadastra um Usuário")
-    public UsuarioModel adicionar(UsuarioCadastroInput usuarioCadastroInput);
+    @Operation(summary = "Busca responsaveis por um restaurante")
+    UsuarioModel adicionar(@RequestBody(description = "Representação de um novo usuário") final UsuarioCadastroInput usuarioCadastroInput);
 
-    @ApiOperation("Atualiza um Usuário por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public UsuarioModel atualizar(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                                  Long idUsuario, UsuarioAtualizacaoInput usuarioAtualizacaoInput);
+    @Operation(summary = "Atualiza usuário pelo id")
+    UsuarioModel atualizar(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long idUsuario,
+                           @RequestBody(description = "Informações para atualizar o usuário") final UsuarioAtualizacaoInput usuarioAtualizacaoInput);
 
-    @ApiOperation("Atualiza a senha do usuário por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public void alterarSenha(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                             Long idUsuario, SenhaUsuarioInput senhaUsuarioInput);
+    @Operation(summary = "Altera s senha do usuário pelo id")
+    void alterarSenha(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long idUsuario,
+                      @RequestBody(description = "Informações para trocar a senha do usuário") final SenhaUsuarioInput senhaUsuarioInput);
 
-    @ApiOperation("Exclui um Usuário por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public void remover(@ApiParam(value = "ID de um usuário", example = "1",required = true) Long idUsuario);
+    @Operation(summary = "Remove usuário pelo id")
+    void remover(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long idUsuario);
     
 }

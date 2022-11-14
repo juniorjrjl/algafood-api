@@ -15,14 +15,14 @@ public class ValorZeroIncluiDescricaoValidator implements ConstraintValidator<Va
     private String descricaoObrigatoria;
 
     @Override
-    public void initialize(ValorZeroIncluiDescricao constraintAnnotation) {
+    public void initialize(final ValorZeroIncluiDescricao constraintAnnotation) {
         this.valorField = constraintAnnotation.valorField();
         this.descricaoField = constraintAnnotation.descricaoField();
         this.descricaoObrigatoria = constraintAnnotation.descricaoObrigatoria();
     }
 
     @Override
-    public boolean isValid(Object objetoValidacao, ConstraintValidatorContext context) {
+    public boolean isValid(final Object objetoValidacao, final ConstraintValidatorContext context) {
         boolean valido = true;
         try {
             BigDecimal valor = (BigDecimal) BeanUtils.getPropertyDescriptor(objetoValidacao.getClass(), valorField)

@@ -1,46 +1,32 @@
 package com.algaworks.algafood.api.v2.openapi.controller;
 
-import javax.validation.Valid;
-
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v2.model.CidadeModelV2;
 import com.algaworks.algafood.api.v2.model.input.CidadeInputV2;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Cidades")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Cidades", description = "Gerencia as cidades")
 public interface CidadeControllerV2OpenApi {
 
-    @ApiOperation("Lista as cidades")
-    public CollectionModel<CidadeModelV2> listar();
+    @Operation(summary = "Lista as cidades")
+    CollectionModel<CidadeModelV2> listar();
 
-    @ApiOperation("Busca uma cidade por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID da cidade inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
-    })
-    public CidadeModelV2 buscar(@PathVariable Long idCidade);
+    @Operation(summary = "Busca uma cidade por id")
+    CidadeModelV2 buscar(@Parameter(description = "Id de uma cidade", example = "1", required = true) final Long idCidade);
 
-    @ApiOperation("Cadastra uma cidade")
-    public CidadeModelV2 adicionar(@RequestBody @Valid CidadeInputV2 cidadeInput);
+    @Operation(summary = "Cadastra uma nova cidade")
+    CidadeModelV2 adicionar(@RequestBody(description = "Representação de uma nova cidade") final CidadeInputV2 cidadeInput);
 
-    @ApiOperation("Atualiza uma cidade por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
-    })
-    public CidadeModelV2 atualizar(@PathVariable Long idCidade, @RequestBody @Valid CidadeInputV2 cidadeInput);
+    @Operation(summary = "Atualiza uma cidade por id")
+    CidadeModelV2 atualizar(@Parameter(description = "Id de uma cidade", example = "1", required = true) final Long idCidade,
+                            @RequestBody(description = "Informações para atualizar a cidade") final CidadeInputV2 cidadeInput);
 
-    @ApiOperation("Exclui uma cidade por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Cidade não encontrada", response = Problem.class)
-    })
-    public void remover(@PathVariable Long idCidade);
+    @Operation(summary = "Exclui uma cidade por id")
+    void remover(@Parameter(description = "Id de uma cidade", example = "1", required = true) final Long idCidade);
     
 }

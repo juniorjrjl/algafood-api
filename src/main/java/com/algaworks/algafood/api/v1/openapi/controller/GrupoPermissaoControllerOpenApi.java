@@ -1,34 +1,26 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.PermissaoModel;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Grupos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Grupos", description = "Gerencia os grupos")
 public interface GrupoPermissaoControllerOpenApi {
 
-    @ApiOperation("Lista as permissões de um grupo")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do grupo inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
-    })
-    public CollectionModel<PermissaoModel> listar(@ApiParam(value = "ID de um grupo", example = "1" )
-                                       Long grupoId);
-    
-    @ApiOperation("Associa uma permissão ao grupo")
-    public ResponseEntity<Void>  associar(@ApiParam(value = "ID de um grupo", example = "1" ) Long grupoId, 
-                        @ApiParam(value = "ID de uma permissão", example = "1" )Long permissaoId);
-    
-    @ApiOperation("Desassocia uma permissão ao grupo")
-    public ResponseEntity<Void>  desassociar(@ApiParam(value = "ID de um grupo", example = "1" ) Long grupoId, 
-                            @ApiParam(value = "ID de uma permissão", example = "1" )Long permissaoId);
+    @Operation(summary = "Busca grupo pelo id")
+    CollectionModel<PermissaoModel> listar(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long grupoId);
+
+    @Operation(summary = "Associa uma permissão á um grupo de permissões")
+    ResponseEntity<Void>  associar(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long grupoId,
+                                   @Parameter(description = "Id de uma permissão", example = "1", required = true) final Long permissaoId);
+
+    @Operation(summary = "Desassocia uma permissão á um grupo de permissões")
+    ResponseEntity<Void>  desassociar(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long grupoId,
+                                      @Parameter(description = "Id de uma permissão", example = "1", required = true) final Long permissaoId);
     
 }

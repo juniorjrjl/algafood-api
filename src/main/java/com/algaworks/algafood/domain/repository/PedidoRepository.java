@@ -16,7 +16,7 @@ public interface PedidoRepository  extends CustomJpaRepository<Pedido, Long>,
     @Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha")
     List<Pedido> findAll();
     
-    Optional<Pedido> findByCodigo(String codigo);
+    Optional<Pedido> findByCodigo(final String codigo);
 
     @Query("select case when "
           	 + "            count(1) > 0 then true "
@@ -27,6 +27,6 @@ public interface PedidoRepository  extends CustomJpaRepository<Pedido, Long>,
        	 + "  join r.usuarios u"
        	 + " where u.id = :idUsuario"
        	 + "   and p.codigo = :codigoPedido")
-       boolean usuarioPodeGerenciarPedido(Long idUsuario, String codigoPedido);
+       boolean usuarioPodeGerenciarPedido(final Long idUsuario, final String codigoPedido);
     
 }

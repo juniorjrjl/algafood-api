@@ -15,8 +15,8 @@ public enum ProblemType {
     ACESSO_NEGADO("/acesso-negado", "Acesso negado"),
     ERRO_DE_SISTEMA("/erro-sistema", "Erro de sistema");
     
-    private String title;
-    private String uri;
+    private final String title;
+    private final String uri;
     
     ProblemType(String path, String title){
         this.uri = String.format("https://algafood.com.br%s", path);

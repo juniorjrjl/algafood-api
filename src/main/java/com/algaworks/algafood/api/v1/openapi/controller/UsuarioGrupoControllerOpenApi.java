@@ -1,43 +1,26 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Usuarios")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Grupos", description = "Gerencia os grupos")
 public interface UsuarioGrupoControllerOpenApi {
 
-    @ApiOperation("Busca um usuário por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do usuário inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public CollectionModel<GrupoModel> listar(@ApiParam(value = "ID de um usuário", example = "1",required = true) Long usuarioId);
+    @Operation(summary = "Busca grupo de permissão de um usuário")
+    CollectionModel<GrupoModel> listar(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long usuarioId);
 
-    @ApiOperation("Associa um Grupo a um Usuario")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public ResponseEntity<Void> associarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                              Long usuarioId,
-                              @ApiParam(value = "ID de um Grupo", example = "1",required = true)
-                              Long grupoId);
+    @Operation(summary = "Associa grupo de permissões a um usuário")
+    ResponseEntity<Void> associarGrupo(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long usuarioId,
+                                       @Parameter(description = "Id de um grupo", example = "1", required = true) final Long grupoId);
 
-    @ApiOperation("Desassocia um Grupo de um Usuário")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Usuário não encontrado", response = Problem.class)
-    })
-    public ResponseEntity<Void> desassociarGrupo(@ApiParam(value = "ID de um usuário", example = "1",required = true)
-                                 Long usuarioId,
-                                 @ApiParam(value = "ID de um Grupo", example = "1",required = true)
-                                 Long grupoId);
+    @Operation(summary = "Desassocia grupo de permissões a um usuário")
+    ResponseEntity<Void> desassociarGrupo(@Parameter(description = "Id de um usuário", example = "1", required = true) final Long usuarioId,
+                                          @Parameter(description = "Id de um grupo", example = "1", required = true) final Long grupoId);
     
 }

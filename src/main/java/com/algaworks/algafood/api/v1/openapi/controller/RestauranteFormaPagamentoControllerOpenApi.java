@@ -1,42 +1,26 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Restaurantes")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Restaurantes", description = "Gerencia os restaurantes")
 public interface RestauranteFormaPagamentoControllerOpenApi {
 
-    @ApiOperation("Busca as formas de pagamentos aceitas por um restaurante")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do Restaurante inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Restaurante não encontrado", response = Problem.class)
-    })
-    public CollectionModel<FormaPagamentoModel> listar(@ApiParam(value = "ID de um restaurante", 
-                                                      example = "1", required = true)
-                                            Long restauranteId);
-    @ApiOperation("Associa ao restaurante uma forma de pagamento")
-    public ResponseEntity<Void> associarFormaPagamento(@ApiParam(value = "ID de um restaurante", 
-                                                 example = "1", required = true)
-                                       Long restauranteId, 
-                                       @ApiParam(value = "ID de uma Forma de Pagamento", 
-                                                      example = "1", required = true)
-                                       Long formaPagamentoId);
+    @Operation(summary = "Lista as formas de pagamento de um restaurante")
+    CollectionModel<FormaPagamentoModel> listar(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId);
 
-    @ApiOperation("Desassocia ao restaurante uma forma de pagamento") 
-    public ResponseEntity<Void> desassociarFormaPagamento(@ApiParam(value = "ID de um restaurante", 
-                                                    example = "1", required = true)
-                                          Long restauranteId, 
-                                          @ApiParam(value = "ID de uma Forma de Pagamento", 
-                                                      example = "1", required = true)
-                                          Long formaPagamentoId);
+    @Operation(summary = "Associa uma forma de pagamento a um restaurante")
+    ResponseEntity<Void> associarFormaPagamento(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                                                @Parameter(description = "Id de uma forma de pagamento", example = "1", required = true) final Long formaPagamentoId);
+
+    @Operation(summary = "Desassocia uma forma de pagamento a um restaurante")
+    ResponseEntity<Void> desassociarFormaPagamento(@Parameter(description = "Id de um restaurante", example = "1", required = true) final Long restauranteId,
+                                                   @Parameter(description = "Id de uma forma de pagamento", example = "1", required = true) final Long formaPagamentoId);
     
 }

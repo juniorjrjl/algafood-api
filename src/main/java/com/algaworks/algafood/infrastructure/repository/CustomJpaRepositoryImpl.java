@@ -13,7 +13,7 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
 
     private EntityManager entityManager;
 
-    public CustomJpaRepositoryImpl(JpaEntityInformation<T, ?> entityInformation, EntityManager entityManager){
+    public CustomJpaRepositoryImpl(final JpaEntityInformation<T, ?> entityInformation, final EntityManager entityManager){
         super(entityInformation, entityManager);
         this.entityManager = entityManager;
     }
@@ -28,7 +28,7 @@ public class CustomJpaRepositoryImpl<T, ID> extends SimpleJpaRepository<T, ID> i
 	}
 
     @Override
-    public void detach(T entity) {
+    public void detach(final T entity) {
         entityManager.detach(entity);
     }
 

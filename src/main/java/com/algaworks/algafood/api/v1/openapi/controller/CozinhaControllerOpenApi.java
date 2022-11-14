@@ -1,49 +1,40 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.CozinhaModel;
 import com.algaworks.algafood.api.v1.model.input.CozinhaInput;
-
+import com.algaworks.algafood.core.springdoc.PageableParameter;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import static io.swagger.v3.oas.annotations.enums.ParameterIn.QUERY;
 
-@Api(tags = "Cozinhas")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Cozinhas", description = "Gerencia as cozinhas")
 public interface CozinhaControllerOpenApi {
 
-    @ApiOperation("Lista as cozinhas")
-    public PagedModel<CozinhaModel> listar(Pageable pageable);
+    @PageableParameter
+    @Operation(summary = "Lista as cozinhas de forma paginada")
+    PagedModel<CozinhaModel> listar(@Parameter(hidden = true) final Pageable pageable);
 
-    @ApiOperation("Busca uma Cozinha por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID da Cozinha inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-    })
-    public CozinhaModel buscar(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long idCozinha);
+    @Operation(summary = "Busca uma cozinha pelo id")
+    CozinhaModel buscar(@Parameter(description = "Id de uma cozinha", example = "1", required = true) final Long idCozinha);
 
-    @ApiOperation("Cadastra uma Cozinha")
-    public CozinhaModel adicionar(@ApiParam(name = "corpo", 
-                                            value = "Representação de uma nova cozinha") 
-                                  CozinhaInput cozinhaInput);
+    @Operation(summary = "Cadastra uma nova cozinha")
+    CozinhaModel adicionar(@RequestBody(description = "Representação de uma nova cozinha") final CozinhaInput cozinhaInput);
 
-    @ApiOperation("Atualiza uma Cozinha por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-    })
-    public CozinhaModel atualizar(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long idCozinha, 
-                                  @ApiParam(name = "corpo", 
-                                            value = "Representação de uma cozinha com os novos dados") 
-                                  CozinhaInput cozinhaInput);
+    @Operation(summary = "Atualiza uma cozinha pelo id")
+    CozinhaModel atualizar(@Parameter(description = "Id de uma cozinha", example = "1", required = true) final Long idCozinha,
+                           @RequestBody(description = "Informações para atualizar a cozinha") final CozinhaInput cozinhaInput);
 
-    @ApiOperation("Exclui uma Cozinha por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Cozinha não encontrada", response = Problem.class)
-    })
-    public void remover(@ApiParam(value = "ID de uma Cozinha", example = "1", required = true) Long idCozinha);
+    @Operation(summary = "Remove uma cozinha pelo id")
+    void remover(@Parameter(description = "Id de uma cozinha", example = "1", required = true) final Long idCozinha);
     
 }

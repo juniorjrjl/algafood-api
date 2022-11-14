@@ -13,8 +13,9 @@ import org.springframework.data.domain.Page;
 public class PageJsonSerializer extends JsonSerializer<Page<?>> {
 
     @Override
-    public void serialize(Page<?> page, JsonGenerator gen, 
-            SerializerProvider serializers) throws IOException {
+    public void serialize(final Page<?> page,
+                          final JsonGenerator gen,
+                          final SerializerProvider serializers) throws IOException {
         gen.writeStartObject();
         gen.writeObjectField("content", page.getContent());
         gen.writeNumberField("size", page.getSize());

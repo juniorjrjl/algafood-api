@@ -1,26 +1,26 @@
 package com.algaworks.algafood.domain.service;
 
-import java.util.List;
-
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
+@AllArgsConstructor
 public class CadastroEstadoService {
 
     private static final String MSG_ESTADO_EM_USO = "Estado de código %d não pode ser removida, pois está em uso";
-    @Autowired
-    private EstadoRepository estadoRepository;
 
-    public Estado buscar(Long id){
+    private final EstadoRepository estadoRepository;
+
+    public Estado buscar(final Long id){
         return estadoRepository.findById(id).orElseThrow(() -> new EstadoNaoEncontradoException(id));
     }
 
@@ -30,13 +30,13 @@ public class CadastroEstadoService {
 
 
     @Transactional
-    public Estado salvar(Estado cozinha){
+    public Estado salvar(final Estado cozinha){
         return estadoRepository.save(cozinha);
     }
     
 
     @Transactional
-    public void excluir(Long id){
+    public void excluir(final Long id){
         try{
             estadoRepository.deleteById(id);
             estadoRepository.flush();

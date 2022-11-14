@@ -5,11 +5,11 @@ public class CozinhaNaoEncontradaException extends EntidadeNaoEncontradaExceptio
 
     private static final long serialVersionUID = 1L;
 
-    public CozinhaNaoEncontradaException(String mensagem) {
+    public CozinhaNaoEncontradaException(final String mensagem) {
         super(mensagem);
     }
     
-    public CozinhaNaoEncontradaException(Long cozinhaId) {
+    public CozinhaNaoEncontradaException(final Long cozinhaId) {
         this(String.format("Não existe um cadastro de cozinha com o código %d", cozinhaId));
     }
 }

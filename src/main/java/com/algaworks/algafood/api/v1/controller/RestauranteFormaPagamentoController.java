@@ -1,6 +1,14 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
+import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
@@ -14,34 +22,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.FormaPagamentoModelAssembler;
-import com.algaworks.algafood.api.v1.model.FormaPagamentoModel;
-import com.algaworks.algafood.api.v1.openapi.controller.RestauranteFormaPagamentoControllerOpenApi;
-import com.algaworks.algafood.core.security.AlgaSecurity;
-import com.algaworks.algafood.core.security.CheckSecurity;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/formas-pagamento", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class RestauranteFormaPagamentoController implements RestauranteFormaPagamentoControllerOpenApi{
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestaurante;
+    private final CadastroRestauranteService cadastroRestaurante;
 
-    @Autowired
-    private FormaPagamentoModelAssembler formaPagamentoModelAssembler;
+    private final FormaPagamentoModelAssembler formaPagamentoModelAssembler;
 
-    @Autowired
-	private AlgaLinks algaLinks;
+	private final AlgaLinks algaLinks;
 
-    @Autowired
-    private AlgaSecurity algaSecurity;  
+    private final AlgaSecurity algaSecurity;
     
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
-    public CollectionModel<FormaPagamentoModel> listar(@PathVariable Long restauranteId){
+    public CollectionModel<FormaPagamentoModel> listar(@PathVariable final Long restauranteId){
         Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
 
         CollectionModel<FormaPagamentoModel> formasPagamentoModel = formaPagamentoModelAssembler
@@ -60,7 +56,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @PutMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> associarFormaPagamento(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId){
+    public ResponseEntity<Void> associarFormaPagamento(@PathVariable final Long restauranteId, @PathVariable final Long formaPagamentoId){
         cadastroRestaurante.associarFormaPagamento(restauranteId, formaPagamentoId);
         return ResponseEntity.noContent().build();
     }
@@ -68,7 +64,7 @@ public class RestauranteFormaPagamentoController implements RestauranteFormaPaga
     @CheckSecurity.Restaurantes.PodeGerenciarFuncionamento
     @DeleteMapping("/{formaPagamentoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> desassociarFormaPagamento(@PathVariable Long restauranteId, @PathVariable Long formaPagamentoId){
+    public ResponseEntity<Void> desassociarFormaPagamento(@PathVariable final Long restauranteId, @PathVariable final Long formaPagamentoId){
         cadastroRestaurante.desassociarFormaPagamento(restauranteId, formaPagamentoId);
         return ResponseEntity.noContent().build();
     }

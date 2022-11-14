@@ -6,16 +6,17 @@ import java.nio.file.Path;
 import com.algaworks.algafood.core.storage.StorageProperties;
 import com.algaworks.algafood.domain.service.FotoStorageService;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
+@AllArgsConstructor
 public class LocalFotoStorageService implements FotoStorageService {
 
-    @Autowired
-    private StorageProperties storageProperties;
+    private final StorageProperties storageProperties;
 
     @Override
-    public void armazenar(NovaFoto novaFoto) {
+    public void armazenar(final NovaFoto novaFoto) {
         try {
             Path arquivoPath = getArquivoPath(novaFoto.getNomeArquivo());
             FileCopyUtils.copy(novaFoto.getInputStream(), Files.newOutputStream(arquivoPath));
@@ -25,7 +26,7 @@ public class LocalFotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public void remover(String nomeArquivo) {
+    public void remover(final String nomeArquivo) {
         try {
             Path arquivoPath = getArquivoPath(nomeArquivo);
             Files.deleteIfExists(arquivoPath);
@@ -35,7 +36,7 @@ public class LocalFotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public FotoRecuperada recuperar(String nomeArquivo) {
+    public FotoRecuperada recuperar(final String nomeArquivo) {
         try {
             Path arquivoPath = getArquivoPath(nomeArquivo);
             return FotoRecuperada.builder()
@@ -46,7 +47,7 @@ public class LocalFotoStorageService implements FotoStorageService {
         }
     }
 
-    private Path getArquivoPath(String nomeArquivo) {
+    private Path getArquivoPath(final String nomeArquivo) {
         return storageProperties.getLocal().getDiretorioFotos().resolve(Path.of(nomeArquivo));
     }
     

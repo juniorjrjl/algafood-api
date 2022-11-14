@@ -1,6 +1,14 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
+import com.algaworks.algafood.api.v1.model.UsuarioModel;
+import com.algaworks.algafood.api.v1.openapi.controller.RestauranteResponsavelControllerOpeApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.core.security.CheckSecurity;
+import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.service.CadastroRestauranteService;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
@@ -14,34 +22,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.UsuarioModelAssembler;
-import com.algaworks.algafood.api.v1.model.UsuarioModel;
-import com.algaworks.algafood.api.v1.openapi.controller.RestauranteResponsavelControllerOpeApi;
-import com.algaworks.algafood.core.security.AlgaSecurity;
-import com.algaworks.algafood.core.security.CheckSecurity;
-import com.algaworks.algafood.domain.model.Restaurante;
-import com.algaworks.algafood.domain.service.CadastroRestauranteService;
-
 @RestController
 @RequestMapping(path = "/v1/restaurantes/{restauranteId}/responsaveis", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class RestauranteResponsavelController implements RestauranteResponsavelControllerOpeApi{
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestaurante;
+    private final CadastroRestauranteService cadastroRestaurante;
 
-    @Autowired
-    private UsuarioModelAssembler usuarioModelAssembler;
-    
-    @Autowired
-    private AlgaLinks algaLinks;
+    private final UsuarioModelAssembler usuarioModelAssembler;
 
-    @Autowired
-    private AlgaSecurity algaSecurity;  
+    private final AlgaLinks algaLinks;
+
+    private final AlgaSecurity algaSecurity;
     
     @CheckSecurity.Restaurantes.PodeConsultar
     @GetMapping
-    public CollectionModel<UsuarioModel> listar(@PathVariable Long restauranteId){
+    public CollectionModel<UsuarioModel> listar(@PathVariable final Long restauranteId){
         Restaurante restaurante = cadastroRestaurante.buscar(restauranteId);
         CollectionModel<UsuarioModel>  usuariosModel = usuarioModelAssembler.toCollectionModel(restaurante.getUsuarios())
             .removeLinks()
@@ -56,7 +52,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @PutMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> associarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId){
+    public ResponseEntity<Void> associarUsuario(@PathVariable final Long restauranteId, @PathVariable final Long usuarioId){
         cadastroRestaurante.associarUsuario(restauranteId, usuarioId);
         return ResponseEntity.noContent().build();
     }
@@ -64,7 +60,7 @@ public class RestauranteResponsavelController implements RestauranteResponsavelC
     @CheckSecurity.Restaurantes.PodeGerenciarCadastro
     @DeleteMapping("/{usuarioId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> desassociarUsuario(@PathVariable Long restauranteId, @PathVariable Long usuarioId){
+    public ResponseEntity<Void> desassociarUsuario(@PathVariable final Long restauranteId, @PathVariable final Long usuarioId){
         cadastroRestaurante.desassociarUsuario(restauranteId, usuarioId);
         return ResponseEntity.noContent().build();
     }

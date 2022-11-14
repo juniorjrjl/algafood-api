@@ -13,7 +13,7 @@ import org.springframework.data.jpa.domain.Specification;
 
 public class PedidoSpecs {
 
-    public static Specification<Pedido> usandoFiltro(PedidoFilter filtro){
+    public static Specification<Pedido> usandoFiltro(final PedidoFilter filtro){
         return (root, query, builder) ->{
             if (Pedido.class.equals(query.getResultType())){
                 root.fetch(Pedido_.restaurante).fetch(Restaurante_.cozinha);

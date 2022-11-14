@@ -1,25 +1,24 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import java.math.BigDecimal;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Getter;
-import lombok.Setter;
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class RestauranteInput {
 
-    @ApiModelProperty(value = "Nome do restaourante", example = "Thay Gourmet", required = true)
+    @Schema(example = "Thai Gourmet")
     @NotBlank
     private String nome;
 
-    @ApiModelProperty(value = "Nome do restaourante", example = "Thay Gourmet")
+    @Schema(example = "12.00")
     @NotNull
     @PositiveOrZero
     private BigDecimal taxaFrete;

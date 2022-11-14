@@ -10,7 +10,7 @@ import org.springframework.data.domain.Sort;
 
 public class PageableTranslator {
 
-    public static Pageable translate(Pageable pageable, Map<String, String> fieldsMappging){
+    public static Pageable translate(final Pageable pageable, final Map<String, String> fieldsMappging){
         var orders = pageable.getSort().stream()
             .filter(order -> fieldsMappging.containsKey(order.getProperty()))
             .map(order -> new Sort.Order(order.getDirection(), fieldsMappging.get(order.getProperty())))

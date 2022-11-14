@@ -1,27 +1,25 @@
 package com.algaworks.algafood.domain.service;
 
-import java.util.List;
-
 import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
+@AllArgsConstructor
 public class CadastroCidadeService {
-    
-    @Autowired
-    private CidadeRepository cidadeRepository;
 
-    @Autowired
-    private CadastroEstadoService cadastroEstado;
+    private final CidadeRepository cidadeRepository;
 
-    public Cidade buscar(Long id){
+    private final CadastroEstadoService cadastroEstado;
+
+    public Cidade buscar(final Long id){
         return cidadeRepository.findById(id).orElseThrow(() -> new CidadeNaoEncontradaException(id));
     }
 
@@ -30,7 +28,7 @@ public class CadastroCidadeService {
     }
     
     @Transactional
-    public Cidade salvar(Cidade cidade){
+    public Cidade salvar(final Cidade cidade){
         Long cidadeId = cidade.getEstado().getId();
         Estado estado = cadastroEstado.buscar(cidadeId);
         cidade.setEstado(estado);
@@ -38,7 +36,7 @@ public class CadastroCidadeService {
     }
     
     @Transactional
-    public void excluir(Long id){
+    public void excluir(final Long id){
         try{
             cidadeRepository.deleteById(id);
             cidadeRepository.flush();

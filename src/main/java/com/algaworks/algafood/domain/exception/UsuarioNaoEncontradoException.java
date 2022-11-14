@@ -5,11 +5,11 @@ public class UsuarioNaoEncontradoException extends EntidadeNaoEncontradaExceptio
 
     private static final long serialVersionUID = 1L;
 
-    public UsuarioNaoEncontradoException(String mensagem) {
+    public UsuarioNaoEncontradoException(final String mensagem) {
         super(mensagem);
     }
     
-    public UsuarioNaoEncontradoException(Long usuarioId) {
+    public UsuarioNaoEncontradoException(final Long usuarioId) {
         this(String.format("Não existe um cadastro de usuário com o código %d", usuarioId));
     }
 }

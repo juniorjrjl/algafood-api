@@ -5,15 +5,15 @@ public class FormaPagamentoNaoEncontradaException extends EntidadeNaoEncontradaE
 
     private static final long serialVersionUID = 1L;
 
-    public FormaPagamentoNaoEncontradaException(String mensagem) {
+    public FormaPagamentoNaoEncontradaException(final String mensagem) {
         super(mensagem);
     }
     
-    public FormaPagamentoNaoEncontradaException(Long formaPagamentoId) {
+    public FormaPagamentoNaoEncontradaException(final Long formaPagamentoId) {
         this(String.format("Não existe um cadastro de forma de pagamento com o código %d", formaPagamentoId));
     }
 
-    public FormaPagamentoNaoEncontradaException(Long formaPagamentoId, Long restauranteId) {
+    public FormaPagamentoNaoEncontradaException(final Long formaPagamentoId, final Long restauranteId) {
         this(String.format("Não existe um cadastro de forma de pagamento com o código %d para o " +
                            "restaurante %d", 
                            formaPagamentoId, restauranteId));

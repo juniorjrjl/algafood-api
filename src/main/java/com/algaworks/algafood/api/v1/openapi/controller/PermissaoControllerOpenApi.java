@@ -1,16 +1,16 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
 import com.algaworks.algafood.api.v1.model.PermissaoModel;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-
-@Api(tags = "Permissoes")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Permissões", description = "Gerencia as permissões")
 public interface PermissaoControllerOpenApi {
 
-    @ApiOperation("Lista as permissoes")
-    public CollectionModel<PermissaoModel> listar();
+    @Operation(summary = "Lista as permissões")
+    CollectionModel<PermissaoModel> listar();
     
 }

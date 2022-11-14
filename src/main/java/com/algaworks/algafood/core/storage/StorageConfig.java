@@ -8,20 +8,22 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Optional;
+
 @Configuration
+@AllArgsConstructor
 public class StorageConfig {
 
-    @Autowired
-    private StorageProperties storageProperties;
+
+    private final StorageProperties storageProperties;
 
     @Bean
-    @ConditionalOnProperty(name = "algafood.storage.tipo", havingValue = "s3")
+    @ConditionalOnProperty(prefix = "algafood.storage", name = "tipo", havingValue = "s3")
     public AmazonS3 amazonS3() {
         var credentials = new BasicAWSCredentials(
             storageProperties.getS3().getIdChaveAcesso(), 
@@ -34,10 +36,10 @@ public class StorageConfig {
     }
     
     @Bean
-    public FotoStorageService fotoStorageService(){
-        return (storageProperties.getTipo().equals(TipoStorage.S3)) ? 
-                new S3FotoStorageService() : 
-                new LocalFotoStorageService(); 
+    public FotoStorageService fotoStorageService(final Optional<AmazonS3> amazonS3, final StorageProperties storageProperties){
+        return (amazonS3.isPresent()) ?
+                new S3FotoStorageService(amazonS3.get(), storageProperties) :
+                new LocalFotoStorageService(storageProperties);
     }
 
 }

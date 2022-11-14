@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import java.util.List;
-
 import com.algaworks.algafood.api.v1.AlgaLinks;
 import com.algaworks.algafood.api.v1.assembler.PermissaoModelAssembler;
 import com.algaworks.algafood.api.v1.model.PermissaoModel;
@@ -9,8 +7,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.PermissaoControllerOpenA
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Permissao;
 import com.algaworks.algafood.domain.service.CadastroPermissaoServive;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.MediaType;
@@ -18,18 +15,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping(path = "/v1/permissoes", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class PermissaoController implements PermissaoControllerOpenApi{
 
-    @Autowired
-    private CadastroPermissaoServive castroPermissao;
+    private final CadastroPermissaoServive castroPermissao;
 
-    @Autowired
-    private PermissaoModelAssembler permissaoModelAssembler;
+    private final PermissaoModelAssembler permissaoModelAssembler;
 
-    @Autowired
-	private AlgaLinks algaLinks;
+	private final AlgaLinks algaLinks;
 
     @CheckSecurity.UsuariosGruposPermissoes.PodeConsultar
     @GetMapping

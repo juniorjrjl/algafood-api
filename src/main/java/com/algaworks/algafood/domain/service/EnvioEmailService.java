@@ -10,7 +10,7 @@ import lombok.Singular;
 
 public interface EnvioEmailService {
 
-    void enviar(Mensagem mensagem);
+    void enviar(final Mensagem mensagem);
 
 
     @Getter

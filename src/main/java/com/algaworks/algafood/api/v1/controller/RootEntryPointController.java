@@ -1,26 +1,25 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.core.security.AlgaSecurity;
-
 @RestController
 @RequestMapping(path = "/v1", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class RootEntryPointController {
 
+    private final AlgaLinks algaLinks;
 
-    @Autowired
-    private AlgaLinks algaLinks;
-
-    @Autowired
-    private AlgaSecurity algaSecurity; 
+    private final AlgaSecurity algaSecurity;
     
+    @Operation(hidden = true)
     @GetMapping
     public RootEntryPointModel root(){
         var rootEntryPointModel = new RootEntryPointModel();

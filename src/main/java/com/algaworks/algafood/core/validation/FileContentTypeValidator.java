@@ -13,12 +13,12 @@ public class FileContentTypeValidator implements ConstraintValidator<FileContent
     private List<String> allowed;
 
     @Override
-    public void initialize(FileContentType constraintAnnotation) {
+    public void initialize(final FileContentType constraintAnnotation) {
         this.allowed = Arrays.asList(constraintAnnotation.allowed());
     }
 
 	@Override
-	public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
+	public boolean isValid(final MultipartFile value, final ConstraintValidatorContext context) {
         return value == null || this.allowed.contains(value.getContentType());
 	}
 

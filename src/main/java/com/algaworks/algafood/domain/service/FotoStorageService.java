@@ -8,11 +8,11 @@ import lombok.Getter;
 
 public interface FotoStorageService {
 
-    FotoRecuperada recuperar(String nomeArquivo);
-    void armazenar(NovaFoto novaFoto);
-    void remover(String nomeArquivo);
+    FotoRecuperada recuperar(final String nomeArquivo);
+    void armazenar(final NovaFoto novaFoto);
+    void remover(final String nomeArquivo);
 
-    default void substituir(String nomeArquivoAntigo, NovaFoto novaFoto){
+    default void substituir(final String nomeArquivoAntigo, final NovaFoto novaFoto){
         this.armazenar(novaFoto);
 
         if (nomeArquivoAntigo != null){
@@ -20,7 +20,7 @@ public interface FotoStorageService {
         }
     }
 
-    default String gerarNomeArquivo(String nomeOriginal){
+    default String gerarNomeArquivo(final String nomeOriginal){
         return UUID.randomUUID().toString() + "_" + nomeOriginal;
     }
     

@@ -13,7 +13,7 @@ public class RestauranteSpecs {
         return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get(Restaurante_.taxaFrete), BigDecimal.ZERO);
     }
 
-    public static Specification<Restaurante> nomeSemelhante(String nome){
+    public static Specification<Restaurante> nomeSemelhante(final String nome){
         return (root, query, criteriaBuilder) -> criteriaBuilder.like(root.get(Restaurante_.nome), "%" + nome + "%");
     }
     

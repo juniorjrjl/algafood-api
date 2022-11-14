@@ -1,46 +1,32 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.EstadoModel;
 import com.algaworks.algafood.api.v1.model.input.EstadoInput;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Estados")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Estados", description = "Gerencia os estados")
 public interface EstadoControllerOpenApi {
 
-    @ApiOperation("Lista os estados")
-    public CollectionModel<EstadoModel> listar();
+    @Operation(summary = "Lista os estados")
+    CollectionModel<EstadoModel> listar();
 
-    @ApiOperation("Busca um Estado por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do Estado inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
-    })
-    public EstadoModel buscar(@ApiParam(value = "ID de um Estado", example = "1", required = true) 
-                              Long idEstado);
+    @Operation(summary = "Busca um estado pelo id")
+    EstadoModel buscar(@Parameter(description = "Id de um estado", example = "1", required = true) final Long idEstado);
 
-    @ApiOperation("Cadastra um estado")
-    public EstadoModel adicionar(EstadoInput estadoInput);
+    @Operation(summary = "Cadastra um estado")
+    EstadoModel adicionar(@RequestBody(description = "Representação de um novo estado") final EstadoInput estadoInput);
 
-    @ApiOperation("Atualiza um Estado por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
-    })
-    public EstadoModel atualizar(@ApiParam(value = "ID de um Estado", example = "1", required = true)
-                                 Long idEstado, 
-                                 EstadoInput estadoInput);
-             
-    @ApiOperation("Exclui um Estado por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Estado não encontrado", response = Problem.class)
-    })
-    public void remover(@ApiParam(value = "ID de um Estado", example = "1", required = true)Long idEstado);
+    @Operation(summary = "Atualiza um estado pelo id")
+    EstadoModel atualizar(@Parameter(description = "Id de um estado", example = "1", required = true) final Long idEstado,
+                          @RequestBody(description = "Informações para atualizar o estado")final EstadoInput estadoInput);
+
+    @Operation(summary = "Remove um estado pelo id")
+    void remover(@Parameter(description = "Id de um estado", example = "1", required = true) final Long idEstado);
     
 }

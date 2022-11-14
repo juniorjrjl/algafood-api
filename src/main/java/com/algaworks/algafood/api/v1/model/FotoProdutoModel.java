@@ -1,25 +1,24 @@
 package com.algaworks.algafood.api.v1.model;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
 public class FotoProdutoModel  extends RepresentationModel<PermissaoModel> {
 
-    @ApiModelProperty(value = "Nome da foto", example = "Lasanha.png")
+    @Schema(example = "b8bbd21a-4dd3-4954-835c-3493af2ba6a0_Prime-Rib.jpg")
     private String nomeArquivo;
 
-    @ApiModelProperty(value = "Descrição da foto", example = "Lasanha")
+    @Schema(example = "Prime Rib ao ponto")
     private String descricao;
 
-    @ApiModelProperty(value = "contentype da requisição", example = "application/json")
+    @Schema(example = "image/jpeg")
     private String contentType;
 
-    @ApiModelProperty(value = "tamanho da foto em kb", example = "200")
+    @Schema(example = "202912")
     private Long tamanho;
     
 }

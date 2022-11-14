@@ -10,18 +10,18 @@ import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 
+@AllArgsConstructor
 public class S3FotoStorageService implements FotoStorageService {
 
-    @Autowired
-    private AmazonS3 amazonS3;
+    private final AmazonS3 amazonS3;
 
-    @Autowired
-    private StorageProperties storageProperties;
+    private final StorageProperties storageProperties;
 
     @Override
-    public FotoRecuperada recuperar(String nomeArquivo) {
+    public FotoRecuperada recuperar(final String nomeArquivo) {
         try{
             String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
             URL url = amazonS3.getUrl(storageProperties.getS3().getBucket(), caminhoArquivo);
@@ -32,7 +32,7 @@ public class S3FotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public void armazenar(NovaFoto novaFoto) {
+    public void armazenar(final NovaFoto novaFoto) {
         try{
             String caminhoArquivo = getCaminhoArquivo(novaFoto.getNomeArquivo());
             var objectMetadata = new ObjectMetadata();
@@ -50,7 +50,7 @@ public class S3FotoStorageService implements FotoStorageService {
     }
 
     @Override
-    public void remover(String nomeArquivo) {
+    public void remover(final String nomeArquivo) {
         try{
             String caminhoArquivo = getCaminhoArquivo(nomeArquivo);
             var deleteObjectRequest = new DeleteObjectRequest(
@@ -63,7 +63,7 @@ public class S3FotoStorageService implements FotoStorageService {
 
     }
 
-    private String getCaminhoArquivo(String nomeArquivo) {
+    private String getCaminhoArquivo(final String nomeArquivo) {
         return String.format("%s/%s", storageProperties.getS3().getDiretorioFotos(), nomeArquivo);
     }
     

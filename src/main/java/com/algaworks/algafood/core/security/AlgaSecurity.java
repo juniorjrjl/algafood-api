@@ -23,17 +23,17 @@ public class AlgaSecurity {
 		return jwt.getClaim("usuario_id");
 	}
 	
-	public boolean gerenciaRestaurante(Long restauranteId){
+	public boolean gerenciaRestaurante(final Long restauranteId){
 		return restauranteId == null ? 
 				false : 
 				cadastroRestaurante.existeResponsavel(restauranteId, getUsuarioId());
 	}
 	
-	public boolean usuarioPodeGerenciarPedido(String codigoPedido) {
+	public boolean usuarioPodeGerenciarPedido(final String codigoPedido) {
 		return cadastroRestaurante.usuarioPodeGerenciarPedido(getUsuarioId(), codigoPedido);
 	}
 	
-	public boolean usuarioAutenticadoIgual(Long usuarioId) {
+	public boolean usuarioAutenticadoIgual(final Long usuarioId) {
 		return getUsuarioId() != null && usuarioId != null && getUsuarioId().equals(usuarioId);
 	}
 	
@@ -65,7 +65,7 @@ public class AlgaSecurity {
 	    return temEscopoEscrita() && hasAuthority("EDITAR_RESTAURANTES");
 	}
 
-	public boolean podeGerenciarFuncionamentoRestaurantes(Long restauranteId) {
+	public boolean podeGerenciarFuncionamentoRestaurantes(final Long restauranteId) {
 	    return temEscopoEscrita() && (hasAuthority("EDITAR_RESTAURANTES")
 	            || gerenciaRestaurante(restauranteId));
 	}

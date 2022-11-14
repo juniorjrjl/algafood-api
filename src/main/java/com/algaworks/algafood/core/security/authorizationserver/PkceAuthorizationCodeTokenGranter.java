@@ -17,14 +17,14 @@ import org.springframework.security.oauth2.provider.token.AuthorizationServerTok
 
 public class PkceAuthorizationCodeTokenGranter extends AuthorizationCodeTokenGranter {
 
-	public PkceAuthorizationCodeTokenGranter(AuthorizationServerTokenServices tokenServices,
+	public PkceAuthorizationCodeTokenGranter(final AuthorizationServerTokenServices tokenServices,
 			AuthorizationCodeServices authorizationCodeServices, ClientDetailsService clientDetailsService,
 			OAuth2RequestFactory requestFactory) {
 		super(tokenServices, authorizationCodeServices, clientDetailsService, requestFactory);
 	}
 
 	@Override
-	protected OAuth2Authentication getOAuth2Authentication(ClientDetails client, TokenRequest tokenRequest) {
+	protected OAuth2Authentication getOAuth2Authentication(final ClientDetails client, final TokenRequest tokenRequest) {
 		OAuth2Authentication authentication = super.getOAuth2Authentication(client, tokenRequest);
 		OAuth2Request request = authentication.getOAuth2Request();
 
@@ -45,7 +45,7 @@ public class PkceAuthorizationCodeTokenGranter extends AuthorizationCodeTokenGra
 		return authentication;
 	}
 	
-	private boolean validateCodeVerifier(String codeVerifier, String codeChallenge, 
+	private boolean validateCodeVerifier(final String codeVerifier, final String codeChallenge,
 			String codeChallengeMethod) {
 		
 		String generatedCodeChallenge = null;
@@ -61,7 +61,7 @@ public class PkceAuthorizationCodeTokenGranter extends AuthorizationCodeTokenGra
 		return generatedCodeChallenge.equals(codeChallenge);
 	}
 
-	private static String generateHashSha256(String plainText) {
+	private static String generateHashSha256(final String plainText) {
 		try {
 			MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
 			byte[] hash = messageDigest.digest(Utf8.encode(plainText));

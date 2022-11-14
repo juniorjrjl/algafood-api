@@ -1,7 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import javax.validation.Valid;
-
 import com.algaworks.algafood.api.v1.assembler.EstadoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.EstadoModelAssembler;
 import com.algaworks.algafood.api.v1.model.EstadoModel;
@@ -10,8 +8,7 @@ import com.algaworks.algafood.api.v1.openapi.controller.EstadoControllerOpenApi;
 import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.service.CadastroEstadoService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,18 +22,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(path = "/v1/estados", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class EstadoController implements EstadoControllerOpenApi{
 
-    @Autowired
-    private EstadoInputDisassembler estadoInputDisassembler;
+    private final EstadoInputDisassembler estadoInputDisassembler;
 
-    @Autowired
-    private EstadoModelAssembler estadoModelAssembler;
+    private final EstadoModelAssembler estadoModelAssembler;
 
-    @Autowired
-    private CadastroEstadoService cadastroEstado;
+    private final CadastroEstadoService cadastroEstado;
 
     @CheckSecurity.Estados.PodeConsultar
     @GetMapping
@@ -46,21 +43,21 @@ public class EstadoController implements EstadoControllerOpenApi{
 
     @CheckSecurity.Estados.PodeConsultar
     @GetMapping("{idEstado}")
-    public EstadoModel buscar(@PathVariable Long idEstado){
+    public EstadoModel buscar(@PathVariable final Long idEstado){
         return estadoModelAssembler.toModel(cadastroEstado.buscar(idEstado));
     }
     
     @CheckSecurity.Estados.PodeEditar
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput){
+    public EstadoModel adicionar(@RequestBody @Valid final EstadoInput estadoInput){
         Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
     @CheckSecurity.Estados.PodeEditar
     @PutMapping("{idEstado}")
-    public EstadoModel atualizar(@PathVariable Long idEstado, @RequestBody @Valid EstadoInput estadoInput){
+    public EstadoModel atualizar(@PathVariable final Long idEstado, @RequestBody @Valid final EstadoInput estadoInput){
         Estado estadoAtual = cadastroEstado.buscar(idEstado);
         estadoInputDisassembler.copyToDomainInObject(estadoInput, estadoAtual);
         return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));

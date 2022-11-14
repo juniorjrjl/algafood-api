@@ -1,24 +1,23 @@
 package com.algaworks.algafood.api.v1.model;
 
-import org.springframework.hateoas.RepresentationModel;
-import org.springframework.hateoas.server.core.Relation;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
 @Relation(collectionRelation = "usuarios")
 @Getter
 @Setter
 public class UsuarioModel extends RepresentationModel<UsuarioModel>{
 
-    @ApiModelProperty(value = "ID do usuário", example = "1")
+    @Schema(example = "1")
     private Long id;
-    
-    @ApiModelProperty(value = "Nome do usuário", example = "Paula")
+
+    @Schema(example = "João")
     private String nome;
 
-    @ApiModelProperty(value = "E-mail do usuário", example = "paula@teste.com.br")
+    @Schema(example = "joao@joao.com")
     private String email;
     
 }

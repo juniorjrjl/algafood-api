@@ -2,12 +2,21 @@ package com.algaworks.algafood.infrastructure.service.email;
 
 import javax.mail.internet.MimeMessage;
 
+import com.algaworks.algafood.core.email.EmailProperties;
+import freemarker.template.Configuration;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 
 public class SandBoxEnvioEmailService extends SmtpEnvioEmailService {
 
+    public SandBoxEnvioEmailService(final EmailProperties emailProperties,
+                                    final JavaMailSender mailSender,
+                                    final Configuration freemarkerConfig) {
+        super(emailProperties, mailSender, freemarkerConfig);
+    }
+
     @Override
-    public void enviar(Mensagem mensagem) {
+    public void enviar(final Mensagem mensagem) {
         try{
             String corpo = processarTemplate(mensagem);
             MimeMessage mimeMessage = mailSender.createMimeMessage();

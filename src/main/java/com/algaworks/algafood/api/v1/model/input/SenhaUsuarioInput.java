@@ -1,28 +1,29 @@
 package com.algaworks.algafood.api.v1.model.input;
 
-import javax.validation.constraints.NotBlank;
-
 import com.algaworks.algafood.core.validation.PasswordCheck;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
-@PasswordCheck(passwordField= "novaSenha", passwordConfirmationField = "confirmaNovaSenha")
+@PasswordCheck
 public class SenhaUsuarioInput {
 
-    @ApiModelProperty(value = "Senha atual do cliente", example = "123", required = true)
+
+    @Schema(example = "1234")
     @NotBlank
     private String senhaAtual;
 
-    @ApiModelProperty(value = "Confirmação da senha atual do cliente", 
-                      example = "123", required = true)
+    @PasswordCheck.PasswordField
+    @Schema(example = "123")
     @NotBlank
     private String novaSenha;
-    
-    @ApiModelProperty(value = "Nova senha do cliente", example = "1234", required = true)
+
+    @PasswordCheck.PasswordConfirmationField
+    @Schema(example = "123")
     @NotBlank
     private String confirmaNovaSenha;
     

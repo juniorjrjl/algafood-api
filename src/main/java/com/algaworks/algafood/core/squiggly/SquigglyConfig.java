@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
 public class SquigglyConfig {
 
     @Bean
-    public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilter(ObjectMapper objectMapper){
+    public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilter(final ObjectMapper objectMapper){
         Squiggly.init(objectMapper, new RequestSquigglyContextProvider("campos", null));
 
         var urlPatterns = Arrays.asList("/pedidos/*", "/restaurantes/*");

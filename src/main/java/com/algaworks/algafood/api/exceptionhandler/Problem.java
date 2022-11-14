@@ -1,54 +1,40 @@
 package com.algaworks.algafood.api.exceptionhandler;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.Builder;
+
 import java.time.OffsetDateTime;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
-import lombok.Builder;
-import lombok.Getter;
-
-@ApiModel("Problema")
 @JsonInclude(Include.NON_NULL)
-@Getter
-@Builder
-public class Problem {
+@Schema(name = "Problema")
+public record Problem(
+		@Schema(example = "400")
+		@JsonProperty("status")
+		Integer status,
+		@Schema(example = "2022-07-15T01:01:50.902245498Z")
+		@JsonProperty("timestamp")
+		OffsetDateTime timestamp,
+		@Schema(example = "https://algafood.com.br/dados-invalidos")
+		@JsonProperty("type")
+		String type,
+		@Schema(example = "Dados inválidos")
+		@JsonProperty("title")
+		String title,
+		@Schema(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto")
+		@JsonProperty("detail")
+		String detail,
+		@Schema(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto")
+		@JsonProperty("userMessage")
+		String userMessage,
+		@Schema(description = "lista de objetos ou campos que geraram erro")
+		@JsonProperty("fields")
+		List<FieldErrorDetails> fields){
 
-	@ApiModelProperty(example = "400", position = 1)
-	private Integer status;
-	
-	@ApiModelProperty(example = "2019-12-01T18:09:02.70844Z", position = 5)
-	private OffsetDateTime timestamp;
-	
-	@ApiModelProperty(example = "https://algafood.com.br/dados-invalidos", position = 10)
-	private String type;
-	
-	@ApiModelProperty(example = "Dados inválidos", position = 15)
-	private String title;
-	
-	@ApiModelProperty(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.", 
-			position = 20)
-	private String detail;
-	
-	@ApiModelProperty(example = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.", 
-			position = 25)
-	private String userMessage;
-	
-	@ApiModelProperty(value = "Lista de objetos ou campos que geraram o erro (opcional)", 
-			position = 30)
-	private List<Object> fields;
-
-    @ApiModel("Objeto problema")
-    @Getter
-    @Builder
-    public static class Object{
-        @ApiModelProperty(example = "preco")
-        private String name;
-        @ApiModelProperty(example = "O preço é obrigatório")
-        private String userMessage;
-    }
-    
+	@Builder
+	public Problem {
+	}
 }

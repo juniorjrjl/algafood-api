@@ -1,48 +1,32 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.GrupoModel;
 import com.algaworks.algafood.api.v1.model.input.GrupoInput;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Grupos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Grupos", description = "Gerencia os grupos")
 public interface GrupoControllerOpenApi {
 
-    @ApiOperation("Lista os grupos")
-    public CollectionModel<GrupoModel> listar();
+    @Operation(summary = "Lista os grupos")
+    CollectionModel<GrupoModel> listar();
 
-    @ApiOperation("Busca um grupo por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do grupo inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
-    })
-    public GrupoModel buscar(@ApiParam(value = "ID de um grupo", example = "1" ) Long idGrupo);
+    @Operation(summary = "Busca um grupo pelo id")
+    GrupoModel buscar(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long idGrupo);
 
-    @ApiOperation("Cadastra um grupo")
-    public GrupoModel adicionar(@ApiParam(name = "corpo", 
-                                          value = "Representação de um novo grupo") 
-                                GrupoInput grupoInput);
+    @Operation(summary = "Cadatra um novo grupo")
+    GrupoModel adicionar(@RequestBody(description = "Representação de um novo grupo") final GrupoInput grupoInput);
 
-    @ApiOperation("Atualiza um grupo por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
-    })
-    public GrupoModel atualizar(@ApiParam(value = "ID de um grupo", example = "1", required = true) Long idGrupo, 
-                                @ApiParam(name = "corpo", 
-                                          value = "Representação de um grupo com os novos dados") 
-                                GrupoInput grupoInput);
+    @Operation(summary = "Atualiza um grupo pelo id")
+    GrupoModel atualizar(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long idGrupo,
+                         @RequestBody(description = "Informações para atualizar um grupo") final GrupoInput grupoInput);
 
-    @ApiOperation("Exclui um grupo por ID")
-    @ApiResponses({
-        @ApiResponse(code = 404, message = "Grupo não encontrado", response = Problem.class)
-    })
-    public void remover(@ApiParam(value = "ID de um grupo", example = "1", required = true) Long idGrupo);
+    @Operation(summary = "Remove um grupo pelo id")
+    void remover(@Parameter(description = "Id de um grupo", example = "1", required = true) final Long idGrupo);
     
 }

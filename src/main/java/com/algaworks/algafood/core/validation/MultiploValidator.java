@@ -10,12 +10,12 @@ public class MultiploValidator implements ConstraintValidator<Multiplo, Number>{
     private int numeroMultiplo;
 
     @Override
-    public void initialize(Multiplo constraintAnnotation) {
+    public void initialize(final Multiplo constraintAnnotation) {
         this.numeroMultiplo = constraintAnnotation.numero();
     }
 
 	@Override
-	public boolean isValid(Number value, ConstraintValidatorContext context) {
+	public boolean isValid(final Number value, final ConstraintValidatorContext context) {
         boolean valido = true;
         if (value != null){
             var valorDecimal = BigDecimal.valueOf(value.doubleValue());

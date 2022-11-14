@@ -11,7 +11,7 @@ public class PageWrapper<T> extends PageImpl<T> {
 
     private Pageable pageable;
 
-    public PageWrapper(Page<T> page, Pageable pageable) {
+    public PageWrapper(final Page<T> page, final Pageable pageable) {
         super(page.getContent(), pageable, page.getTotalElements());
         this.pageable = pageable;
     }

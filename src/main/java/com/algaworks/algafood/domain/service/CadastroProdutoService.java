@@ -7,25 +7,25 @@ import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class CadastroProdutoService {
 
-    @Autowired
-    private ProdutoRepository produtoRepository;
+    private final ProdutoRepository produtoRepository;
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestaurante;
+    private final CadastroRestauranteService cadastroRestaurante;
 
-    public Produto buscar(Long restauranteId, Long produtoId){
+    public Produto buscar(final Long restauranteId, final Long produtoId){
         return produtoRepository.findByRestauranteIdAndId(restauranteId, produtoId)
             .orElseThrow(() -> new ProdutoNaoEncontradoException(restauranteId, produtoId));
     }
 
-    public List<Produto> buscar(Long idRestaurante, boolean incluirInativos){
+    public List<Produto> buscar(final Long idRestaurante, final boolean incluirInativos){
         Restaurante restaurante = cadastroRestaurante.buscar(idRestaurante);
         return (incluirInativos) ? 
             produtoRepository.findByRestaurante(restaurante) :
@@ -33,14 +33,14 @@ public class CadastroProdutoService {
     }
 
     @Transactional
-    public Produto salvar(Produto produto){
+    public Produto salvar(final Produto produto){
         Restaurante restaurante = cadastroRestaurante.buscar(produto.getRestaurante().getId());
         produto.setRestaurante(restaurante);
         return produtoRepository.save(produto);
     }
 
     @Transactional
-    public void remover(Long restauranteId, Long produtoId){
+    public void remover(final Long restauranteId, final Long produtoId){
             if (produtoRepository.deleteByRestauranteIdAndId(restauranteId, produtoId) > 0){
                 produtoRepository.flush();
             }else{

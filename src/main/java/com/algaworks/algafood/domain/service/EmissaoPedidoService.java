@@ -12,6 +12,7 @@ import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
 import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,36 +20,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@AllArgsConstructor
 public class EmissaoPedidoService {
 
-    @Autowired
-    private PedidoRepository pedidoRepository;
+    private final PedidoRepository pedidoRepository;
 
-    @Autowired
-    private CadastroRestauranteService cadastroRestaurate;
+    private final CadastroRestauranteService cadastroRestaurate;
 
-    @Autowired
-    private CadastroProdutoService cadastroProduto;
+    private final CadastroProdutoService cadastroProduto;
 
-    @Autowired
-    private CadastroUsuarioService cadastroUsuario;
+    private final CadastroUsuarioService cadastroUsuario;
 
-    @Autowired
-    private CadastroCidadeService cadastroCidade;
+    private final CadastroCidadeService cadastroCidade;
 
-    @Autowired
-    private CadastroFormaPagamentoService cadastroFormaPagamento;
+    private final CadastroFormaPagamentoService cadastroFormaPagamento;
 
-    public Pedido buscar(String codigo){
+    public Pedido buscar(final String codigo){
         return pedidoRepository.findByCodigo(codigo).orElseThrow(() -> new PedidoNaoEncontradoException(codigo));
     }
 
-    public Page<Pedido> listar(PedidoFilter filtro, Pageable pageable){
+    public Page<Pedido> listar(final PedidoFilter filtro, final Pageable pageable){
         return pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro), pageable);
     }
     
     @Transactional
-    public Pedido salvar(Pedido pedido){
+    public Pedido salvar(final Pedido pedido){
         Restaurante restaurante = cadastroRestaurate.buscar(pedido.getRestaurante().getId());
         carregarInformacoes(pedido);                     
         Long formaPagamentoId = pedido.getFormaPagamento().getId();
@@ -63,7 +59,7 @@ public class EmissaoPedidoService {
         return pedidoRepository.save(pedido);
     }
 
-    private void carregarInformacoes(Pedido pedido){
+    private void carregarInformacoes(final Pedido pedido){
         Long clienteId = pedido.getCliente().getId();
         Long cidadeId = pedido.getEnderecoEntrega().getCidade().getId();
         pedido.setCliente(cadastroUsuario.buscar(clienteId));
@@ -74,7 +70,7 @@ public class EmissaoPedidoService {
         pedido.setRestaurante(cadastroRestaurate.buscar(restauranteId));
     }
 
-    private void gerarItensPedido(Pedido pedido, Long restauranteId, BigDecimal taxaFrete){
+    private void gerarItensPedido(final Pedido pedido, final Long restauranteId, final BigDecimal taxaFrete){
         pedido.setTaxaFrete(taxaFrete);
         for (int i = 0; i < pedido.getItens().size(); i++) {
             Long produtoId = pedido.getItens().get(i).getProduto().getId();

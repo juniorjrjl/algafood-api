@@ -1,9 +1,15 @@
 package com.algaworks.algafood.core.security.authorizationserver;
 
+import java.security.KeyPair;
+import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 
 import javax.sql.DataSource;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.JWKSet;
+import com.nimbusds.jose.jwk.KeyUse;
+import com.nimbusds.jose.jwk.RSAKey;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -85,17 +91,33 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 		approvalStore.setTokenStore(tokenStore);
 		return approvalStore;
 	}
-	
+
+	@Bean
+	public JWKSet jwkSet(){
+		var builder = new RSAKey.Builder((RSAPublicKey) keyPair().getPublic())
+				.keyUse(KeyUse.SIGNATURE)
+				.algorithm(JWSAlgorithm.RS256)
+				.keyID("algafood-key-id");
+		return new JWKSet(builder.build());
+	}
+
 	@Bean
 	public JwtAccessTokenConverter jwtAccessTokenConverter() {
-		JwtAccessTokenConverter jwtAccessTokenConverter = new JwtAccessTokenConverter();
+		var jwtAccessTokenConverter = new JwtAccessTokenConverter();
 		// jwtAccessTokenConverter.setSigningKey("fsd8a7f9f47d98sa7f1sd9c879fcasdf71c8sd97cf8sad97f1csd9817cfsd977f1cd97sad19sd"); assinatura simetrica
 
-		
-		var keyStoreFactory = new KeyStoreKeyFactory(jwtKeyStoreProperties.getJksLocation(), jwtKeyStoreProperties.getPassword().toCharArray());
-		var keyPair = keyStoreFactory.getKeyPair(jwtKeyStoreProperties.getKeypairAlias());
-		jwtAccessTokenConverter.setKeyPair(keyPair);
+		jwtAccessTokenConverter.setKeyPair(keyPair());
 		return jwtAccessTokenConverter;
 	}
-	
+
+	private KeyPair keyPair() {
+		var keyStorePass = jwtKeyStoreProperties.getPassword();
+		var keyPairAlias = jwtKeyStoreProperties.getKeypairAlias();
+
+		var keyStoreKeyFactory = new KeyStoreKeyFactory(
+				jwtKeyStoreProperties.getJksLocation(), keyStorePass.toCharArray());
+
+		return keyStoreKeyFactory.getKeyPair(keyPairAlias);
+	}
+
 }

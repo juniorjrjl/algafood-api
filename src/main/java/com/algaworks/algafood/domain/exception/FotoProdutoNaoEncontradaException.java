@@ -4,11 +4,11 @@ public class FotoProdutoNaoEncontradaException extends EntidadeNaoEncontradaExce
 
     private static final long serialVersionUID = 1L;
     
-    public FotoProdutoNaoEncontradaException(String mensagem) {
+    public FotoProdutoNaoEncontradaException(final String mensagem) {
         super(mensagem);
     }
 
-    public FotoProdutoNaoEncontradaException(Long restauranteId, Long produtoId) {
+    public FotoProdutoNaoEncontradaException(final Long restauranteId, final Long produtoId) {
         this(String.format("Não existe uma foto para o produto %d no restaurante %d", restauranteId, produtoId));
     }
 }

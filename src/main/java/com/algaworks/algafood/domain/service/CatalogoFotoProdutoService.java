@@ -1,33 +1,31 @@
 package com.algaworks.algafood.domain.service;
 
-import java.io.InputStream;
-import java.util.Optional;
-
 import com.algaworks.algafood.domain.exception.FotoProdutoNaoEncontradaException;
 import com.algaworks.algafood.domain.model.FotoProduto;
 import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.FotoStorageService.NovaFoto;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.InputStream;
+import java.util.Optional;
+
 @Service
+@AllArgsConstructor
 public class CatalogoFotoProdutoService {
 
-    @Autowired
     private ProdutoRepository produtoRepository;
 
-    @Autowired
     private FotoStorageService fotoStorageService;
 
-    public FotoProduto buscar(Long restauranteId, Long produtoId){
+    public FotoProduto buscar(final Long restauranteId, final Long produtoId){
         return produtoRepository.findFotoById(restauranteId, produtoId)
             .orElseThrow(() -> new FotoProdutoNaoEncontradaException(restauranteId, produtoId));
     }
 
     @Transactional
-    public FotoProduto salvar(FotoProduto foto, InputStream dadosArquivo){
+    public FotoProduto salvar(final FotoProduto foto, final InputStream dadosArquivo){
         Long restauranteId = foto.getProduto().getRestaurante().getId();
         Long produtoId = foto.getProduto().getId();
         Optional<FotoProduto> fotoAtual = produtoRepository.findFotoById(restauranteId, produtoId);
@@ -37,19 +35,19 @@ public class CatalogoFotoProdutoService {
             produtoRepository.delete(fotoAtual.get());
         }
         foto.setNomeArquivo(fotoStorageService.gerarNomeArquivo(foto.getNomeArquivo()));
-        foto = produtoRepository.save(foto);
+        var fotoSalva = produtoRepository.save(foto);
         produtoRepository.flush();
         NovaFoto novaFoto = NovaFoto.builder()
-            .nomeArquivo(foto.getNomeArquivo())
-            .contentType(foto.getContentType())
+            .nomeArquivo(fotoSalva.getNomeArquivo())
+            .contentType(fotoSalva.getContentType())
             .inputStream(dadosArquivo)
             .build();
         fotoStorageService.substituir(nomeArquivoExistente, novaFoto);
-        return foto;
+        return fotoSalva;
     }
     
     @Transactional
-    public void excluir(Long restauranteId, Long produtoId){
+    public void excluir(final Long restauranteId, Long produtoId){
         FotoProduto fotoProduto = buscar(restauranteId, produtoId);
         fotoStorageService.remover(fotoProduto.getNomeArquivo());
         produtoRepository.delete(fotoProduto);

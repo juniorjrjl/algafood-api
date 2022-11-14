@@ -1,30 +1,29 @@
 package com.algaworks.algafood.api.v1.model;
 
-import java.math.BigDecimal;
-
-import org.springframework.hateoas.RepresentationModel;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+
+import java.math.BigDecimal;
 
 @Getter
 @Setter
 public class ProdutoModel extends RepresentationModel<ProdutoModel> {
 
-    @ApiModelProperty(value = "ID do produto", example = "1")
+    @Schema(example = "1")
     private Long id;
 
-    @ApiModelProperty(value = "Nome do produto", example = "Lasanha")
+    @Schema(example = "Pizza de Frango com Caputiry")
     private String nome;
 
-    @ApiModelProperty(value = "Descrição do produto", example = "Lasanha quatro queijos")
+    @Schema(example = "uma deliciosa pizza feita em forno elétrico")
     private String descricao;
 
-    @ApiModelProperty(value = "Preço do produto", example = "10.00")
+    @Schema(example = "18.90")
     private BigDecimal preco;
 
-    @ApiModelProperty(value = "Produto está ativo", example = "1")
+    @Schema(example = "true")
     private Boolean ativo;
     
 }

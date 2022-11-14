@@ -1,31 +1,29 @@
 package com.algaworks.algafood.infrastructure.service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import javax.persistence.EntityManager;
-import javax.persistence.criteria.Predicate;
-
 import com.algaworks.algafood.domain.filter.VendaDiariaFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Pedido_;
 import com.algaworks.algafood.domain.model.StatusPedido;
 import com.algaworks.algafood.domain.model.dto.VendaDiaria;
 import com.algaworks.algafood.domain.service.VendaQueriesService;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.criteria.Predicate;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 
 @Repository
+@AllArgsConstructor
 public class VendaQueriesServiceImpl implements VendaQueriesService {
 
-	@Autowired
-	private EntityManager entityManager;
+	private final EntityManager entityManager;
 
 	@Override
-	public List<VendaDiaria> consultarVendasDiarias(VendaDiariaFilter filtro, String timeOffset) {
+	public List<VendaDiaria> consultarVendasDiarias(final VendaDiariaFilter filtro, final String timeOffset) {
 		var builder = entityManager.getCriteriaBuilder();
 		var query = builder.createQuery(VendaDiaria.class);
 		var root  = query.from(Pedido.class);

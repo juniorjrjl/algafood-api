@@ -1,0 +1,86 @@
+spring:
+  datasource:
+    url: jdbc:mysql://db:3306/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: algafood
+    password: algafood
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 3
+      idle-timeout: 10000
+  flyway:
+    locations: classpath:db/migration,classpath:db/testdata
+    url: jdbc:mysql://db:3306/algafood?createDatabaseIfNotExist=true&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    user: algafood
+    password: algafood
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    database: mysql
+    hibernate:
+      ddl-auto: none
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+      fail-on-ignored-properties: true
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false
+  servlet:
+    multipart:
+      #max-file-size: 20KB
+      #max-request-size: 20KB
+  mail:
+    host: smtp.sendgrid.net
+    port: 587
+    username: apikey
+    password: apikey
+  freemarker:
+    settings:
+      locale: pt_BR
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/.well-known/jwks.json
+
+  devtools:
+    remote:
+      secret: 123
+    restart:
+      trigger-file: trigger.txt
+
+algafood:
+  email:
+    remetente: Algafood <naorespoder@algafood.com.br>
+    impl: fake
+    sand-box:
+      destinatario: teste@teste.com.br
+  jwt:
+    keystore:
+      jks-location: base64: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
+      password: 123456
+      keypair-alias: algafood
+  storage:
+    tipo: local
+
+server:
+  compression:
+    enabled: true
+
+springdoc:
+#  packages-to-scan: com.algaworks.algafood.api
+#  paths-to-match: /v1/**,/v2/**
+  o-auth-flow:
+    authorization-url: http://localhost:8080/oauth/authorize
+    token-url: http://localhost:8080/oauth/token
+  swagger-ui:
+    oauth:
+      client-id: algafood-web
+      client-secret: web123
+      use-pkce-with-authorization-code-grant: true

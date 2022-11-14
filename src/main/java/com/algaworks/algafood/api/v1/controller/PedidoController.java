@@ -1,23 +1,5 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import java.util.Map;
-
-import javax.validation.Valid;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.PagedModel;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
 import com.algaworks.algafood.api.v1.assembler.PedidoInputDisassembler;
 import com.algaworks.algafood.api.v1.assembler.PedidoModelAssembler;
 import com.algaworks.algafood.api.v1.assembler.PedidoResumoModelAssembler;
@@ -32,35 +14,45 @@ import com.algaworks.algafood.core.security.CheckSecurity;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
+import java.util.Map;
 
 
 
 @RestController
 @RequestMapping(path = "/v1/pedidos", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class PedidoController implements PedidoControllerOpenApi{
 
-    @Autowired
-    private EmissaoPedidoService emissaoPedido;
+    private final EmissaoPedidoService emissaoPedido;
 
-    @Autowired
-    private PedidoModelAssembler pedidoModelAssembler;
+    private final PedidoModelAssembler pedidoModelAssembler;
 
-    @Autowired
-    private PedidoResumoModelAssembler pedidoResumoModelAssembler;
+    private final PedidoResumoModelAssembler pedidoResumoModelAssembler;
 
-    @Autowired
-    private PedidoInputDisassembler pedidoInputDisassembler;
+    private final PedidoInputDisassembler pedidoInputDisassembler;
 
-    @Autowired
-    private PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
+    private final PagedResourcesAssembler<Pedido> pagedResourcesAssembler;
 
-    @Autowired
-    private AlgaSecurity algaSecurity;
+    private final AlgaSecurity algaSecurity;
     
     @CheckSecurity.Pedidos.PodeConsultar
     @GetMapping
-    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, 
-            @PageableDefault(size = 10)Pageable pageable) {
+    public PagedModel<PedidoResumoModel> pesquisar(final PedidoFilter filtro, @PageableDefault final Pageable pageable) {
         Pageable pageableTraduzido  = traduzirPageable(pageable);
 
         Page<Pedido> pedidosPage = emissaoPedido.listar(filtro, pageableTraduzido);
@@ -72,13 +64,13 @@ public class PedidoController implements PedidoControllerOpenApi{
     
     @CheckSecurity.Pedidos.PodeBuscar
     @GetMapping("{codigoPedido}")
-    public PedidoModel buscar(@PathVariable String codigoPedido){
+    public PedidoModel buscar(@PathVariable final String codigoPedido){
         return pedidoModelAssembler.toModel(emissaoPedido.buscar(codigoPedido));
     }
     
     @CheckSecurity.Pedidos.PodeCriar
     @PostMapping
-    public PedidoModel emitir(@RequestBody @Valid PedidoInput pedidoInput) {
+    public PedidoModel emitir(@RequestBody @Valid final PedidoInput pedidoInput) {
         Pedido pedido = pedidoInputDisassembler.toDomainObject(pedidoInput);
         pedido.getCliente().setId(algaSecurity.getUsuarioId());
         emissaoPedido.salvar(pedido);

@@ -7,7 +7,7 @@ public class PedidoNaoEncontradoException extends EntidadeNaoEncontradaException
 
     private static final long serialVersionUID = 1L;
     
-    public PedidoNaoEncontradoException(String codigoPedido) {
+    public PedidoNaoEncontradoException(final String codigoPedido) {
         super(String.format("Não existe um cadastro de pedido com o código %s", codigoPedido));
     }
 

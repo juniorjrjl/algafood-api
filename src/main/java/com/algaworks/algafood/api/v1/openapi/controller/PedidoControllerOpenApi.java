@@ -1,45 +1,30 @@
 package com.algaworks.algafood.api.v1.openapi.controller;
 
-import com.algaworks.algafood.api.exceptionhandler.Problem;
 import com.algaworks.algafood.api.v1.model.PedidoModel;
 import com.algaworks.algafood.api.v1.model.PedidoResumoModel;
 import com.algaworks.algafood.api.v1.model.input.PedidoInput;
+import com.algaworks.algafood.core.springdoc.PageableParameter;
 import com.algaworks.algafood.domain.filter.PedidoFilter;
-
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
-
-@Api(tags = "Pedidos")
+@SecurityRequirement(name = "security_auth")
+@Tag(name = "Pedidos", description = "Gerencia os pedidos")
 public interface PedidoControllerOpenApi {
 
-    @ApiImplicitParams({
-        @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-        name = "campos", paramType = "query", type = "string")
-    })
-    @ApiOperation("Lista os pedidos")
-    public PagedModel<PedidoResumoModel> pesquisar(PedidoFilter filtro, Pageable pageable);
-    
-    @ApiImplicitParams({
-        @ApiImplicitParam(value = "Nomes das propriedades para filtrar na resposta, separados por vírgula",
-        name = "campos", paramType = "query", type = "string")
-    })
-    @ApiOperation("Busca um pedido por ID")
-    @ApiResponses({
-        @ApiResponse(code = 400, message = "ID do pedido inválido", response = Problem.class),
-        @ApiResponse(code = 404, message = "Pedido não encontrado", response = Problem.class)
-    })
-    public PedidoModel buscar(@ApiParam(value = "Código de um pedido", example = "f9981ca4-5a5e-4da3-af04-933861df3e55", required = true) 
-                              String codigoPedido);
+    @PageableParameter
+    @Operation(summary = "Busca pedidos de forma páginada")
+    PagedModel<PedidoResumoModel> pesquisar(final PedidoFilter filtro, @Parameter(hidden = true) final Pageable pageable);
 
-    @ApiOperation("Emite um pedido")
-    public PedidoModel emitir(PedidoInput pedidoInput);
+    @Operation(summary = "Busca pedido pelo id")
+    PedidoModel buscar(@Parameter(description = "Id de um estado", example = "f9981ca4-5a5e-4da3-af04-933861df3e55", required = true) final String codigoPedido);
+
+    @Operation(summary = "Cadastra um pedido")
+    PedidoModel emitir(@RequestBody(description = "Representação de um novo pedido") final PedidoInput pedidoInput);
     
 }

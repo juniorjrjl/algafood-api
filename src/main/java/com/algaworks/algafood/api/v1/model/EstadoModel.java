@@ -1,18 +1,17 @@
 package com.algaworks.algafood.api.v1.model;
 
-import org.springframework.hateoas.RepresentationModel;
-
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
 
 @Getter
 @Setter
 public class EstadoModel extends RepresentationModel<EstadoModel>{
 
-    @ApiModelProperty(value = "ID de um Estado", example = "1")
+    @Schema(example = "2")
     private Long id;
-    
-    @ApiModelProperty(value = "Nome de um Estado", example = "São Paulo")
+
+    @Schema(example = "São Paulo")
     private String nome;
 }

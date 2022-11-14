@@ -11,12 +11,12 @@ public class FileSizeValidator implements ConstraintValidator<FileSize, Multipar
     private DataSize maxSize;
 
     @Override
-    public void initialize(FileSize constraintAnnotation) {
+    public void initialize(final FileSize constraintAnnotation) {
         this.maxSize = DataSize.parse(constraintAnnotation.max());
     }
 
 	@Override
-	public boolean isValid(MultipartFile value, ConstraintValidatorContext context) {
+	public boolean isValid(final MultipartFile value, final ConstraintValidatorContext context) {
         return value == null || value.getSize() <= maxSize.toBytes();
 	}
 

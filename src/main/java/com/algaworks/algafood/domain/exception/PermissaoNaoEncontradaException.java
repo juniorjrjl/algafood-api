@@ -5,11 +5,11 @@ public class PermissaoNaoEncontradaException extends EntidadeNaoEncontradaExcept
 
     private static final long serialVersionUID = 1L;
 
-    public PermissaoNaoEncontradaException(String mensagem) {
+    public PermissaoNaoEncontradaException(final String mensagem) {
         super(mensagem);
     }
     
-    public PermissaoNaoEncontradaException(Long permissaoId) {
+    public PermissaoNaoEncontradaException(final Long permissaoId) {
         this(String.format("Não existe um cadastro de permissao com o código %d", permissaoId));
     }
 }

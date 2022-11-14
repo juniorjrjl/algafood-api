@@ -1,6 +1,6 @@
 package com.algaworks.algafood.api.v1.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,19 +8,19 @@ import lombok.Setter;
 @Setter
 public class EnderecoModel {
 
-    @ApiModelProperty(value = "CEP do endereço", example = "12030-999")
+    @Schema(example = "12030-000")
     private String cep;
 
-    @ApiModelProperty(value = "logradouro do endereço", example = "Rua dos testes")
+    @Schema(example = "Rua Emílio Whinter")
     private String logradouro;
 
-    @ApiModelProperty(value = "número do endereço", example = "100")
+    @Schema(example = "134")
     private String numero;
 
-    @ApiModelProperty(value = "complemento do endereço", example = "apartamento 103")
+    @Schema(example = "apartamento 45")
     private String complemento;
 
-    @ApiModelProperty(value = "bairro do endereço", example = "bairro dos testes")
+    @Schema(example = "Jardim das  Nações")
     private String bairro;
     
     private CidadeResumoModel cidade;

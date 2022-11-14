@@ -1,6 +1,13 @@
 package com.algaworks.algafood.api.v1.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import com.algaworks.algafood.api.v1.AlgaLinks;
+import com.algaworks.algafood.api.v1.assembler.GrupoModelAssembler;
+import com.algaworks.algafood.api.v1.model.GrupoModel;
+import com.algaworks.algafood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
+import com.algaworks.algafood.core.security.AlgaSecurity;
+import com.algaworks.algafood.domain.model.Usuario;
+import com.algaworks.algafood.domain.service.CadastroUsuarioService;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
@@ -14,33 +21,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.algaworks.algafood.api.v1.AlgaLinks;
-import com.algaworks.algafood.api.v1.assembler.GrupoModelAssembler;
-import com.algaworks.algafood.api.v1.model.GrupoModel;
-import com.algaworks.algafood.api.v1.openapi.controller.UsuarioGrupoControllerOpenApi;
-import com.algaworks.algafood.core.security.AlgaSecurity;
-import com.algaworks.algafood.domain.model.Usuario;
-import com.algaworks.algafood.domain.service.CadastroUsuarioService;
-
 
 @RestController
 @RequestMapping(path = "/v1/usuarios/{usuarioId}/grupos", produces = MediaType.APPLICATION_JSON_VALUE)
+@AllArgsConstructor
 public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
 
-    @Autowired
-    private CadastroUsuarioService cadastroUsuario;
+    private final CadastroUsuarioService cadastroUsuario;
 
-    @Autowired
-    private GrupoModelAssembler grupoModelAssembler;
+    private final GrupoModelAssembler grupoModelAssembler;
 
-    @Autowired
-	private AlgaLinks algaLinks;
+	private final AlgaLinks algaLinks;
 
-    @Autowired
-    private AlgaSecurity algaSecurity; 
+    private final AlgaSecurity algaSecurity;
     
     @GetMapping
-    public CollectionModel<GrupoModel> listar(@PathVariable Long usuarioId) {
+    public CollectionModel<GrupoModel> listar(@PathVariable final Long usuarioId) {
         Usuario usuario = cadastroUsuario.buscar(usuarioId);
         CollectionModel<GrupoModel> gruposModel = grupoModelAssembler.toCollectionModel(usuario.getGrupos())
             .add(algaLinks.linkToGruposUsuarios(IanaLinkRelations.SELF.value(), usuarioId));
@@ -53,14 +49,14 @@ public class UsuarioGrupoController implements UsuarioGrupoControllerOpenApi{
     
     @PutMapping(value="/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> associarGrupo(@PathVariable Long usuarioId,@PathVariable Long grupoId) {
+    public ResponseEntity<Void> associarGrupo(@PathVariable final Long usuarioId,@PathVariable final Long grupoId) {
         cadastroUsuario.associarGrupo(usuarioId, grupoId);
         return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping(value="/{grupoId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public ResponseEntity<Void> desassociarGrupo(@PathVariable Long usuarioId,@PathVariable Long grupoId) {
+    public ResponseEntity<Void> desassociarGrupo(@PathVariable final Long usuarioId,@PathVariable final Long grupoId) {
         cadastroUsuario.desassociarGrupo(usuarioId, grupoId);
         return ResponseEntity.noContent().build();
     }
