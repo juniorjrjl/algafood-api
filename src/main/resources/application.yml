@@ -47,7 +47,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          jwk-set-uri: http://localhost:8080/.well-known/jwks.json
+          jwk-set-uri: http://localhost:8080/oauth2/jwks
 
   devtools:
     remote:
@@ -68,6 +68,8 @@ algafood:
       keypair-alias: algafood
   storage:
     tipo: local
+  auth:
+    provider-url: http://localhost:8080
 
 server:
   compression:
@@ -77,8 +79,8 @@ springdoc:
 #  packages-to-scan: com.algaworks.algafood.api
 #  paths-to-match: /v1/**,/v2/**
   o-auth-flow:
-    authorization-url: http://localhost:8080/oauth/authorize
-    token-url: http://localhost:8080/oauth/token
+    authorization-url: http://local-algatestes.com:8080/oauth2/authorize
+    token-url: http://local-algatestes.com:8080/oauth2/token
   swagger-ui:
     oauth:
       client-id: algafood-web

@@ -1,5 +1,6 @@
 package com.algaworks.algafood.core.security;
 
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -9,10 +10,10 @@ import org.springframework.stereotype.Component;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 
 @Component
+@AllArgsConstructor
 public class AlgaSecurity {
-	
-	@Autowired
-	private CadastroRestauranteService cadastroRestaurante;
+
+	private final CadastroRestauranteService cadastroRestaurante;
 	
 	public Authentication getAuthentication() {
 		return SecurityContextHolder.getContext().getAuthentication();
@@ -41,7 +42,7 @@ public class AlgaSecurity {
 	    return getAuthentication().isAuthenticated();
 	}
 	
-	public boolean hasAuthority(String authorityName) {
+	public boolean hasAuthority(final String authorityName) {
 		return getAuthentication().getAuthorities().stream().anyMatch(a -> a.getAuthority().equals(authorityName));
 	}
 	
@@ -53,7 +54,7 @@ public class AlgaSecurity {
 	    return hasAuthority("SCOPE_READ");
 	}
 	
-	public boolean podeGerenciarPedidos(String codigoPedido) {
+	public boolean podeGerenciarPedidos(final String codigoPedido) {
 		return temEscopoEscrita() && (hasAuthority("GERENCIAR_PEDIDOS") || usuarioPodeGerenciarPedido(codigoPedido));
 	}
 	
@@ -78,7 +79,7 @@ public class AlgaSecurity {
 	    return temEscopoEscrita() && hasAuthority("EDITAR_USUARIOS_GRUPOS_PERMISSOES");
 	}
 
-	public boolean podePesquisarPedidos(Long clienteId, Long restauranteId) {
+	public boolean podePesquisarPedidos(final Long clienteId, final Long restauranteId) {
 	    return temEscopoLeitura() && (hasAuthority("CONSULTAR_PEDIDOS")
 	            || usuarioAutenticadoIgual(clienteId) || gerenciaRestaurante(restauranteId));
 	}
